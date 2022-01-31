@@ -14,15 +14,15 @@ public class AssignmentExpression extends ExpressionStatement {
         return interpreter.rewrite(id, (JSValue)value);
     }
 
-    public AssignmentExpression setIdentifier(Identifier id) {
+    public AssignmentExpression setDestination(Identifier id) {
         Objects.requireNonNull(id);
         this.id = id;
         return this;
     }
 
     public static AssignmentExpression from(Identifier id, Expression expression) {
-        var assignExpression = new AssignmentExpression().setIdentifier(id);
-        assignExpression.setExpression(expression);
+        var assignExpression = new AssignmentExpression().setDestination(id);
+        assignExpression.setSource(expression);
         return assignExpression;
     }
 

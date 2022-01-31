@@ -9,8 +9,6 @@ public interface BinaryOperator extends ASTNode {
     public static BinaryOperator Multiply = new OperatorMultiply();
     public static BinaryOperator Divide = new OperatorDivide();
     public static BinaryOperator Mod = new OperatorMod();
-    public static BinaryOperator Equals = new OperatorEquals();
-    public static BinaryOperator LessThan = new OperatorLessThan();
 
     @Override
     public default Object execute() {

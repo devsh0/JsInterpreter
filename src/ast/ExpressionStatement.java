@@ -8,7 +8,7 @@ public class ExpressionStatement implements Statement, Expression {
         return expression.execute();
     }
 
-    public ExpressionStatement setExpression(Expression expression) {
+    public ExpressionStatement setSource(Expression expression) {
         Objects.requireNonNull(expression);
         this.expression = expression;
         return this;
