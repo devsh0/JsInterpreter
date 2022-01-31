@@ -6,6 +6,7 @@ import ast.operator.*;
 import java.util.Objects;
 
 public class JSNumber implements
+        OperatorLessThan.SupportsLessThanTest,
         OperatorEquals.SupportsEqualityTest,
         OperatorPlus.Addable,
         OperatorMinus.Subtractable,
@@ -95,16 +96,23 @@ public class JSNumber implements
         return new JSNumber().setValue(number);
     }
 
+    private JSNumber getJSNumber(Expression expr) {
+        Objects.requireNonNull(expr);
+        var valueOrError = expr.execute();
+        // TODO: Handle type casts.
+        Assert(valueOrError instanceof JSNumber);
+        return (JSNumber)valueOrError;
+    }
+
     @Override
     public JSBoolean isEqualTo(Expression other) {
-        Objects.requireNonNull(other);
-        var valueOrError = other.execute();
-        Assert(valueOrError instanceof JSValue);
-        var value = (JSValue)valueOrError;
+        var number = getJSNumber(other);
+        return JSBoolean.from(value.equals(number.value));
+    }
 
-        // TODO: Handle type casts.
-        Assert(value instanceof JSNumber);
-        var number = (JSNumber)value;
-        return JSBoolean.from(this.value.equals(number.value));
+    @Override
+    public JSBoolean isLessThan(Expression other) {
+        var number = getJSNumber(other);
+        return JSBoolean.from(value < number.value);
     }
 }

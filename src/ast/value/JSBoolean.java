@@ -1,8 +1,15 @@
 package ast.value;
 
+import ast.Expression;
+import ast.operator.OperatorEquals;
+import ast.operator.OperatorLessThan;
+
 import java.util.Objects;
 
-public class JSBoolean implements JSValue {
+public class JSBoolean implements
+        JSValue,
+        OperatorLessThan.SupportsLessThanTest,
+        OperatorEquals.SupportsEqualityTest {
     private boolean value;
 
     @Override
@@ -28,7 +35,7 @@ public class JSBoolean implements JSValue {
     @Override
     public JSBoolean setValue(Object value) {
         Assert(value instanceof Boolean);
-        this.value = (Boolean)value;
+        this.value = (Boolean) value;
         return this;
     }
 
@@ -55,5 +62,29 @@ public class JSBoolean implements JSValue {
     public static JSBoolean from(Boolean value) {
         Objects.requireNonNull(value);
         return new JSBoolean().setValue(value);
+    }
+
+    private JSBoolean getJSBoolean(Expression expr) {
+        Objects.requireNonNull(expr);
+        var valueOrError = expr.execute();
+        // TODO: Handle type casts.
+        Assert(valueOrError instanceof JSBoolean);
+        return (JSBoolean)valueOrError;
+    }
+
+    @Override
+    public JSBoolean isEqualTo(Expression other) {
+        var bool = getJSBoolean(other);
+        if (value != bool.value)
+            return JSBoolean.from(false);
+        return JSBoolean.from(true);
+    }
+
+    @Override
+    public JSBoolean isLessThan(Expression other) {
+        var bool = getJSBoolean(other);
+        if (value && !(bool.value))
+            return JSBoolean.from(true);
+        return JSBoolean.from(false);
     }
 }
