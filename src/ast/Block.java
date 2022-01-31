@@ -24,13 +24,13 @@ public class Block implements Statement {
             if (lastStatement instanceof CompoundStatement compoundStatement)
                 lastStatement = compoundStatement.getLastStatement();
 
-            if (lastStatement instanceof ReturnStatement)
+            if (lastStatement instanceof ReturnStatement) {
+                interpreter.exitCurrentScope();
                 return returnValue;
+            }
         }
 
-        if (lastStatement instanceof ReturnStatement)
-            interpreter.exitCurrentFunctionScope();
-        else interpreter.exitCurrentScope();
+        interpreter.exitCurrentScope();
         return returnValue;
     }
 

@@ -50,7 +50,7 @@ public class Main implements Assertable {
         programBody.append(defineFunctionHelper(isEvenFunctionId));
 
         var ifStatement = new IfStatement().setConditionExpression(
-                new CallExpression().setCallee(isEvenFunctionId).setArguments(JSValue.from(50)));
+                new CallExpression().setCallee(isEvenFunctionId).setArguments(JSValue.from(40)));
         var ifBody = new Block(ifStatement);
         ifBody.append(new ExpressionStatement().setExpression(JSValue.from(1)));
         ifStatement.setBody(ifBody);

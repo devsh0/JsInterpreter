@@ -21,18 +21,6 @@ public class Interpreter implements Assertable {
         return this;
     }
 
-    public Scope exitCurrentFunctionScope() {
-        for (;;)  {
-            var currentScope = exitCurrentScope();
-            var ownerOrEmpty = currentScope.getOwner();
-            if (ownerOrEmpty.isPresent()) {
-                var owner = ownerOrEmpty.get();
-                if (owner instanceof FunctionDeclaration)
-                    return currentScope;
-            }
-        }
-    }
-
     public Optional<ASTNode> queryScope(final Identifier identifier) {
         for (int i = stack.size() - 1; i >= 0; i--) {
             var scope = stack.get(i);
