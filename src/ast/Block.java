@@ -21,18 +21,16 @@ public class Block implements Statement {
             returnValue = statement.execute();
             lastStatement = statement;
 
-            if (statement instanceof CompoundStatement compoundStatement) {
-                var lastNestedStatement = compoundStatement.getLastStatement();
-                if (lastNestedStatement instanceof ReturnStatement)
-                    return returnValue;
-            }
+            if (lastStatement instanceof CompoundStatement compoundStatement)
+                lastStatement = compoundStatement.getLastStatement();
 
-            if (statement instanceof ReturnStatement) {
-                interpreter.exitCurrentFunctionScope();
+            if (lastStatement instanceof ReturnStatement)
                 return returnValue;
-            }
         }
-        interpreter.exitCurrentScope();
+
+        if (lastStatement instanceof ReturnStatement)
+            interpreter.exitCurrentFunctionScope();
+        else interpreter.exitCurrentScope();
         return returnValue;
     }
 

@@ -15,8 +15,28 @@ public class Main implements Assertable {
                 JSValue.from(0)
         ));
         var ifBody = new Block(ifStatement);
-        ifBody.append(ReturnStatement.from(JSValue.from(true)));
+
+        var innerIfStatement = new IfStatement().setConditionExpression(BinaryExpression.from(
+                BinaryOperator.Equals,
+                BinaryExpression.from(BinaryOperator.Mod, Identifier.from("number"), JSValue.from(4)),
+                JSValue.from(0)
+        ));
+        var innerIfBody = new Block(innerIfStatement);
+
+        var moreInnerIfStatement = new IfStatement().setConditionExpression(BinaryExpression.from(
+                BinaryOperator.Equals,
+                BinaryExpression.from(BinaryOperator.Mod, Identifier.from("number"), JSValue.from(5)),
+                JSValue.from(0)
+        ));
+        var moreInnerIfBody = new Block(moreInnerIfStatement);
+        moreInnerIfBody.append(ReturnStatement.from(JSValue.from(true)));
+        moreInnerIfStatement.setBody(moreInnerIfBody);
+
+        innerIfBody.append(moreInnerIfStatement);
+        innerIfStatement.setBody(innerIfBody);
+        ifBody.append(innerIfStatement);
         ifStatement.setBody(ifBody);
+
         var returnStatement = ReturnStatement.from(JSValue.from(false));
         functionBody.append(ifStatement).append(returnStatement);
         return functionDeclaration.setId(functionId).setBody(functionBody);
@@ -26,11 +46,11 @@ public class Main implements Assertable {
         var interpreter = Interpreter.get();
         Program program = new Program();
         var programBody = new Block(program);
-        Identifier isEvenFunctionId = Identifier.from("isEven");
+        Identifier isEvenFunctionId = Identifier.from("isGoodEven");
         programBody.append(defineFunctionHelper(isEvenFunctionId));
 
         var ifStatement = new IfStatement().setConditionExpression(
-                new CallExpression().setCallee(isEvenFunctionId).setArguments(JSValue.from(21)));
+                new CallExpression().setCallee(isEvenFunctionId).setArguments(JSValue.from(50)));
         var ifBody = new Block(ifStatement);
         ifBody.append(new ExpressionStatement().setExpression(JSValue.from(1)));
         ifStatement.setBody(ifBody);
