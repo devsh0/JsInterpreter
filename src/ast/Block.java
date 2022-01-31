@@ -19,6 +19,13 @@ public class Block implements Statement {
         Object returnValue = JSValue.undefined();
         for (var statement : statementList) {
             returnValue = statement.execute();
+            lastStatement = statement;
+
+            if (statement instanceof CompoundStatement compoundStatement) {
+                var lastNestedStatement = compoundStatement.getLastStatement();
+                if (lastNestedStatement instanceof ReturnStatement)
+                    return returnValue;
+            }
 
             if (statement instanceof ReturnStatement) {
                 interpreter.exitCurrentFunctionScope();
@@ -29,15 +36,20 @@ public class Block implements Statement {
         return returnValue;
     }
 
-    public Block append(final ASTNode node) {
+    public Block append(final Statement node) {
         Objects.requireNonNull(node);
         statementList.add(node);
         return this;
     }
 
+    public Statement getLastStatement() {
+        return lastStatement;
+    }
+
     public Scope getScope() {
         return scope;
     }
-    private List<ASTNode> statementList = new ArrayList<>();
+    private List<Statement> statementList = new ArrayList<>();
     private Scope scope;
+    private Statement lastStatement;
 }

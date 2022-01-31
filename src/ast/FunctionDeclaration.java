@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 // Fixme: Is there a difference between function declaration and definition in JS?
-public class FunctionDeclaration implements ASTNode {
+public class FunctionDeclaration implements CompoundStatement {
     @Override
     public Object execute() {
         Interpreter.get().getCurrentScope().addEntry(id, this);
@@ -50,6 +50,11 @@ public class FunctionDeclaration implements ASTNode {
 
     public Block getBody() {
         return body;
+    }
+
+    @Override
+    public Statement getLastStatement() {
+        return body.getLastStatement();
     }
 
     private Identifier id;

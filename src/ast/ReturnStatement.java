@@ -2,7 +2,7 @@ package ast;
 
 import java.util.Objects;
 
-public class ReturnStatement implements ASTNode {
+public class ReturnStatement implements Statement {
     @Override
     public Object execute() {
         return expression.execute();

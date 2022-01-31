@@ -5,7 +5,7 @@ import org.js.Interpreter;
 
 import java.util.Objects;
 
-public class VariableDeclaration implements ASTNode {
+public class VariableDeclaration implements Statement {
     @Override
     public Object execute() {
         Interpreter.get().getCurrentScope().addEntry(id, initializer);
