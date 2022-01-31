@@ -1,5 +1,6 @@
 package ast;
 
+import ast.value.JSValue;
 import org.js.Interpreter;
 
 import java.util.Objects;
@@ -8,10 +9,9 @@ public class AssignmentExpression extends ExpressionStatement {
     @Override
     public Object execute() {
         var interpreter = Interpreter.get();
-        var entity = interpreter.queryScope(id);
-        Assert(entity.isPresent());
-        interpreter.getCurrentScope().addEntry(id, expression);
-        return expression;
+        var value = super.execute();
+        Assert(value instanceof JSValue);
+        return interpreter.rewrite(id, (JSValue)value);
     }
 
     public AssignmentExpression setIdentifier(Identifier id) {

@@ -59,6 +59,11 @@ public class JSString implements OperatorPlus.Addable {
         return value;
     }
 
+    @Override
+    public void dump() {
+        System.out.println("[JSString: '" + value + "']");
+    }
+
     public static JSString from(String string) {
         return new JSString().setValue(string);
     }

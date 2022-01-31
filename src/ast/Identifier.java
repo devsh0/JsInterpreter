@@ -39,6 +39,11 @@ public class Identifier implements ASTNode, Expression {
         return Objects.hash(name);
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public static Identifier from(String name) {
         Objects.requireNonNull(name);
         Assertable._assert(!name.isEmpty());

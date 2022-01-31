@@ -36,6 +36,16 @@ public class Interpreter implements Assertable {
         return stack.get(stack.size() - 1);
     }
 
+    public Expression rewrite(Identifier identifier, Expression value) {
+        for (int i = stack.size() - 1; i >= 0; i--) {
+            var scope = stack.get(i);
+            var entityOrNull = scope.getIdentifierEntity(identifier);
+            if (entityOrNull.isPresent())
+                scope.addEntry(identifier, value);
+        }
+        return value;
+    }
+
     public Scope exitCurrentScope() {
         Assert(stack.size() > 0);
         return stack.remove(stack.size() - 1);

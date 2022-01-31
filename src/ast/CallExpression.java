@@ -23,7 +23,7 @@ public class CallExpression extends ExpressionStatement {
         var iterCount = Math.min(arguments.size(), parameters.size());
         for (int i = 0; i < iterCount; i++)
             scope.addEntry(parameters.get(i), arguments.get(i));
-        return function.getBody().execute();
+        return functionBody.execute();
     }
 
     public CallExpression setCallee(final Identifier id) {

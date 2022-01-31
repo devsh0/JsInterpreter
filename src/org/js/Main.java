@@ -9,39 +9,42 @@ public class Main implements Assertable {
     private static FunctionDeclaration defineFunctionHelper(final Identifier functionId) {
         var functionDeclaration = new FunctionDeclaration().setParameters(Identifier.from("number"));
         var functionBody = new Block(functionDeclaration);
+        var valueId = Identifier.from("value");
+        var valueDeclaration = new VariableDeclaration().setIdentifier(valueId).setInitializer(JSValue.from(""));
+        functionBody.append(valueDeclaration);
+
         var ifStatement = new IfStatement().setConditionExpression(BinaryExpression.from(
                 BinaryOperator.Equals,
-                BinaryExpression.from(BinaryOperator.Mod, Identifier.from("number"), JSValue.from(2)),
+                BinaryExpression.from(BinaryOperator.Mod, Identifier.from("number"), JSValue.from(3)),
                 JSValue.from(0)
         ));
         var ifBody = new Block(ifStatement);
-
-        var innerIfStatement = new IfStatement().setConditionExpression(BinaryExpression.from(
-                BinaryOperator.Equals,
-                BinaryExpression.from(BinaryOperator.Mod, Identifier.from("number"), JSValue.from(4)),
-                JSValue.from(0)
+        var assignment = new AssignmentExpression().setIdentifier(valueId);
+        assignment.setExpression(BinaryExpression.from(
+                BinaryOperator.Plus,
+                valueId,
+                JSValue.from("fizz")
         ));
-        var innerIfBody = new Block(innerIfStatement);
+        ifBody.append(assignment);
+        ifStatement.setBody(ifBody);
+        functionBody.append(ifStatement);
 
-        var moreInnerIfStatement = new IfStatement().setConditionExpression(BinaryExpression.from(
+        ifStatement = new IfStatement().setConditionExpression(BinaryExpression.from(
                 BinaryOperator.Equals,
                 BinaryExpression.from(BinaryOperator.Mod, Identifier.from("number"), JSValue.from(5)),
                 JSValue.from(0)
         ));
-        var moreInnerIfBody = new Block(moreInnerIfStatement);
-        moreInnerIfBody.append(ReturnStatement.from(JSValue.from(true)));
-        moreInnerIfStatement.setBody(moreInnerIfBody);
-
-        innerIfBody.append(moreInnerIfStatement);
-        innerIfStatement.setBody(innerIfBody);
-        ifBody.append(innerIfStatement);
+        ifBody = new Block(ifStatement);
+        assignment = new AssignmentExpression().setIdentifier(valueId);
+        assignment.setExpression(BinaryExpression.from(
+                BinaryOperator.Plus,
+                valueId,
+                JSValue.from("buzz")
+        ));
+        ifBody.append(assignment);
         ifStatement.setBody(ifBody);
 
-        var elseBody = new Block(ifStatement);
-        elseBody.append(ReturnStatement.from(JSValue.from(false)));
-        ifStatement.setAlternate(elseBody);
-
-        functionBody.append(ifStatement);
+        functionBody.append(ifStatement).append(new ReturnStatement().setExpression(valueId));
         return (FunctionDeclaration) functionDeclaration.setId(functionId).setBody(functionBody);
     }
 
@@ -49,16 +52,9 @@ public class Main implements Assertable {
         var interpreter = Interpreter.get();
         Program program = new Program();
         var programBody = new Block(program);
-        Identifier isEvenFunctionId = Identifier.from("isGoodEven");
-        programBody.append(defineFunctionHelper(isEvenFunctionId));
-
-        var ifStatement = new IfStatement().setConditionExpression(
-                new CallExpression().setCallee(isEvenFunctionId).setArguments(JSValue.from(40)));
-        var ifBody = new Block(ifStatement);
-        ifBody.append(new ExpressionStatement().setExpression(JSValue.from(1)));
-        ifStatement.setBody(ifBody);
-
-        programBody.append(ifStatement);
+        Identifier fizzBuzzFun = Identifier.from("fizzBuzz");
+        programBody.append(defineFunctionHelper(fizzBuzzFun));
+        programBody.append(new CallExpression().setCallee(fizzBuzzFun).setArguments(JSValue.from(10)));
         program.setBody(programBody);
         var value = interpreter.run(program);
         ((JSValue) value).dump();
