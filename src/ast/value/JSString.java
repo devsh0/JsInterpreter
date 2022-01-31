@@ -27,6 +27,16 @@ public class JSString implements OperatorPlus.Addable {
     }
 
     @Override
+    public boolean isTruthy() {
+        return value.isEmpty();
+    }
+
+    @Override
+    public boolean isFalsy() {
+        return !value.isEmpty();
+    }
+
+    @Override
     public Object getValue() {
         return value;
     }

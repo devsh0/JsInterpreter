@@ -7,6 +7,16 @@ public class JSUndefined implements JSValue {
     }
 
     @Override
+    public boolean isTruthy() {
+        return false;
+    }
+
+    @Override
+    public boolean isFalsy() {
+        return true;
+    }
+
+    @Override
     public Object getValue() {
         return null;
     }

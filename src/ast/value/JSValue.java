@@ -1,9 +1,12 @@
 package ast.value;
 
 import ast.Expression;
-import myutils.Assertable;
 
 public interface JSValue extends Expression {
+    public boolean isTruthy();
+
+    public boolean isFalsy();
+
     public Object getValue();
 
     public JSValue setValue(Object value);
@@ -16,6 +19,10 @@ public interface JSValue extends Expression {
 
     public static JSString from(String string) {
         return JSString.from(string);
+    }
+
+    public static JSBoolean from(Boolean value) {
+        return JSBoolean.from(value);
     }
 
     public static JSUndefined undefined() {

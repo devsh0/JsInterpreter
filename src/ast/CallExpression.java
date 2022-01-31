@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class CallExpression implements ExpressionStatement {
+public class CallExpression extends ExpressionStatement {
     @Override
     public Object execute() {
         Objects.requireNonNull(callee);
@@ -25,7 +25,6 @@ public class CallExpression implements ExpressionStatement {
             scope.addEntry(parameters.get(i), arguments.get(i));
         return function.getBody().execute();
     }
-
 
     public CallExpression setCallee(final Identifier id) {
         Objects.requireNonNull(id);

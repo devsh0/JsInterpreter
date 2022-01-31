@@ -7,11 +7,18 @@ import myutils.Assertable;
 
 public class Main implements Assertable {
     private static FunctionDeclaration defineFunctionHelper(final Identifier functionId) {
-        var functionDeclaration = new FunctionDeclaration();
+        var functionDeclaration = new FunctionDeclaration().setParameters(Identifier.from("number"));
         var functionBody = new Block(functionDeclaration);
-        var returnStatement = ReturnStatement.from(BinaryExpression.from(BinaryOperator.Plus,
-                JSValue.from("one"), JSValue.from(2)));
-        functionBody.append(returnStatement);
+        var ifStatement = new IfStatement().setConditionExpression(BinaryExpression.from(
+                BinaryOperator.Equals,
+                BinaryExpression.from(BinaryOperator.Mod, Identifier.from("number"), JSValue.from(2)),
+                JSValue.from(0)
+        ));
+        var ifBody = new Block(ifStatement);
+        ifBody.append(ReturnStatement.from(JSValue.from(true)));
+        ifStatement.setBody(ifBody);
+        var returnStatement = ReturnStatement.from(JSValue.from(false));
+        functionBody.append(ifStatement).append(returnStatement);
         return functionDeclaration.setId(functionId).setBody(functionBody);
     }
 
@@ -19,11 +26,16 @@ public class Main implements Assertable {
         var interpreter = Interpreter.get();
         Program program = new Program();
         var programBody = new Block(program);
-        Identifier mainFunctionId = Identifier.from("main");
-        programBody.append(defineFunctionHelper(mainFunctionId));
-        programBody.append(new CallExpression()
-                .setCallee(mainFunctionId)
-                .setArguments(JSValue.from(10), JSValue.from(20)));
+        Identifier isEvenFunctionId = Identifier.from("isEven");
+        programBody.append(defineFunctionHelper(isEvenFunctionId));
+
+        var ifStatement = new IfStatement().setConditionExpression(
+                new CallExpression().setCallee(isEvenFunctionId).setArguments(JSValue.from(21)));
+        var ifBody = new Block(ifStatement);
+        ifBody.append(new ExpressionStatement().setExpression(JSValue.from(1)));
+        ifStatement.setBody(ifBody);
+
+        programBody.append(ifStatement);
         program.setBody(programBody);
         var value = interpreter.run(program);
         ((JSValue) value).dump();

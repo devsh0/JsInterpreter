@@ -1,20 +1,29 @@
 package ast.value;
 
 import ast.Expression;
-import ast.operator.OperatorDivide;
-import ast.operator.OperatorMinus;
-import ast.operator.OperatorMultiply;
-import ast.operator.OperatorPlus;
+import ast.operator.*;
 
 import java.util.Objects;
 
 public class JSNumber implements
+        OperatorEquals.SupportsEqualityTest,
         OperatorPlus.Addable,
         OperatorMinus.Subtractable,
         OperatorMultiply.Multiplicable,
-        OperatorDivide.Divisible {
+        OperatorDivide.Divisible,
+        OperatorMod.Modable {
 
     private Double value;
+
+    @Override
+    public boolean isTruthy() {
+        return value != 0;
+    }
+
+    @Override
+    public boolean isFalsy() {
+        return value == 0;
+    }
 
     @Override
     public Object getValue() {
@@ -24,11 +33,11 @@ public class JSNumber implements
     @Override
     public JSValue add(Expression other) {
         if (other instanceof JSNumber) {
-            var otherNumber = ((JSNumber)other).getValue();
-            return JSNumber.from(value + (Double)otherNumber);
+            var otherNumber = ((JSNumber) other).getValue();
+            return JSNumber.from(value + (Double) otherNumber);
         } else if (other instanceof JSString) {
-            var otherString = ((JSString)other).getValue();
-            return JSString.from(asString() + (String)otherString);
+            var otherString = ((JSString) other).getValue();
+            return JSString.from(asString() + (String) otherString);
         } else {
             Assert(false);
             return null;
@@ -37,20 +46,26 @@ public class JSNumber implements
 
     @Override
     public JSValue subtract(Expression other) {
-        var otherNumber = ((JSNumber)other).getValue();
-        return JSNumber.from(value - (Double)otherNumber);
+        var otherNumber = ((JSNumber) other).getValue();
+        return JSNumber.from(value - (Double) otherNumber);
     }
 
     @Override
     public JSValue multiply(Expression other) {
-        var otherNumber = ((JSNumber)other).getValue();
-        return JSNumber.from(value * (Double)otherNumber);
+        var otherNumber = ((JSNumber) other).getValue();
+        return JSNumber.from(value * (Double) otherNumber);
     }
 
     @Override
     public JSValue divide(Expression other) {
-        var otherNumber = ((JSNumber)other).getValue();
-        return JSNumber.from(value / (Double)otherNumber);
+        var otherNumber = ((JSNumber) other).getValue();
+        return JSNumber.from(value / (Double) otherNumber);
+    }
+
+    @Override
+    public Expression mod(Expression other) {
+        var otherNumber = ((JSNumber) other).getValue();
+        return JSNumber.from(value % (Double) otherNumber);
     }
 
     @Override
@@ -78,5 +93,18 @@ public class JSNumber implements
     public static JSNumber from(Number number) {
         Objects.requireNonNull(number);
         return new JSNumber().setValue(number);
+    }
+
+    @Override
+    public JSBoolean isEqualTo(Expression other) {
+        Objects.requireNonNull(other);
+        var valueOrError = other.execute();
+        Assert(valueOrError instanceof JSValue);
+        var value = (JSValue)valueOrError;
+
+        // TODO: Handle type casts.
+        Assert(value instanceof JSNumber);
+        var number = (JSNumber)value;
+        return JSBoolean.from(this.value.equals(number.value));
     }
 }

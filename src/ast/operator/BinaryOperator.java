@@ -8,6 +8,8 @@ public interface BinaryOperator extends ASTNode {
     public static BinaryOperator Minus = new OperatorMinus();
     public static BinaryOperator Multiply = new OperatorMultiply();
     public static BinaryOperator Divide = new OperatorDivide();
+    public static BinaryOperator Mod = new OperatorMod();
+    public static BinaryOperator Equals = new OperatorEquals();
 
     @Override
     public default Object execute() {

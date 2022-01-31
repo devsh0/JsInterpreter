@@ -4,14 +4,14 @@ import org.js.Interpreter;
 
 import java.util.Objects;
 
-public class AssignmentExpression implements ExpressionStatement {
+public class AssignmentExpression extends ExpressionStatement {
     @Override
     public Object execute() {
         var interpreter = Interpreter.get();
         var entity = interpreter.queryScope(id);
         Assert(entity.isPresent());
-        interpreter.getCurrentScope().addEntry(id, value);
-        return value;
+        interpreter.getCurrentScope().addEntry(id, expression);
+        return expression;
     }
 
     public AssignmentExpression setIdentifier(Identifier id) {
@@ -20,16 +20,11 @@ public class AssignmentExpression implements ExpressionStatement {
         return this;
     }
 
-    public AssignmentExpression setValue(Expression expression) {
-        Objects.requireNonNull(expression);
-        this.value = expression;
-        return this;
-    }
-
     public static AssignmentExpression from(Identifier id, Expression expression) {
-        return new AssignmentExpression().setIdentifier(id).setValue(expression);
+        var assignExpression = new AssignmentExpression().setIdentifier(id);
+        assignExpression.setExpression(expression);
+        return assignExpression;
     }
 
     private Identifier id;
-    private Expression value;
 }
