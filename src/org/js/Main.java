@@ -37,9 +37,13 @@ public class Main implements Assertable {
         ifBody.append(innerIfStatement);
         ifStatement.setBody(ifBody);
 
-        var returnStatement = ReturnStatement.from(JSValue.from(false));
-        functionBody.append(ifStatement).append(returnStatement);
-        return functionDeclaration.setId(functionId).setBody(functionBody);
+        var elseStatement = new ElseStatement();
+        var elseBody = new Block(elseStatement);
+        elseBody.append(ReturnStatement.from(JSValue.from(false)));
+        elseStatement.setBody(elseBody);
+
+        functionBody.append(ifStatement).append(elseStatement);
+        return (FunctionDeclaration) functionDeclaration.setId(functionId).setBody(functionBody);
     }
 
     public static void main(String[] args) {
@@ -50,7 +54,7 @@ public class Main implements Assertable {
         programBody.append(defineFunctionHelper(isEvenFunctionId));
 
         var ifStatement = new IfStatement().setConditionExpression(
-                new CallExpression().setCallee(isEvenFunctionId).setArguments(JSValue.from(40)));
+                new CallExpression().setCallee(isEvenFunctionId).setArguments(JSValue.from(50)));
         var ifBody = new Block(ifStatement);
         ifBody.append(new ExpressionStatement().setExpression(JSValue.from(1)));
         ifStatement.setBody(ifBody);

@@ -1,6 +1,22 @@
 package ast;
 
-public interface CompoundStatement extends Statement {
-    public Block getBody();
-    public Statement getLastStatement();
+import java.util.Objects;
+
+public abstract class CompoundStatement implements Statement {
+    protected Block body;
+
+    public abstract Object execute();
+
+    public CompoundStatement setBody(Block body) {
+        Objects.requireNonNull(body);
+        this.body = body;
+        return this;
+    }
+
+    public Block getBody() {
+        return body;
+    }
+    public Statement getLastStatement() {
+        return body.getLastStatement();
+    }
 }

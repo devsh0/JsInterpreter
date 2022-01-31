@@ -3,7 +3,7 @@ package ast;
 import ast.value.JSValue;
 import java.util.Objects;
 
-public class IfStatement implements CompoundStatement {
+public class IfStatement extends CompoundStatement {
     @Override
     public Object execute() {
         var valueOrError = conditionExpression.execute();
@@ -15,12 +15,6 @@ public class IfStatement implements CompoundStatement {
         return JSValue.undefined();
     }
 
-    public IfStatement setBody(final Block body) {
-        Objects.requireNonNull(body);
-        this.body = body;
-        return this;
-    }
-
     public IfStatement setConditionExpression(Expression condition) {
         Objects.requireNonNull(condition);
         this.conditionExpression = condition;
@@ -28,19 +22,10 @@ public class IfStatement implements CompoundStatement {
     }
 
     public static IfStatement from(Expression condition, Block body) {
-        return new IfStatement().setConditionExpression(condition).setBody(body);
-    }
-
-    @Override
-    public Block getBody() {
-        return body;
-    }
-
-    @Override
-    public Statement getLastStatement() {
-        return body.getLastStatement();
+        var statement =  new IfStatement().setConditionExpression(condition);
+        statement.setBody(body);
+        return statement;
     }
 
     private Expression conditionExpression;
-    private Block body;
 }
