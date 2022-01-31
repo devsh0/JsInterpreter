@@ -12,12 +12,19 @@ public class IfStatement extends CompoundStatement {
         var value = (JSValue)valueOrError;
         if (value.isTruthy())
             return body.execute();
-        return JSValue.undefined();
+        return alternate != null ? alternate.execute() : JSValue.undefined();
     }
 
     public IfStatement setConditionExpression(Expression condition) {
         Objects.requireNonNull(condition);
         this.conditionExpression = condition;
+        return this;
+    }
+
+    public IfStatement setAlternate(Statement statement) {
+        Objects.requireNonNull(statement);
+        Assert(statement instanceof IfStatement || statement instanceof Block);
+        this.alternate = statement;
         return this;
     }
 
@@ -28,4 +35,5 @@ public class IfStatement extends CompoundStatement {
     }
 
     private Expression conditionExpression;
+    private Statement alternate;
 }
