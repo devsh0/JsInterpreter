@@ -8,7 +8,7 @@ import myutils.Assertable;
 public class Main implements Assertable {
     private static FunctionDeclaration defineFunctionHelper(final Identifier functionId) {
         var functionDeclaration = new FunctionDeclaration();
-        var functionBody = new Block();
+        var functionBody = new Block(functionDeclaration);
         var returnStatement = ReturnStatement.from(BinaryExpression.from(BinaryOperator.Plus,
                 JSValue.from("one"), JSValue.from(2)));
         functionBody.append(returnStatement);
@@ -18,7 +18,7 @@ public class Main implements Assertable {
     public static void main(String[] args) {
         var interpreter = Interpreter.get();
         Program program = new Program();
-        var programBody = new Block();
+        var programBody = new Block(program);
         Identifier mainFunctionId = Identifier.from("main");
         programBody.append(defineFunctionHelper(mainFunctionId));
         programBody.append(new CallExpression()

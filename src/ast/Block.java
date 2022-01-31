@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class Block implements Statement {
+    public Block (ASTNode owner) {
+        scope = new Scope(owner);
+    }
+
     @Override
     public Object execute() {
         var interpreter = Interpreter.get();
@@ -15,6 +19,11 @@ public class Block implements Statement {
         Object returnValue = JSValue.undefined();
         for (var statement : statementList) {
             returnValue = statement.execute();
+
+            if (statement instanceof ReturnStatement) {
+                interpreter.exitCurrentFunctionScope();
+                return returnValue;
+            }
         }
         interpreter.exitCurrentScope();
         return returnValue;
@@ -30,5 +39,5 @@ public class Block implements Statement {
         return scope;
     }
     private List<ASTNode> statementList = new ArrayList<>();
-    private Scope scope = new Scope();
+    private Scope scope;
 }

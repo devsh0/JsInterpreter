@@ -1,9 +1,6 @@
 package org.js;
 
-import ast.ASTNode;
-import ast.Identifier;
-import ast.Program;
-import ast.Scope;
+import ast.*;
 import myutils.Assertable;
 
 import java.util.ArrayList;
@@ -15,13 +12,25 @@ public class Interpreter implements Assertable {
     private List<Scope> stack = new ArrayList<>();
 
     private Interpreter() {
-        Scope globalScope = new Scope();
+        Scope globalScope = new Scope(null);
         stack.add(globalScope);
     }
 
     public Interpreter enterScope(final Scope scope) {
         stack.add(scope);
         return this;
+    }
+
+    public Scope exitCurrentFunctionScope() {
+        for (;;)  {
+            var currentScope = exitCurrentScope();
+            var ownerOrEmpty = currentScope.getOwner();
+            if (ownerOrEmpty.isPresent()) {
+                var owner = ownerOrEmpty.get();
+                if (owner instanceof FunctionDeclaration)
+                    return currentScope;
+            }
+        }
     }
 
     public Optional<ASTNode> queryScope(final Identifier identifier) {
@@ -39,9 +48,9 @@ public class Interpreter implements Assertable {
         return stack.get(stack.size() - 1);
     }
 
-    public Interpreter exitCurrentScope() {
-        stack.remove(stack.size() - 1);
-        return this;
+    public Scope exitCurrentScope() {
+        Assert(stack.size() > 0);
+        return stack.remove(stack.size() - 1);
     }
 
     public Object run (final Program program) {
