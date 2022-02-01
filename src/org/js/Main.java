@@ -134,9 +134,9 @@ public class Main implements Assertable {
                 .setRhs(varI)
         ));
         var ifStatement = new IfStatement().setConditionExpression(new BinaryExpression()
-                .setOperator(RelationalOperator.Equals)
-                .setLhs(varSum)
-                .setRhs(parameterNumber)
+                .setOperator(RelationalOperator.LessThan)
+                .setLhs(parameterNumber)
+                .setRhs(varSum)
         );
         var ifBody = new Block(ifStatement);
         ifBody.append(new BreakStatement(whileStatement));
@@ -209,8 +209,8 @@ public class Main implements Assertable {
 
     public static void main(String[] args) {
         runStepsToReachN();
-        /*runFizzBuzz();
+        runFizzBuzz();
         runIsGoodEven();
-        runNSum();*/
+        runNSum();
     }
 }

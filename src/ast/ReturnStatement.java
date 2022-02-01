@@ -12,7 +12,7 @@ public class ReturnStatement implements Statement {
 
     @Override
     public Object execute() {
-        Interpreter.get().prepareToExitCompoundStatement(functionRef);
+        Interpreter.get().setExitPoint(functionRef);
         return expression.execute();
     }
 

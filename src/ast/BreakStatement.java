@@ -19,14 +19,10 @@ public class BreakStatement implements Statement {
             var entity = entityOrEmpty.get();
             Assert(entity instanceof SupportsBreakStatement);
             var breakableEntity = (SupportsBreakStatement)entity;
-            interpreter.prepareToExitCompoundStatement(breakableEntity);
+            interpreter.setExitPoint(breakableEntity);
         }
-        if (label == null) {
-            interpreter.prepareToExitCompoundStatement(owner);
-            return null;
-        }
-
-
+        else
+            interpreter.setExitPoint(owner);
         return null;
     }
 

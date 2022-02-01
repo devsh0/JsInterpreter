@@ -17,9 +17,11 @@ public class Block implements Statement {
 
     private boolean handleEarlyExit(Interpreter interpreter) {
         var ref = interpreter.getExitingCompoundStatementRef();
-        if (owner != ref)
+        if (ref == null)
             return false;
         notifyExit();
+        if (owner == ref)
+            interpreter.clearExitPoint();
         return true;
     }
 
@@ -54,7 +56,6 @@ public class Block implements Statement {
     }
 
     private void notifyExit() {
-        Interpreter.get().notifyExit();
         shouldExit = true;
     }
 

@@ -17,7 +17,7 @@ public class Interpreter implements Assertable {
         stack.add(globalScope);
     }
 
-    public Interpreter prepareToExitCompoundStatement(CompoundStatement ref) {
+    public Interpreter setExitPoint(CompoundStatement ref) {
         exitRef = ref;
         return this;
     }
@@ -26,7 +26,7 @@ public class Interpreter implements Assertable {
         return exitRef;
     }
 
-    public Interpreter notifyExit() {
+    public Interpreter clearExitPoint() {
         exitRef = null;
         return this;
     }
