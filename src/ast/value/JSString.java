@@ -1,13 +1,15 @@
 package ast.value;
 
 import ast.Expression;
-import ast.operator.OperatorEquals;
-import ast.operator.OperatorLessThan;
-import ast.operator.OperatorPlus;
+import ast.operator.*;
 
 import java.util.Objects;
 
-public class JSString implements OperatorPlus.Addable,
+public class JSString implements
+        OperatorPlus.Addable,
+        OperatorLessThanOrEqual.SupportsLessThanOrEqualTest,
+        OperatorGreaterThan.SupportsGreaterThanTest,
+        OperatorGreaterThanOrEqual.SupportsGreaterThanOrEqualTest,
         OperatorEquals.SupportsEqualityTest,
         OperatorLessThan.SupportsLessThanTest {
     private String value;
@@ -91,7 +93,7 @@ public class JSString implements OperatorPlus.Addable,
             if (value.charAt(i) > string.value.charAt(i))
                 return JSBoolean.from(false);
         }
-        return JSBoolean.from(false);
+        return JSBoolean.from(value.length() < string.value.length());
     }
 
     @Override
@@ -103,5 +105,32 @@ public class JSString implements OperatorPlus.Addable,
             if (value.charAt(i) != string.value.charAt(i))
                 return JSBoolean.from(false);
         return JSBoolean.from(true);
+    }
+
+    @Override
+    public JSBoolean isGreaterThan(Expression other) {
+        var isEqual = isEqualTo(other);
+        if (isEqual.isTruthy())
+            return JSBoolean.from(false);
+        var isLessThan = isLessThan(other);
+        if (isLessThan.isTruthy())
+            return JSBoolean.from(false);
+        return JSBoolean.from(true);
+    }
+
+    @Override
+    public JSBoolean isGreaterThanOrEqual(Expression other) {
+        var isGreater = isGreaterThan(other);
+        if (isGreater.isTruthy())
+            return JSBoolean.from(true);
+        return JSBoolean.from(isEqualTo(other).isTruthy());
+    }
+
+    @Override
+    public JSBoolean isLessThanOrEqual(Expression other) {
+        var isLess = isLessThan(other);
+        if (isLess.isTruthy())
+            return JSBoolean.from(true);
+        return JSBoolean.from(isEqualTo(other).isTruthy());
     }
 }

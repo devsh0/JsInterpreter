@@ -7,6 +7,9 @@ import java.util.Objects;
 
 public class JSNumber implements
         OperatorLessThan.SupportsLessThanTest,
+        OperatorGreaterThan.SupportsGreaterThanTest,
+        OperatorGreaterThanOrEqual.SupportsGreaterThanOrEqualTest,
+        OperatorLessThanOrEqual.SupportsLessThanOrEqualTest,
         OperatorEquals.SupportsEqualityTest,
         OperatorPlus.Addable,
         OperatorMinus.Subtractable,
@@ -114,5 +117,23 @@ public class JSNumber implements
     public JSBoolean isLessThan(Expression other) {
         var number = getJSNumber(other);
         return JSBoolean.from(value < number.value);
+    }
+
+    @Override
+    public JSBoolean isGreaterThan(Expression other) {
+        var number = getJSNumber(other);
+        return JSBoolean.from(value > number.value);
+    }
+
+    @Override
+    public JSBoolean isGreaterThanOrEqual(Expression other) {
+        var number = getJSNumber(other);
+        return JSBoolean.from(value >= number.value);
+    }
+
+    @Override
+    public JSBoolean isLessThanOrEqual(Expression other) {
+        var number = getJSNumber(other);
+        return JSBoolean.from(value <= number.value);
     }
 }

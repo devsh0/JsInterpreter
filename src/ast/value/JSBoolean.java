@@ -1,13 +1,15 @@
 package ast.value;
 
 import ast.Expression;
-import ast.operator.OperatorEquals;
-import ast.operator.OperatorLessThan;
+import ast.operator.*;
 
 import java.util.Objects;
 
 public class JSBoolean implements
         JSValue,
+        OperatorGreaterThan.SupportsGreaterThanTest,
+        OperatorGreaterThanOrEqual.SupportsGreaterThanOrEqualTest,
+        OperatorLessThanOrEqual.SupportsLessThanOrEqualTest,
         OperatorLessThan.SupportsLessThanTest,
         OperatorEquals.SupportsEqualityTest {
     private boolean value;
@@ -86,5 +88,28 @@ public class JSBoolean implements
         if (value && !(bool.value))
             return JSBoolean.from(true);
         return JSBoolean.from(false);
+    }
+
+    @Override
+    public JSBoolean isGreaterThan(Expression other) {
+        if (isLessThan(other).isTruthy())
+            return from(false);
+        if (isEqualTo(other).isTruthy())
+            return from(false);
+        return from(true);
+    }
+
+    @Override
+    public JSBoolean isGreaterThanOrEqual(Expression other) {
+        if (isGreaterThan(other).isTruthy())
+            return from(true);
+        return from(isEqualTo(other).isTruthy());
+    }
+
+    @Override
+    public JSBoolean isLessThanOrEqual(Expression other) {
+        if (isLessThan(other).isTruthy())
+            return from(true);
+        return from(isEqualTo(other).isTruthy());
     }
 }

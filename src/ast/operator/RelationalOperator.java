@@ -1,6 +1,9 @@
 package ast.operator;
 
 public interface RelationalOperator extends BinaryOperator {
-    public static BinaryOperator Equals = new OperatorEquals();
-    public static BinaryOperator LessThan = new OperatorLessThan();
+    public static RelationalOperator Equals = new OperatorEquals();
+    public static RelationalOperator LessThan = new OperatorLessThan();
+    public static RelationalOperator LessThanOrEqual = new OperatorLessThanOrEqual();
+    public static RelationalOperator GreaterThan = new OperatorGreaterThan();
+    public static RelationalOperator GreaterThanOrEqual = new OperatorGreaterThanOrEqual();
 }
