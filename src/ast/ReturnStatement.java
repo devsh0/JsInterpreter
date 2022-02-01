@@ -1,10 +1,18 @@
 package ast;
 
+import org.js.Interpreter;
+
 import java.util.Objects;
 
 public class ReturnStatement implements Statement {
+
+    public ReturnStatement(FunctionDeclaration ref) {
+        functionRef = ref;
+    }
+
     @Override
     public Object execute() {
+        Interpreter.get().prepareToExitFromFunction(functionRef);
         return expression.execute();
     }
 
@@ -14,9 +22,10 @@ public class ReturnStatement implements Statement {
         return this;
     }
 
-    public static ReturnStatement from (Expression expression) {
-        return new ReturnStatement().setExpression(expression);
+    public FunctionDeclaration getFunctionRef() {
+        return functionRef;
     }
 
     private Expression expression;
+    private FunctionDeclaration functionRef;
 }

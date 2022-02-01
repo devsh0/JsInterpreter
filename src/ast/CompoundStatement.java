@@ -16,7 +16,4 @@ public abstract class CompoundStatement implements Statement {
     public Block getBody() {
         return body;
     }
-    public Statement getLastStatement() {
-        return body.getLastStatement();
-    }
 }

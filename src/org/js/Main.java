@@ -31,7 +31,7 @@ public class Main implements Assertable {
         ));
         whileStatement.setBody(whileBody);
         functionBody.append(whileStatement);
-        functionBody.append(new ReturnStatement().setExpression(localSum));
+        functionBody.append(new ReturnStatement(functionDeclaration).setExpression(localSum));
         return (FunctionDeclaration) functionDeclaration.setId(functionId).setBody(functionBody);
     }
 
@@ -73,17 +73,57 @@ public class Main implements Assertable {
         ifBody.append(assignment);
         ifStatement.setBody(ifBody);
 
-        functionBody.append(ifStatement).append(new ReturnStatement().setExpression(valueId));
+        functionBody.append(ifStatement).append(new ReturnStatement(functionDeclaration).setExpression(valueId));
         return (FunctionDeclaration) functionDeclaration.setId(functionId).setBody(functionBody);
+    }
+
+    // Crazy nested if statements.
+    private static FunctionDeclaration defineIsGoodEven(Identifier id) {
+        var parameterNumber = Identifier.from("number");
+        var functionDeclaration = new FunctionDeclaration().setId(id).setParameters(parameterNumber);
+        var functionBody = new Block(functionDeclaration);
+
+        var ifStatement = new IfStatement().setConditionExpression(BinaryExpression.from(
+                RelationalOperator.Equals,
+                BinaryExpression.from(BinaryOperator.Mod, parameterNumber, JSValue.from(2)),
+                JSValue.from(0)
+        ));
+
+        var innerIfStatement = new IfStatement().setConditionExpression(BinaryExpression.from(
+                RelationalOperator.Equals,
+                BinaryExpression.from(BinaryOperator.Mod, parameterNumber, JSValue.from(3)),
+                JSValue.from(0)
+        ));
+
+        var innermostIfStatement = new IfStatement().setConditionExpression(BinaryExpression.from(
+                RelationalOperator.Equals,
+                BinaryExpression.from(BinaryOperator.Mod, parameterNumber, JSValue.from(5)),
+                JSValue.from(0)
+        ));
+
+        var ifBody = new Block(ifStatement);
+        ifBody.append(innerIfStatement);
+        ifStatement.setBody(ifBody);
+
+        var innerIfBody = new Block(innerIfStatement);
+        innerIfBody.append(innermostIfStatement);
+        innerIfStatement.setBody(innerIfBody);
+
+        var innermostIfBody = new Block(innermostIfStatement);
+        innermostIfBody.append(new ReturnStatement(functionDeclaration).setExpression(JSValue.from(true)));
+        innermostIfStatement.setBody(innermostIfBody);
+
+        functionBody.append(ifStatement).append(new ReturnStatement(functionDeclaration).setExpression(JSValue.from(false)));
+        return (FunctionDeclaration) functionDeclaration.setBody(functionBody);
     }
 
     public static void main(String[] args) {
         var interpreter = Interpreter.get();
         Program program = new Program();
         var programBody = new Block(program);
-        Identifier nSumFun = Identifier.from("nSum");
-        programBody.append(defineNSum(nSumFun));
-        programBody.append(new CallExpression().setCallee(nSumFun).setArguments(JSValue.from(10)));
+        Identifier isGoodEvenFun = Identifier.from("isGoodEven");
+        programBody.append(defineIsGoodEven(isGoodEvenFun));
+        programBody.append(new CallExpression().setCallee(isGoodEvenFun).setArguments(JSValue.from(60)));
         program.setBody(programBody);
         var value = interpreter.run(program);
         ((JSValue) value).dump();

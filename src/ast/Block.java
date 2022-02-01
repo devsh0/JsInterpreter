@@ -12,6 +12,19 @@ public class Block implements Statement {
         scope = new Scope(owner);
     }
 
+    private boolean handleFunctionExit(Interpreter interpreter) {
+        var funRef = interpreter.getExitingFunctionRef();
+        if (funRef == null)
+            return false;
+        var ownerOrEmpty = scope.getOwner();
+        if (ownerOrEmpty.isPresent()) {
+            var owner = ownerOrEmpty.get();
+            if (owner == funRef)
+                interpreter.notifyFunctionExit();
+        }
+        return true;
+    }
+
     @Override
     public Object execute() {
         var interpreter = Interpreter.get();
@@ -19,17 +32,9 @@ public class Block implements Statement {
         Object returnValue = JSValue.undefined();
         for (var statement : statementList) {
             returnValue = statement.execute();
-            lastStatement = statement;
-
-            if (lastStatement instanceof CompoundStatement compoundStatement)
-                lastStatement = compoundStatement.getLastStatement();
-
-            if (lastStatement instanceof ReturnStatement) {
-                interpreter.exitCurrentScope();
-                return returnValue;
-            }
+            if (handleFunctionExit(interpreter))
+                break;
         }
-
         interpreter.exitCurrentScope();
         return returnValue;
     }
@@ -40,14 +45,10 @@ public class Block implements Statement {
         return this;
     }
 
-    public Statement getLastStatement() {
-        return lastStatement;
-    }
-
     public Scope getScope() {
         return scope;
     }
+
     private List<Statement> statementList = new ArrayList<>();
     private Scope scope;
-    private Statement lastStatement;
 }
