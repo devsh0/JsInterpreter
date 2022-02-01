@@ -26,7 +26,7 @@ public class JSBoolean implements
 
     @Override
     public boolean isFalsy() {
-        return value;
+        return !isTruthy();
     }
 
     @Override

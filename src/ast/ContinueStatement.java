@@ -4,8 +4,8 @@ import org.js.Interpreter;
 
 import java.util.Objects;
 
-public class BreakStatement implements Statement {
-    public BreakStatement(CompoundStatement owner) {
+public class ContinueStatement implements Statement {
+    public ContinueStatement(CompoundStatement owner) {
         Objects.requireNonNull(owner);
         this.owner = owner;
     }
@@ -13,21 +13,21 @@ public class BreakStatement implements Statement {
     @Override
     public Object execute() {
         var interpreter = Interpreter.get();
-        BreakAndContinueSupportingBlock breakableEntity;
+        BreakAndContinueSupportingBlock continuableEntity;
         if (label != null) {
             var entityOrEmpty = interpreter.queryScope(label);
             Assert(entityOrEmpty.isPresent());
             var entity = entityOrEmpty.get();
             Assert(entity instanceof BreakAndContinueSupportingBlock);
-            breakableEntity = (BreakAndContinueSupportingBlock) entity;
+            continuableEntity = (BreakAndContinueSupportingBlock) entity;
         } else
-            breakableEntity = (BreakAndContinueSupportingBlock) owner;
-        breakableEntity.setBreakFlag(true);
-        interpreter.setExitPoint(breakableEntity);
+            continuableEntity = (BreakAndContinueSupportingBlock) owner;
+        continuableEntity.setContinueFlag(true);
+        interpreter.setExitPoint(continuableEntity);
         return null;
     }
 
-    public BreakStatement setLabel(Identifier label) {
+    public ContinueStatement setLabel(Identifier label) {
         Objects.requireNonNull(label);
         this.label = label;
         return this;

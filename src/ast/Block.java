@@ -19,12 +19,10 @@ public class Block implements Statement {
         var ref = interpreter.getExitingCompoundStatementRef();
         if (ref == null)
             return false;
-
         if (owner == ref) {
             setOwnerExitFlag();
             interpreter.clearExitPoint();
         }
-
         return true;
     }
 

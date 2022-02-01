@@ -5,24 +5,30 @@ import org.js.Interpreter;
 
 import java.util.Objects;
 
-public class WhileStatement extends SupportsBreakStatement {
+public class WhileStatement extends BreakAndContinueSupportingBlock {
     @Override
     public Object execute() {
         var interpreter = Interpreter.get();
         if (label != null)
             interpreter.getCurrentScope().addEntry(label, this);
-        var valueOrError = conditionExpression.execute();
-        Assert(valueOrError instanceof JSValue);
-        var value = (JSValue) valueOrError;
         Object result = JSValue.undefined();
 
-        while (value.isTruthy()) {
-            result = body.execute();
-            if (body.testAndClearExitFlag())
-                break;
-            valueOrError = conditionExpression.execute();
+        while (true) {
+            var valueOrError = conditionExpression.execute();
             Assert(valueOrError instanceof JSValue);
-            value = (JSValue) valueOrError;
+            var value = (JSValue) valueOrError;
+            if (value.isFalsy())
+                break;
+
+            result = body.execute();
+            // Fixme: exit flag also should be defined on the compound statement rather than its body.
+            if (body.testAndClearExitFlag()) {
+                if (testAndClearContinueFlag())
+                    continue;
+                if (testAndClearBreakFlag())
+                    break;
+                break;
+            }
         }
         return result;
     }
@@ -34,7 +40,7 @@ public class WhileStatement extends SupportsBreakStatement {
     }
 
     @Override
-    public SupportsBreakStatement setLabel(Identifier label) {
+    public BreakAndContinueSupportingBlock setLabel(Identifier label) {
         Objects.requireNonNull(label);
         this.label = label;
         return this;
