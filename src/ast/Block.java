@@ -19,9 +19,12 @@ public class Block implements Statement {
         var ref = interpreter.getExitingCompoundStatementRef();
         if (ref == null)
             return false;
-        notifyExit();
-        if (owner == ref)
+
+        if (owner == ref) {
+            setOwnerExitFlag();
             interpreter.clearExitPoint();
+        }
+
         return true;
     }
 
@@ -55,7 +58,7 @@ public class Block implements Statement {
         return scope;
     }
 
-    private void notifyExit() {
+    private void setOwnerExitFlag() {
         shouldExit = true;
     }
 

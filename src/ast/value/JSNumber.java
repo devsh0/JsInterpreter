@@ -101,7 +101,7 @@ public class JSNumber implements
         var valueOrError = expr.execute();
         // TODO: Handle type casts.
         Assert(valueOrError instanceof JSNumber);
-        return (JSNumber)valueOrError;
+        return (JSNumber) valueOrError;
     }
 
     @Override

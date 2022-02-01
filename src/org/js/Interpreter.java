@@ -31,7 +31,6 @@ public class Interpreter implements Assertable {
         return this;
     }
 
-
     public Interpreter enterScope(final Scope scope) {
         stack.add(scope);
         return this;
