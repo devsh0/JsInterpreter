@@ -2,7 +2,7 @@ package ast;
 
 import java.util.Objects;
 
-public class Program implements ASTNode {
+public class Program extends CompoundStatement {
     @Override
     public Object execute() {
         Objects.requireNonNull(body);

@@ -6,22 +6,20 @@ import org.js.Interpreter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Block implements Statement {
-    public Block (ASTNode owner) {
-        scope = new Scope(owner);
+    public Block(CompoundStatement owner) {
+        Objects.requireNonNull(owner);
+        this.owner = owner;
+        scope = new Scope();
     }
 
-    private boolean handleFunctionExit(Interpreter interpreter) {
-        var funRef = interpreter.getExitingFunctionRef();
-        if (funRef == null)
+    private boolean handleEarlyExit(Interpreter interpreter) {
+        var ref = interpreter.getExitingCompoundStatementRef();
+        if (owner != ref)
             return false;
-        var ownerOrEmpty = scope.getOwner();
-        if (ownerOrEmpty.isPresent()) {
-            var owner = ownerOrEmpty.get();
-            if (owner == funRef)
-                interpreter.notifyFunctionExit();
-        }
+        notifyExit();
         return true;
     }
 
@@ -32,7 +30,7 @@ public class Block implements Statement {
         Object returnValue = JSValue.undefined();
         for (var statement : statementList) {
             returnValue = statement.execute();
-            if (handleFunctionExit(interpreter))
+            if (handleEarlyExit(interpreter))
                 break;
         }
         interpreter.exitCurrentScope();
@@ -45,10 +43,31 @@ public class Block implements Statement {
         return this;
     }
 
+    public Optional<ASTNode> getOwner() {
+        if (owner == null)
+            return Optional.empty();
+        return Optional.of(owner);
+    }
+
     public Scope getScope() {
         return scope;
     }
 
+    private void notifyExit() {
+        Interpreter.get().notifyExit();
+        shouldExit = true;
+    }
+
+    public boolean testAndClearExitFlag() {
+        if (shouldExit) {
+            shouldExit = false;
+            return true;
+        }
+        return false;
+    }
+
     private List<Statement> statementList = new ArrayList<>();
+    private CompoundStatement owner;
     private Scope scope;
+    private boolean shouldExit = false;
 }

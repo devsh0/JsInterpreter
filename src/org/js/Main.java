@@ -77,7 +77,7 @@ public class Main implements Assertable {
         return (FunctionDeclaration) functionDeclaration.setId(functionId).setBody(functionBody);
     }
 
-    // Crazy nested if statements.
+    // Kinda tests crazy nested if statements.
     private static FunctionDeclaration defineIsGoodEven(Identifier id) {
         var parameterNumber = Identifier.from("number");
         var functionDeclaration = new FunctionDeclaration().setId(id).setParameters(parameterNumber);
@@ -117,15 +117,100 @@ public class Main implements Assertable {
         return (FunctionDeclaration) functionDeclaration.setBody(functionBody);
     }
 
-    public static void main(String[] args) {
+    private static FunctionDeclaration defineStepsToReachN(Identifier id) {
+        var parameterNumber = Identifier.from("number");
+        FunctionDeclaration functionDeclaration = new FunctionDeclaration().setId(id).setParameters(parameterNumber);
+        var funBody = new Block(functionDeclaration);
+        var varSum = Identifier.from("sum");
+        funBody.append(new VariableDeclaration().setIdentifier(varSum).setInitializer(JSValue.from(0)));
+        var varI = Identifier.from("i");
+        funBody.append(new VariableDeclaration().setIdentifier(varI).setInitializer(JSValue.from(0)));
+
+        var whileStatement = new WhileStatement().setConditionExpression(JSValue.from(true));
+        var whileBody = new Block(whileStatement);
+        whileBody.append(new AssignmentExpression().setDestination(varSum).setSource(new BinaryExpression()
+                .setOperator(BinaryOperator.Plus)
+                .setLhs(varSum)
+                .setRhs(varI)
+        ));
+        var ifStatement = new IfStatement().setConditionExpression(new BinaryExpression()
+                .setOperator(RelationalOperator.Equals)
+                .setLhs(varSum)
+                .setRhs(parameterNumber)
+        );
+        var ifBody = new Block(ifStatement);
+        ifBody.append(new BreakStatement(whileStatement));
+        ifStatement.setBody(ifBody);
+
+        whileBody.append(ifStatement);
+        whileBody.append(new AssignmentExpression().setDestination(varI).setSource(new BinaryExpression()
+                .setOperator(BinaryOperator.Plus)
+                .setLhs(varI)
+                .setRhs(JSValue.from(1))
+        ));
+
+        whileStatement.setBody(whileBody);
+        funBody.append(whileStatement);
+        funBody.append(new ReturnStatement(functionDeclaration).setExpression(varI));
+        return (FunctionDeclaration) functionDeclaration.setBody(funBody);
+    }
+
+    private static void runIsGoodEven() {
+        System.out.println("Running isGoodEven...");
         var interpreter = Interpreter.get();
         Program program = new Program();
         var programBody = new Block(program);
         Identifier isGoodEvenFun = Identifier.from("isGoodEven");
         programBody.append(defineIsGoodEven(isGoodEvenFun));
-        programBody.append(new CallExpression().setCallee(isGoodEvenFun).setArguments(JSValue.from(60)));
+        programBody.append(new CallExpression().setCallee(isGoodEvenFun).setArguments(JSValue.from(30)));
         program.setBody(programBody);
         var value = interpreter.run(program);
         ((JSValue) value).dump();
+    }
+
+    private static void runFizzBuzz() {
+        System.out.println("Running fizzBuzz...");
+        var interpreter = Interpreter.get();
+        Program program = new Program();
+        var programBody = new Block(program);
+        Identifier fizzBuzzFun = Identifier.from("fizzBuzz");
+        programBody.append(defineFizzBuzz(fizzBuzzFun));
+        programBody.append(new CallExpression().setCallee(fizzBuzzFun).setArguments(JSValue.from(12)));
+        program.setBody(programBody);
+        var value = interpreter.run(program);
+        ((JSValue) value).dump();
+    }
+
+    private static void runNSum() {
+        System.out.println("Running nSum...");
+        var interpreter = Interpreter.get();
+        Program program = new Program();
+        var programBody = new Block(program);
+        Identifier nSumFun = Identifier.from("nSum");
+        programBody.append(defineNSum(nSumFun));
+        programBody.append(new CallExpression().setCallee(nSumFun).setArguments(JSValue.from(12)));
+        program.setBody(programBody);
+        var value = interpreter.run(program);
+        ((JSValue) value).dump();
+    }
+
+    private static void runStepsToReachN() {
+        System.out.println("Running stepsToReachN...");
+        var interpreter = Interpreter.get();
+        Program program = new Program();
+        var programBody = new Block(program);
+        Identifier stepsToReachFun = Identifier.from("nSum");
+        programBody.append(defineStepsToReachN(stepsToReachFun));
+        programBody.append(new CallExpression().setCallee(stepsToReachFun).setArguments(JSValue.from(12)));
+        program.setBody(programBody);
+        var value = interpreter.run(program);
+        ((JSValue) value).dump();
+    }
+
+    public static void main(String[] args) {
+        runStepsToReachN();
+        /*runFizzBuzz();
+        runIsGoodEven();
+        runNSum();*/
     }
 }

@@ -5,9 +5,6 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Scope implements ASTNode {
-    public Scope (ASTNode owner) {
-        this.owner = owner;
-    }
     @Override
     public Object execute() {
         return null;
@@ -25,12 +22,5 @@ public class Scope implements ASTNode {
         return Optional.of(entity);
     }
 
-    public Optional<ASTNode> getOwner() {
-        if (owner == null)
-            return Optional.empty();
-        return Optional.of(owner);
-    }
-
     private Map<Identifier, ASTNode> identifierMap = new HashMap<>();
-    private ASTNode owner;
 }
