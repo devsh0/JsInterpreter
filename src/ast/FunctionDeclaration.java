@@ -15,7 +15,7 @@ public class FunctionDeclaration extends CompoundStatement {
         return this;
     }
 
-    public FunctionDeclaration setId(final Identifier id) {
+    public FunctionDeclaration setIdentifier(final Identifier id) {
         Objects.requireNonNull(id);
         this.id = id;
         return this;
@@ -28,7 +28,7 @@ public class FunctionDeclaration extends CompoundStatement {
     }
 
     public static FunctionDeclaration from(Identifier id, Identifier[] parameters, Block body) {
-        var fun = new FunctionDeclaration().setId(id).setParameters(parameters);
+        var fun = new FunctionDeclaration().setIdentifier(id).setParameters(parameters);
         fun.setBody(body);
         for (var parameter : parameters)
             fun.body.append(VariableDeclaration.from(parameter));

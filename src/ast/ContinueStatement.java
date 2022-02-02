@@ -22,8 +22,7 @@ public class ContinueStatement implements Statement {
         } else {
             continuableEntity = owner;
         }
-        throw new
-                ContinueException(continuableEntity);
+        throw new ContinueException(continuableEntity);
     }
 
     public ContinueStatement setLabel(Identifier label) {

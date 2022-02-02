@@ -29,7 +29,7 @@ class IfStatementTest {
     private String getFizzBuzzOutput(double input) {
         var fizzBuzzFun = Identifier.from("fizzBuzz");
         var functionDeclaration = new FunctionDeclaration()
-                .setId(fizzBuzzFun)
+                .setIdentifier(fizzBuzzFun)
                 .setParameters(Identifier.from("number"));
 
         var functionBody = new Block(functionDeclaration);
@@ -98,7 +98,7 @@ class IfStatementTest {
 
         var nestedIfHelperFun = Identifier.from("nestedIfHelper");
         var parameterNumber = Identifier.from("number");
-        var functionDeclaration = new FunctionDeclaration().setId(nestedIfHelperFun).setParameters(parameterNumber);
+        var functionDeclaration = new FunctionDeclaration().setIdentifier(nestedIfHelperFun).setParameters(parameterNumber);
         var functionBody = new Block(functionDeclaration);
 
         var ifStatement = new IfStatement().setConditionExpression(BinaryExpression.from(
