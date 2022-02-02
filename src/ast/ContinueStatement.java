@@ -12,19 +12,18 @@ public class ContinueStatement implements Statement {
 
     @Override
     public Object execute() {
-        var interpreter = Interpreter.get();
-        BreakAndContinueSupportingBlock continuableEntity;
+        CompoundStatement continuableEntity;
         if (label != null) {
-            var entityOrEmpty = interpreter.queryScope(label);
+            var entityOrEmpty = Interpreter.get().queryScope(label);
             Assert(entityOrEmpty.isPresent());
             var entity = entityOrEmpty.get();
-            Assert(entity instanceof BreakAndContinueSupportingBlock);
-            continuableEntity = (BreakAndContinueSupportingBlock) entity;
-        } else
-            continuableEntity = (BreakAndContinueSupportingBlock) owner;
-        continuableEntity.setContinueFlag(true);
-        interpreter.setExitPoint(continuableEntity);
-        return null;
+            Assert(entity instanceof CompoundStatement);
+            continuableEntity = (CompoundStatement) entity;
+        } else {
+            continuableEntity = owner;
+        }
+        throw new
+                ContinueException(continuableEntity);
     }
 
     public ContinueStatement setLabel(Identifier label) {

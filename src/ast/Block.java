@@ -15,17 +15,6 @@ public class Block implements Statement {
         scope = new Scope();
     }
 
-    private boolean handleEarlyExit(Interpreter interpreter) {
-        var ref = interpreter.getExitingCompoundStatementRef();
-        if (ref == null)
-            return false;
-        if (owner == ref) {
-            setOwnerExitFlag();
-            interpreter.clearExitPoint();
-        }
-        return true;
-    }
-
     @Override
     public Object execute() {
         var interpreter = Interpreter.get();
@@ -33,8 +22,6 @@ public class Block implements Statement {
         Object returnValue = JSValue.undefined();
         for (var statement : statementList) {
             returnValue = statement.execute();
-            if (handleEarlyExit(interpreter))
-                break;
         }
         interpreter.exitCurrentScope();
         return returnValue;
@@ -56,20 +43,7 @@ public class Block implements Statement {
         return scope;
     }
 
-    private void setOwnerExitFlag() {
-        shouldExit = true;
-    }
-
-    public boolean testAndClearExitFlag() {
-        if (shouldExit) {
-            shouldExit = false;
-            return true;
-        }
-        return false;
-    }
-
     private List<Statement> statementList = new ArrayList<>();
     private CompoundStatement owner;
     private Scope scope;
-    private boolean shouldExit = false;
 }

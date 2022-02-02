@@ -10,25 +10,10 @@ import java.util.Optional;
 public class Interpreter implements Assertable {
     private static Interpreter interpreter = null;
     private List<Scope> stack = new ArrayList<>();
-    private CompoundStatement exitRef;
 
     private Interpreter() {
         Scope globalScope = new Scope();
         stack.add(globalScope);
-    }
-
-    public Interpreter setExitPoint(CompoundStatement ref) {
-        exitRef = ref;
-        return this;
-    }
-
-    public CompoundStatement getExitingCompoundStatementRef() {
-        return exitRef;
-    }
-
-    public Interpreter clearExitPoint() {
-        exitRef = null;
-        return this;
     }
 
     public Interpreter enterScope(final Scope scope) {

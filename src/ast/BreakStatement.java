@@ -12,19 +12,17 @@ public class BreakStatement implements Statement {
 
     @Override
     public Object execute() {
-        var interpreter = Interpreter.get();
-        BreakAndContinueSupportingBlock breakableEntity;
+        CompoundStatement breakableEntity;
         if (label != null) {
-            var entityOrEmpty = interpreter.queryScope(label);
+            var entityOrEmpty = Interpreter.get().queryScope(label);
             Assert(entityOrEmpty.isPresent());
             var entity = entityOrEmpty.get();
-            Assert(entity instanceof BreakAndContinueSupportingBlock);
-            breakableEntity = (BreakAndContinueSupportingBlock) entity;
-        } else
-            breakableEntity = (BreakAndContinueSupportingBlock) owner;
-        breakableEntity.setBreakFlag(true);
-        interpreter.setExitPoint(breakableEntity);
-        return null;
+            Assert(entity instanceof CompoundStatement);
+            breakableEntity = (CompoundStatement) entity;
+        } else {
+            breakableEntity = owner;
+        }
+        throw new BreakException(breakableEntity);
     }
 
     public BreakStatement setLabel(Identifier label) {

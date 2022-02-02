@@ -5,7 +5,7 @@ import org.js.Interpreter;
 
 import java.util.Objects;
 
-public class WhileStatement extends BreakAndContinueSupportingBlock {
+public class WhileStatement extends CompoundStatement {
     @Override
     public Object execute() {
         var interpreter = Interpreter.get();
@@ -20,14 +20,17 @@ public class WhileStatement extends BreakAndContinueSupportingBlock {
             if (value.isFalsy())
                 break;
 
-            result = body.execute();
-            // Fixme: exit flag also should be defined on the compound statement rather than its body.
-            if (body.testAndClearExitFlag()) {
-                if (testAndClearContinueFlag())
-                    continue;
-                if (testAndClearBreakFlag())
-                    break;
+            try {
+                result = body.execute();
+            } catch (BreakException exception) {
+                if (this != exception.getTarget())
+                    throw exception;
                 break;
+            } catch (ContinueException exception) {
+                if (this != exception.getTarget())
+                    throw exception;
+
+                // continue; but redundant to specify.
             }
         }
         return result;
@@ -39,14 +42,12 @@ public class WhileStatement extends BreakAndContinueSupportingBlock {
         return this;
     }
 
-    @Override
-    public BreakAndContinueSupportingBlock setLabel(Identifier label) {
+    public CompoundStatement setLabel(Identifier label) {
         Objects.requireNonNull(label);
         this.label = label;
         return this;
     }
 
-    @Override
     public Identifier getLabel() {
         return label;
     }
