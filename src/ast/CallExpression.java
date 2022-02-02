@@ -16,14 +16,21 @@ public class CallExpression extends ExpressionStatement {
         Assert(functionOrEmpty.isPresent());
         var entity = functionOrEmpty.get();
         Assert(entity instanceof FunctionDeclaration);
-        var function = (FunctionDeclaration)entity;
+        var function = (FunctionDeclaration) entity;
         var parameters = function.getParameters();
         var functionBody = function.getBody();
         var scope = functionBody.getScope();
         var iterCount = Math.min(arguments.size(), parameters.size());
         for (int i = 0; i < iterCount; i++)
             scope.addEntry(parameters.get(i), arguments.get(i));
-        return functionBody.execute();
+
+        Object returnVal;
+        try {
+            returnVal = functionBody.execute();
+        } catch (ReturnException exception) {
+            returnVal = exception.getReturnValue();
+        }
+        return returnVal;
     }
 
     public CallExpression setCallee(final Identifier id) {
@@ -32,7 +39,7 @@ public class CallExpression extends ExpressionStatement {
         return this;
     }
 
-    public CallExpression setArguments(Expression...args) {
+    public CallExpression setArguments(Expression... args) {
         Objects.requireNonNull(args);
         arguments = Arrays.asList(args);
         return this;
