@@ -272,6 +272,55 @@ public class TokenStream implements Assertable {
         }
     }
 
+    public List<Token> peekTokens(int count) {
+        List<Token> tokens = new ArrayList<>();
+        int oldCursor = cursor;
+        while (count != 0) {
+            tokens.add(consumeNextToken());
+            count -= 1;
+        }
+        cursor = oldCursor;
+        return tokens;
+    }
+
+    public Token peekNextToken() {
+        return peekTokens(1).get(0);
+    }
+
+    public Token consumeComma() {
+        return consumeAndMatch(Token.Type.CommaT);
+    }
+
+    public Token consumeSemiColon() {
+        return consumeAndMatch(Token.Type.SemiColonT);
+    }
+
+    public Token consumeIdentifierToken() {
+        return consumeAndMatch(Token.Type.IdentifierT);
+    }
+
+    private Token consumeAndMatch(Token.Type type) {
+        var nextToken = consumeNextToken();
+        if (nextToken.getType() != type)
+            FIXME_REPORT_SYNTAX_ERROR();
+        return nextToken;
+    }
+    public Token consumeLeftParen() {
+        return consumeAndMatch(Token.Type.LeftParenT);
+    }
+
+    public Token consumeRightParen() {
+        return consumeAndMatch(Token.Type.RightParenT);
+    }
+
+    public Token consumeLeftCurly() {
+        return consumeAndMatch(Token.Type.LeftCurlyT);
+    }
+
+    public Token consumeRightCurly() {
+        return consumeAndMatch(Token.Type.RightCurlyT);
+    }
+
     public void dump() {
         while (!eof())
             consumeNextToken().dump();
