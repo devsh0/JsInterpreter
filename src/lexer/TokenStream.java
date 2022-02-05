@@ -73,7 +73,7 @@ public class TokenStream implements Assertable {
                     }
                     if (keyword.length() == accumulatedString().length()) {
                         if (!Utils.isValidIdentifierChar(peek()))
-                            return new Token(Token.Type.Keyword, keyword);
+                            return new Token(Token.Type.KeywordT, keyword);
                     }
                 }
             }
@@ -124,7 +124,7 @@ public class TokenStream implements Assertable {
                 // Identifier.
                 while (Utils.isValidIdentifierChar(peek()))
                     accumulate();
-                return new Token(Token.Type.Identifier, accumulatedString());
+                return new Token(Token.Type.IdentifierT, accumulatedString());
             }
 
             if (accumulatedString().equals("\"")) {
@@ -138,19 +138,19 @@ public class TokenStream implements Assertable {
                             case '"':
                                 break;
                             default:
-                                FixmeReportSyntaxError();
+                                FIXME_REPORT_SYNTAX_ERROR();
                         }
                     }
                 }
                 consumeNextChar(); // Consume the '"'
-                return new Token(Token.Type.StringLiteral, accumulatedString().substring(1));
+                return new Token(Token.Type.StringLiteralT, accumulatedString().substring(1));
             }
 
             if (accumulatedString().matches("[.0-9]")) {
                 String str = accumulatedString();
                 if (str.equals(".")) {
                     if (!peek(1).matches("[0-9]"))
-                        return new Token(Token.Type.Dot, str);
+                        return new Token(Token.Type.DotT, str);
                 }
 
                 // Number literal.
