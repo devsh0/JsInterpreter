@@ -13,9 +13,9 @@ public class CallExpression extends ExpressionStatement {
         Objects.requireNonNull(callee);
         var interpreter = Interpreter.get();
         var functionOrEmpty = interpreter.queryScope(callee);
-        Assert(functionOrEmpty.isPresent());
+        ASSERT(functionOrEmpty.isPresent());
         var entity = functionOrEmpty.get();
-        Assert(entity instanceof FunctionDeclaration);
+        ASSERT(entity instanceof FunctionDeclaration);
         var function = (FunctionDeclaration) entity;
         var parameters = function.getParameters();
         var functionBody = function.getBody();

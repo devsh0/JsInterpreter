@@ -2,13 +2,16 @@ package lexer;
 
 import myutils.Assertable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TokenStream implements Assertable {
     private int cursor = 0;
     private String text;
     private StringBuilder accumulator;
 
     public TokenStream(String text) {
-        Assert(text != null && !text.isEmpty());
+        ASSERT(text != null && !text.isEmpty());
         this.text = text;
     }
 
@@ -18,7 +21,7 @@ public class TokenStream implements Assertable {
 
     String peek(int count) {
         if ((cursor + count) >= text.length())
-            FixmeReportSyntaxError();
+            FIXME_REPORT_SYNTAX_ERROR();
         int oldCursor = cursor;
         StringBuilder builder = new StringBuilder();
         while (count != 0) {
@@ -31,7 +34,7 @@ public class TokenStream implements Assertable {
 
     char consumeNextChar() {
         if (eof())
-            FixmeReportSyntaxError();
+            FIXME_REPORT_SYNTAX_ERROR();
         return text.charAt(cursor++);
     }
 
@@ -82,40 +85,50 @@ public class TokenStream implements Assertable {
                 // Operator.
                 switch (accumulatedString()) {
                     case "+":
+                        Token.Type operatorType;
                         char next = peek();
                         if (next == '=' || next == '+')
                             accumulate();
-                        return new Token(Token.Type.Operator, accumulatedString());
+                        operatorType = next == '+' ? Token.Type.UnaryOperatorT : Token.Type.UnaryOrBinaryOperatorT;
+                        return new Token(operatorType, accumulatedString());
                     case "-":
                         next = peek();
                         if (next == '=' || next == '-')
                             accumulate();
-                        return new Token(Token.Type.Operator, accumulatedString());
+                        operatorType = next == '-' ? Token.Type.UnaryOperatorT : Token.Type.UnaryOrBinaryOperatorT;
+                        return new Token(operatorType, accumulatedString());
+                    case "!":
+                        operatorType = Token.Type.UnaryOperatorT;
+                        next = peek();
+                        if (next == '=') {
+                            accumulate();
+                            operatorType = Token.Type.BinaryOperatorT;
+                        }
+                        return new Token(operatorType, accumulatedString());
                     case "*":
                     case "/":
                     case "%":
                     case ">":
                     case "<":
                     case "=":
-                    case "!":
                         next = peek();
                         if (next == '=')
                             accumulate();
-                        return new Token(Token.Type.Operator, accumulatedString());
+                        return new Token(Token.Type.BinaryOperatorT, accumulatedString());
 
                     case "|":
                         next = accumulate();
                         if (next != '|')
-                            FixmeReportSyntaxError();
-                        return new Token(Token.Type.Operator, accumulatedString());
+                            FIXME_REPORT_SYNTAX_ERROR();
+                        return new Token(Token.Type.BinaryOperatorT, accumulatedString());
 
                     case "&":
                         next = accumulate();
                         if (next != '&')
-                            FixmeReportSyntaxError();
-                        return new Token(Token.Type.Operator, accumulatedString());
+                            FIXME_REPORT_SYNTAX_ERROR();
+                        return new Token(Token.Type.BinaryOperatorT, accumulatedString());
                     default:
-                        FixmeReportSyntaxError();
+                        FIXME_REPORT_SYNTAX_ERROR();
                         return null;
                 }
             }
@@ -187,7 +200,7 @@ public class TokenStream implements Assertable {
                             if (nextChar.matches("[0-9]")) {
                                 accumulate();
                                 state = States.SEEN_DIGIT_AFTER_DECIMAL;
-                            } else FixmeReportSyntaxError();
+                            } else FIXME_REPORT_SYNTAX_ERROR();
                             break;
                         }
 
@@ -209,7 +222,7 @@ public class TokenStream implements Assertable {
                             } else if (nextChar.matches("[0-9]")) {
                                 state = States.SEEN_DIGIT_AFTER_E;
                                 accumulate();
-                            } else FixmeReportSyntaxError();
+                            } else FIXME_REPORT_SYNTAX_ERROR();
                             break;
                         }
 
@@ -227,35 +240,35 @@ public class TokenStream implements Assertable {
                             if (nextChar.matches("[0-9]")) {
                                 state = States.SEEN_DIGIT_AFTER_ESIGN;
                                 accumulate();
-                            } else FixmeReportSyntaxError();
+                            } else FIXME_REPORT_SYNTAX_ERROR();
                             break;
                         }
                     }
                 }
 
-                return new Token(Token.Type.NumberLiteral, accumulatedString());
+                return new Token(Token.Type.NumberLiteralT, accumulatedString());
             }
 
             if (accumulatedString().equals(":"))
-                return new Token(Token.Type.Colon, accumulatedString());
+                return new Token(Token.Type.ColonT, accumulatedString());
             if (accumulatedString().equals(","))
-                return new Token(Token.Type.Comma, accumulatedString());
+                return new Token(Token.Type.CommaT, accumulatedString());
             if (accumulatedString().equals("["))
-                return new Token(Token.Type.LeftBracket, accumulatedString());
+                return new Token(Token.Type.LeftBracketT, accumulatedString());
             if (accumulatedString().equals("]"))
-                return new Token(Token.Type.RightBracket, accumulatedString());
+                return new Token(Token.Type.RightBracketT, accumulatedString());
             if (accumulatedString().equals("("))
-                return new Token(Token.Type.LeftParen, accumulatedString());
+                return new Token(Token.Type.LeftParenT, accumulatedString());
             if (accumulatedString().equals(")"))
-                return new Token(Token.Type.RightParen, accumulatedString());
+                return new Token(Token.Type.RightParenT, accumulatedString());
             if (accumulatedString().equals("{"))
-                return new Token(Token.Type.LeftCurly, accumulatedString());
+                return new Token(Token.Type.LeftCurlyT, accumulatedString());
             if (accumulatedString().equals("}"))
-                return new Token(Token.Type.RightCurly, accumulatedString());
+                return new Token(Token.Type.RightCurlyT, accumulatedString());
             if (accumulatedString().equals("."))
-                return new Token(Token.Type.Dot, accumulatedString());
+                return new Token(Token.Type.DotT, accumulatedString());
             if (accumulatedString().equals(";"))
-                return new Token(Token.Type.SemiColon, accumulatedString());
+                return new Token(Token.Type.SemiColonT, accumulatedString());
         }
     }
 

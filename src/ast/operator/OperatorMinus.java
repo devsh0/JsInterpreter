@@ -9,7 +9,7 @@ public class OperatorMinus implements BinaryOperator {
         public Expression subtract(Expression rhs);
 
         static Subtractable valueOf(Object value) {
-            Assertable._assert(value instanceof Subtractable);
+            Assertable._ASSERT(value instanceof Subtractable);
             return (Subtractable) value;
         }
     }

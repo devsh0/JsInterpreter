@@ -43,7 +43,7 @@ public class JSNumber implements
             var otherString = ((JSString) other).getValue();
             return JSString.from(asString() + (String) otherString);
         } else {
-            Assert(false);
+            ASSERT(false);
             return null;
         }
     }
@@ -74,7 +74,7 @@ public class JSNumber implements
 
     @Override
     public JSNumber setValue(Object value) {
-        Assert(value instanceof Number);
+        ASSERT(value instanceof Number);
         this.value = ((Number) value).doubleValue();
         return this;
     }
@@ -103,7 +103,7 @@ public class JSNumber implements
         Objects.requireNonNull(expr);
         var valueOrError = expr.execute();
         // TODO: Handle type casts.
-        Assert(valueOrError instanceof JSNumber);
+        ASSERT(valueOrError instanceof JSNumber);
         return (JSNumber) valueOrError;
     }
 

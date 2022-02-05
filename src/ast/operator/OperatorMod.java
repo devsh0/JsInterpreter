@@ -9,7 +9,7 @@ public class OperatorMod implements BinaryOperator {
         public Expression mod(Expression rhs);
 
         static Modable valueOf(Object value) {
-            Assertable._assert(value instanceof Modable);
+            Assertable._ASSERT(value instanceof Modable);
             return (Modable) value;
         }
     }

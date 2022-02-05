@@ -15,7 +15,7 @@ public class WhileStatement extends CompoundStatement {
 
         while (true) {
             var valueOrError = conditionExpression.execute();
-            Assert(valueOrError instanceof JSValue);
+            ASSERT(valueOrError instanceof JSValue);
             var value = (JSValue) valueOrError;
             if (value.isFalsy())
                 break;

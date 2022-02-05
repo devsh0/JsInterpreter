@@ -10,7 +10,7 @@ public class OperatorLessThanOrEqual implements RelationalOperator {
         public JSBoolean isLessThanOrEqual(Expression other);
 
         static SupportsLessThanOrEqualTest valueOf(Object value) {
-            Assertable._assert(value instanceof SupportsLessThanOrEqualTest);
+            Assertable._ASSERT(value instanceof SupportsLessThanOrEqualTest);
             return (SupportsLessThanOrEqualTest) value;
         }
     }

@@ -9,7 +9,7 @@ public class OperatorDivide implements BinaryOperator {
         public Expression divide(Expression rhs);
 
         static Divisible valueOf(Object value) {
-            Assertable._assert(value instanceof Divisible);
+            Assertable._ASSERT(value instanceof Divisible);
             return (Divisible)value;
         }
     }

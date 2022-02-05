@@ -9,7 +9,7 @@ public class OperatorPlus implements BinaryOperator {
         public Expression add(Expression rhs);
 
         static Addable valueOf(Object value) {
-            Assertable._assert(value instanceof Addable);
+            Assertable._ASSERT(value instanceof Addable);
             return (Addable) value;
         }
     }

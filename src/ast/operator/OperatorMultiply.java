@@ -9,7 +9,7 @@ public class OperatorMultiply implements BinaryOperator {
         public Expression multiply(Expression rhs);
 
         static Multiplicable valueOf(Object value) {
-            Assertable._assert(value instanceof Multiplicable);
+            Assertable._ASSERT(value instanceof Multiplicable);
             return (Multiplicable) value;
         }
     }

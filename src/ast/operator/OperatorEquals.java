@@ -10,7 +10,7 @@ public class OperatorEquals implements RelationalOperator {
         public JSBoolean isEqualTo(Expression other);
 
         static SupportsEqualityTest valueOf(Object value) {
-            Assertable._assert(value instanceof SupportsEqualityTest);
+            Assertable._ASSERT(value instanceof SupportsEqualityTest);
             return (SupportsEqualityTest) value;
         }
     }

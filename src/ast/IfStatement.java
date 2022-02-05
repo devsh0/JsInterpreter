@@ -8,7 +8,7 @@ public class IfStatement extends CompoundStatement {
     public Object execute() {
         var valueOrError = conditionExpression.execute();
         // FIXME: Shouldn't `truthy` and `falsy` properties be defined on `Expression` rather than `JSValue`?
-        Assert(valueOrError instanceof JSValue);
+        ASSERT(valueOrError instanceof JSValue);
         var value = (JSValue)valueOrError;
         if (value.isTruthy())
             return body.execute();
@@ -23,7 +23,7 @@ public class IfStatement extends CompoundStatement {
 
     public IfStatement setAlternate(Statement statement) {
         Objects.requireNonNull(statement);
-        Assert(statement instanceof IfStatement || statement instanceof Block);
+        ASSERT(statement instanceof IfStatement || statement instanceof Block);
         this.alternate = statement;
         return this;
     }

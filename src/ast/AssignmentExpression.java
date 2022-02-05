@@ -10,7 +10,7 @@ public class AssignmentExpression extends ExpressionStatement {
     public Object execute() {
         var interpreter = Interpreter.get();
         var value = super.execute();
-        Assert(value instanceof JSValue);
+        ASSERT(value instanceof JSValue);
         return interpreter.rewrite(id, (JSValue)value);
     }
 

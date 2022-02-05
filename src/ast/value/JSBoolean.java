@@ -36,7 +36,7 @@ public class JSBoolean implements
 
     @Override
     public JSBoolean setValue(Object value) {
-        Assert(value instanceof Boolean);
+        ASSERT(value instanceof Boolean);
         this.value = (Boolean) value;
         return this;
     }
@@ -70,7 +70,7 @@ public class JSBoolean implements
         Objects.requireNonNull(expr);
         var valueOrError = expr.execute();
         // TODO: Handle type casts.
-        Assert(valueOrError instanceof JSBoolean);
+        ASSERT(valueOrError instanceof JSBoolean);
         return (JSBoolean)valueOrError;
     }
 

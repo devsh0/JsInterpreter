@@ -10,7 +10,7 @@ public class OperatorGreaterThanOrEqual implements RelationalOperator {
         public JSBoolean isGreaterThanOrEqual(Expression other);
 
         static SupportsGreaterThanOrEqualTest valueOf(Object value) {
-            Assertable._assert(value instanceof SupportsGreaterThanOrEqualTest);
+            Assertable._ASSERT(value instanceof SupportsGreaterThanOrEqualTest);
             return (SupportsGreaterThanOrEqualTest) value;
         }
     }
