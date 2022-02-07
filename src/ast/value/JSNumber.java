@@ -90,6 +90,11 @@ public class JSNumber implements
     }
 
     @Override
+    public String getDump(int indent) {
+        return value + "";
+    }
+
+    @Override
     public String toString() {
         return value + "";
     }

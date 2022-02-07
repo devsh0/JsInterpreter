@@ -36,6 +36,14 @@ public class WhileStatement extends CompoundStatement {
         return result;
     }
 
+    @Override
+    public String getDump(int indent) {
+        var builder = getIndentedBuilder(indent);
+        builder.append("while (").append(conditionExpression.getDump(indent)).append(")");
+        builder.append(body.getDump(indent));
+        return builder.toString();
+    }
+
     public WhileStatement setConditionExpression(Expression expression) {
         Objects.requireNonNull(expression);
         conditionExpression = expression;

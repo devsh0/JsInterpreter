@@ -15,6 +15,14 @@ public class IfStatement extends CompoundStatement {
         return alternate != null ? alternate.execute() : JSValue.undefined();
     }
 
+    @Override
+    public String getDump(int indent) {
+        var builder = getIndentedBuilder(indent);
+        builder.append("if (").append(conditionExpression.getDump(indent)).append(")");
+        builder.append(body.getDump(indent));
+        return builder.toString();
+    }
+
     public IfStatement setConditionExpression(Expression condition) {
         Objects.requireNonNull(condition);
         this.conditionExpression = condition;

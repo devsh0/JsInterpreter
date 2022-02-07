@@ -5,6 +5,11 @@ import ast.value.JSValue;
 import myutils.Assertable;
 
 public class OperatorMod implements BinaryOperator {
+    @Override
+    public String getDump(int indent) {
+        return " % ";
+    }
+
     public static interface Modable extends JSValue {
         public Expression mod(Expression rhs);
 

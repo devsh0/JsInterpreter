@@ -27,6 +27,18 @@ public class Block implements Statement {
         return returnValue;
     }
 
+    @Override
+    public String getDump(int indent) {
+        var builder = new StringBuilder();
+        builder.append("\n").append(getIndent(indent)).append("{\n");
+        for (var statement : statementList) {
+            builder.append(statement.getDump(indent + Indent));
+            builder.append(statement instanceof CompoundStatement ? "\n" : ";");
+            builder.append("\n");
+        }
+        return builder.append(getIndent(indent)).append("}").toString();
+    }
+
     public Block append(final Statement node) {
         Objects.requireNonNull(node);
         statementList.add(node);

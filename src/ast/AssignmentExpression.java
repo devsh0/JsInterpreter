@@ -26,5 +26,12 @@ public class AssignmentExpression extends ExpressionStatement {
         return assignExpression;
     }
 
+    @Override
+    public String getDump(int indent) {
+        var builder = getIndentedBuilder(indent);
+        builder.append(id.getDump(indent)).append(" = ").append(expression.getDump(indent));
+        return builder.toString();
+    }
+
     private Identifier id;
 }

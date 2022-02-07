@@ -35,6 +35,19 @@ public class FunctionDeclaration extends CompoundStatement {
         return fun;
     }
 
+    @Override
+    public String getDump(int indent) {
+        var builder = getIndentedBuilder(indent);
+        builder.append(String.format("function %s(", id));
+        for (var parameter : parameters)
+            builder.append(String.format("%s, ", parameter));
+        if (parameters.size() > 0)
+            builder = new StringBuilder(builder.substring(0, builder.lastIndexOf(",")));
+        builder.append(")");
+        builder.append(body.getDump(indent));
+        return builder.toString();
+    }
+
     public Identifier getId() {
         return id;
     }

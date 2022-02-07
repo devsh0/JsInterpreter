@@ -19,6 +19,11 @@ public class Identifier implements ASTNode, Expression {
         return entity.get().execute();
     }
 
+    @Override
+    public String getDump(int indent) {
+        return name;
+    }
+
     public Identifier setName(final String name) {
         this.name = name;
         return this;

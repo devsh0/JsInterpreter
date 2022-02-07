@@ -6,6 +6,11 @@ import ast.value.JSValue;
 import myutils.Assertable;
 
 public class OperatorLessThan implements RelationalOperator {
+    @Override
+    public String getDump(int indent) {
+        return " < ";
+    }
+
     public static interface SupportsLessThanTest extends JSValue {
         public JSBoolean isLessThan(Expression other);
 

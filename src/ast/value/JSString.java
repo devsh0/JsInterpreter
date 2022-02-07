@@ -67,8 +67,8 @@ public class JSString implements
     }
 
     @Override
-    public void dump() {
-        System.out.println("[JSString: '" + value + "']");
+    public String getDump(int indent) {
+        return "\"" + value + "\"";
     }
 
     public static JSString from(String string) {

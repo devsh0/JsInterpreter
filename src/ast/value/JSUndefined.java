@@ -7,6 +7,11 @@ public class JSUndefined implements JSValue {
     }
 
     @Override
+    public String getDump(int indent) {
+        return "undefined";
+    }
+
+    @Override
     public boolean isTruthy() {
         return false;
     }

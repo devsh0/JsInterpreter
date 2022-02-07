@@ -10,6 +10,11 @@ public class Scope implements ASTNode {
         return null;
     }
 
+    @Override
+    public String getDump(int indent) {
+        return "";
+    }
+
     public Scope addEntry(final Identifier identifier, final ASTNode symbolEntity) {
         this.identifierMap.put(identifier, symbolEntity);
         return this;

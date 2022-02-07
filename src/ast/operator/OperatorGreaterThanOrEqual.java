@@ -6,6 +6,11 @@ import ast.value.JSValue;
 import myutils.Assertable;
 
 public class OperatorGreaterThanOrEqual implements RelationalOperator {
+    @Override
+    public String getDump(int indent) {
+        return " >= ";
+    }
+
     public static interface SupportsGreaterThanOrEqualTest extends JSValue {
         public JSBoolean isGreaterThanOrEqual(Expression other);
 
