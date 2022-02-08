@@ -39,6 +39,12 @@ public class CallExpression extends ExpressionStatement {
         return this;
     }
 
+    public CallExpression addArgument(Expression arg) {
+        Objects.requireNonNull(arg);
+        arguments.add(arg);
+        return this;
+    }
+
     public CallExpression setArguments(Expression... args) {
         Objects.requireNonNull(args);
         arguments = Arrays.asList(args);
