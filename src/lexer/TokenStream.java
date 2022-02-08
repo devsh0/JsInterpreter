@@ -12,7 +12,7 @@ public class TokenStream implements Assertable {
 
     public TokenStream(String text) {
         ASSERT(text != null && !text.isEmpty());
-        this.text = text;
+        this.text = text.trim();
     }
 
     char peek() {
@@ -20,7 +20,7 @@ public class TokenStream implements Assertable {
     }
 
     String peek(int count) {
-        if ((cursor + count) >= text.length())
+        if ((cursor + count) > text.length())
             FIXME_REPORT_SYNTAX_ERROR();
         int oldCursor = cursor;
         StringBuilder builder = new StringBuilder();
