@@ -21,6 +21,17 @@ public interface Assertable {
         _ASSERT(false);
     }
 
+    static void _VERIFY(boolean condition) {
+        if (!condition) {
+            System.err.println("Verification failed bro!");
+            _ASSERT(false);
+        }
+    }
+
+    default void VERIFY(boolean condition) {
+        _VERIFY(condition);
+    }
+
     default void ASSERT(final boolean condition) {
         _ASSERT(condition);
     }
