@@ -22,7 +22,7 @@ public class CallExpression extends ExpressionStatement {
         var scope = functionBody.getScope();
         var iterCount = Math.min(arguments.size(), parameters.size());
         for (int i = 0; i < iterCount; i++)
-            scope.addEntry(parameters.get(i), arguments.get(i));
+            scope.addEntry(parameters.get(i), (ASTNode)arguments.get(i).execute());
 
         Object returnVal;
         try {
