@@ -323,6 +323,14 @@ public class TokenStream implements Assertable {
             FIXME_REPORT_SYNTAX_ERROR();
         return nextToken;
     }
+
+    private Token consumeAndMatch(String tokenValue) {
+        var nextToken = consumeNextToken();
+        if (!nextToken.getValue().equals(tokenValue))
+            FIXME_REPORT_SYNTAX_ERROR();
+        return nextToken;
+    }
+
     public Token consumeLeftParen() {
         return consumeAndMatch(Token.Type.LeftParenT);
     }
@@ -333,6 +341,10 @@ public class TokenStream implements Assertable {
 
     public Token consumeLeftCurly() {
         return consumeAndMatch(Token.Type.LeftCurlyT);
+    }
+
+    public Token consumeAssignmentOperator() {
+        return consumeAndMatch("=");
     }
 
     public Token consumeRightCurly() {
