@@ -61,9 +61,27 @@ public class TokenStream implements Assertable {
         accumulator = new StringBuilder();
     }
 
+    private void consumeComments() {
+        if (text.length() - cursor < 2)
+            return;
+        var charsAhead = peek(2);
+        while (charsAhead.equals("//")) {
+            var nextChar = consumeNextChar();
+            while (!eof() && nextChar != '\n')
+                nextChar = consumeNextChar();
+            if (text.length() - cursor < 2)
+                return;
+            charsAhead = peek(2);
+        }
+    }
+
     public Token consumeNextToken() {
         resetAccumulator();
         consumeWhitespaces();
+        consumeComments();
+        if (eof())
+            return new Token(Token.Type.EOF, null);
+
         while (true) {
             accumulate();
             if (accumulatedString().matches("[a-z]")) {
