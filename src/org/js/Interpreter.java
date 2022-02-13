@@ -27,7 +27,7 @@ public class Interpreter implements Assertable {
     }
 
     public Scope getCurrentScope () {
-        Assert(stack.size() >= 1);
+        ASSERT(stack.size() >= 1);
         return stack.get(stack.size() - 1);
     }
 
