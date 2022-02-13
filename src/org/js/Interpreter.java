@@ -11,11 +11,6 @@ public class Interpreter implements Assertable {
     private static Interpreter interpreter = null;
     private List<Scope> stack = new ArrayList<>();
 
-    private Interpreter() {
-        Scope globalScope = new Scope();
-        stack.add(globalScope);
-    }
-
     public Interpreter enterScope(final Scope scope) {
         stack.add(scope);
         return this;
@@ -40,18 +35,23 @@ public class Interpreter implements Assertable {
         for (int i = stack.size() - 1; i >= 0; i--) {
             var scope = stack.get(i);
             var entityOrNull = scope.getIdentifierEntity(identifier);
-            if (entityOrNull.isPresent())
-                scope.addEntry(identifier, value);
+            if (entityOrNull.isPresent()) {
+                scope.addOrUpdateEntry(identifier, value);
+                return value;
+            }
         }
         return value;
     }
 
     public Scope exitCurrentScope() {
-        Assert(stack.size() > 0);
+        ASSERT(stack.size() > 0);
         return stack.remove(stack.size() - 1);
     }
 
-    public Object run (final Program program) {
+    public Object run (final ASTNode programNode) {
+        VERIFY(programNode instanceof Program);
+        Program program = (Program)programNode;
+        stack.add(new Scope(program));
         return program.execute();
     }
 
