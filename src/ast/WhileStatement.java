@@ -51,7 +51,6 @@ public class WhileStatement extends CompoundStatement {
     }
 
     public CompoundStatement setLabel(Identifier label) {
-        Objects.requireNonNull(label);
         this.label = label;
         return this;
     }
