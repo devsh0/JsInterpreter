@@ -16,6 +16,11 @@ public interface Assertable {
         _ASSERT(false);
     }
 
+    static void _FIXME_REPORT_SEMANTIC_ERROR() {
+        System.err.println("Expecting a semantic error here!");
+        _ASSERT(false);
+    }
+
     static void _FIXME_UNIMPLEMENTED() {
         System.err.println("This feature is yet to be implemented!");
         _ASSERT(false);
@@ -42,6 +47,10 @@ public interface Assertable {
 
     default void FIXME_REPORT_SYNTAX_ERROR() {
         _FIXME_REPORT_SYNTAX_ERROR();
+    }
+
+    default void FIXME_REPORT_SEMANTIC_ERROR() {
+        _FIXME_REPORT_SEMANTIC_ERROR();
     }
 
     default void ASSERT_NOT_REACHED() {
