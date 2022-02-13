@@ -309,8 +309,12 @@ public class TokenStream implements Assertable {
         return consumeAndMatch(Token.Type.SemiColonT);
     }
 
-    public Token consumeIdentifierToken() {
+    public Token consumeIdentifier() {
         return consumeAndMatch(Token.Type.IdentifierT);
+    }
+
+    public Token consumeColon() {
+        return consumeAndMatch(Token.Type.ColonT);
     }
 
     private Token consumeAndMatch(Token.Type type) {
