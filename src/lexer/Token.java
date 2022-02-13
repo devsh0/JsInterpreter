@@ -17,6 +17,7 @@ public class Token implements Assertable {
         LeftBracketT,
         LeftCurlyT,
         LeftParenT,
+        LineCommentT,
         NumberLiteralT,
         UnaryOperatorT,
         UnaryOrBinaryOperatorT,

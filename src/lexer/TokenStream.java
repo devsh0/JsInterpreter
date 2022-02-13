@@ -61,29 +61,25 @@ public class TokenStream implements Assertable {
         accumulator = new StringBuilder();
     }
 
-    private void consumeComments() {
-        if (text.length() - cursor < 2)
-            return;
-        var charsAhead = peek(2);
-        while (charsAhead.equals("//")) {
-            var nextChar = consumeNextChar();
-            while (!eof() && nextChar != '\n')
-                nextChar = consumeNextChar();
-            if (text.length() - cursor < 2)
-                return;
-            charsAhead = peek(2);
-        }
-    }
-
     public Token consumeNextToken() {
         resetAccumulator();
         consumeWhitespaces();
-        consumeComments();
         if (eof())
             return new Token(Token.Type.EOF, null);
 
         while (true) {
             accumulate();
+
+            // Deal with line comments first.
+            if (accumulatedString().equals("/")) {
+                char next = peek();
+                if (next == '/') {
+                    // This is a line comment.
+                    while(!eof() && accumulate() != '\n');
+                    return new Token(Token.Type.LineCommentT, accumulatedString());
+                }
+            }
+
             if (accumulatedString().matches("[a-z]")) {
                 for (var keyword : Token.keywordLexemes) {
                     // Maybe keyword.
@@ -123,8 +119,8 @@ public class TokenStream implements Assertable {
                             operatorType = Token.Type.BinaryOperatorT;
                         }
                         return new Token(operatorType, accumulatedString());
-                    case "*":
                     case "/":
+                    case "*":
                     case "%":
                     case ">":
                     case "<":
