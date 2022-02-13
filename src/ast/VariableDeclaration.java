@@ -8,7 +8,7 @@ import java.util.Objects;
 public class VariableDeclaration implements Statement {
     @Override
     public Object execute() {
-        Interpreter.get().getCurrentScope().addEntry(id, initializer);
+        Interpreter.get().getCurrentScope().addOrUpdateEntry(id, initializer);
         return this;
     }
 

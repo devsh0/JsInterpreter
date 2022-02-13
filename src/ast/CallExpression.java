@@ -19,16 +19,17 @@ public class CallExpression extends ExpressionStatement {
         var function = (FunctionDeclaration) entity;
         var parameters = function.getParameters();
         var functionBody = function.getBody();
-        var scope = functionBody.getScope();
+        var functionScope = functionBody.getScope();
         var iterCount = Math.min(arguments.size(), parameters.size());
         for (int i = 0; i < iterCount; i++)
-            scope.addEntry(parameters.get(i), (ASTNode)arguments.get(i).execute());
+            functionScope.addOrUpdateEntry(parameters.get(i), (ASTNode)arguments.get(i).execute());
 
         Object returnVal;
         try {
             returnVal = functionBody.execute();
         } catch (ReturnException exception) {
             returnVal = exception.getReturnValue();
+            while (!interpreter.exitCurrentScope().equals(functionScope));
         }
         return returnVal;
     }

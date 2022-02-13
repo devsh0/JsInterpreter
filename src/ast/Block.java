@@ -12,17 +12,18 @@ public class Block implements Statement {
     public Block(CompoundStatement owner) {
         Objects.requireNonNull(owner);
         this.owner = owner;
-        scope = new Scope();
+        scope = new Scope(owner);
     }
 
     @Override
     public Object execute() {
         var interpreter = Interpreter.get();
-        interpreter.enterScope(scope);
+        var clone = scope.clone();
+
+        interpreter.enterScope(clone);
         Object returnValue = JSValue.undefined();
-        for (var statement : statementList) {
+        for (var statement : statementList)
             returnValue = statement.execute();
-        }
         interpreter.exitCurrentScope();
         return returnValue;
     }

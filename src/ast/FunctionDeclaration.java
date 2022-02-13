@@ -11,7 +11,7 @@ import java.util.Objects;
 public class FunctionDeclaration extends CompoundStatement {
     @Override
     public Object execute() {
-        Interpreter.get().getCurrentScope().addEntry(id, this);
+        Interpreter.get().getCurrentScope().addOrUpdateEntry(id, this);
         return this;
     }
 

@@ -10,7 +10,7 @@ public class WhileStatement extends CompoundStatement {
     public Object execute() {
         var interpreter = Interpreter.get();
         if (label != null)
-            interpreter.getCurrentScope().addEntry(label, this);
+            interpreter.getCurrentScope().addOrUpdateEntry(label, this);
         Object result = JSValue.undefined();
 
         while (true) {
