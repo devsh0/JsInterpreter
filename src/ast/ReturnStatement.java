@@ -1,7 +1,5 @@
 package ast;
 
-import org.js.Interpreter;
-
 import java.util.Objects;
 
 public class ReturnStatement implements Statement {
@@ -13,6 +11,13 @@ public class ReturnStatement implements Statement {
     @Override
     public Object execute() {
         throw new ReturnException(functionRef, expression.execute());
+    }
+
+    @Override
+    public String getDump(int indent) {
+        var builder = getIndentedBuilder(indent);
+        builder.append("return ").append(expression.getDump(indent));
+        return builder.toString();
     }
 
     public ReturnStatement setExpression(final Expression expression) {

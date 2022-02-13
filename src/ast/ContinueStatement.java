@@ -15,14 +15,23 @@ public class ContinueStatement implements Statement {
         CompoundStatement continuableEntity;
         if (label != null) {
             var entityOrEmpty = Interpreter.get().queryScope(label);
-            Assert(entityOrEmpty.isPresent());
+            ASSERT(entityOrEmpty.isPresent());
             var entity = entityOrEmpty.get();
-            Assert(entity instanceof CompoundStatement);
+            ASSERT(entity instanceof CompoundStatement);
             continuableEntity = (CompoundStatement) entity;
         } else {
             continuableEntity = owner;
         }
         throw new ContinueException(continuableEntity);
+    }
+
+    @Override
+    public String getDump(int indent) {
+        var builder = getIndentedBuilder(indent);
+        builder.append("continue ");
+        if (label != null)
+            builder.append(label.getDump(indent));
+        return builder.toString();
     }
 
     public ContinueStatement setLabel(Identifier label) {

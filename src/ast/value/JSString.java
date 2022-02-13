@@ -28,7 +28,7 @@ public class JSString implements
             var otherString = ((JSNumber) rhs).asString();
             return JSString.from(value + otherString.value);
         } else {
-            Assert(false);
+            ASSERT(false);
             return null;
         }
     }
@@ -51,7 +51,7 @@ public class JSString implements
     @Override
     public JSString setValue(Object value) {
         Objects.requireNonNull(value);
-        Assert(value instanceof String);
+        ASSERT(value instanceof String);
         this.value = (String) value;
         return this;
     }
@@ -67,8 +67,8 @@ public class JSString implements
     }
 
     @Override
-    public void dump() {
-        System.out.println("[JSString: '" + value + "']");
+    public String getDump(int indent) {
+        return "\"" + value + "\"";
     }
 
     public static JSString from(String string) {
@@ -79,7 +79,7 @@ public class JSString implements
         Objects.requireNonNull(expr);
         var valueOrError = expr.execute();
         // TODO: Handle type casts.
-        Assert(valueOrError instanceof JSString);
+        ASSERT(valueOrError instanceof JSString);
         return (JSString) valueOrError;
     }
 

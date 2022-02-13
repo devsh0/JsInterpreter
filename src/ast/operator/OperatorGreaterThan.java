@@ -6,11 +6,16 @@ import ast.value.JSValue;
 import myutils.Assertable;
 
 public class OperatorGreaterThan implements RelationalOperator {
+    @Override
+    public String getDump(int indent) {
+        return " > ";
+    }
+
     public static interface SupportsGreaterThanTest extends JSValue {
         public JSBoolean isGreaterThan(Expression other);
 
         static SupportsGreaterThanTest valueOf(Object value) {
-            Assertable._assert(value instanceof SupportsGreaterThanTest);
+            Assertable._ASSERT(value instanceof SupportsGreaterThanTest);
             return (SupportsGreaterThanTest) value;
         }
     }

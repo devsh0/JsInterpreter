@@ -6,11 +6,16 @@ import ast.value.JSValue;
 import myutils.Assertable;
 
 public class OperatorEquals implements RelationalOperator {
+    @Override
+    public String getDump(int indent) {
+        return " == ";
+    }
+
     public static interface SupportsEqualityTest extends JSValue {
         public JSBoolean isEqualTo(Expression other);
 
         static SupportsEqualityTest valueOf(Object value) {
-            Assertable._assert(value instanceof SupportsEqualityTest);
+            Assertable._ASSERT(value instanceof SupportsEqualityTest);
             return (SupportsEqualityTest) value;
         }
     }

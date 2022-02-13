@@ -11,7 +11,7 @@ import java.util.Objects;
 public class FunctionDeclaration extends CompoundStatement {
     @Override
     public Object execute() {
-        Interpreter.get().getCurrentScope().addEntry(id, this);
+        Interpreter.get().getCurrentScope().addOrUpdateEntry(id, this);
         return this;
     }
 
@@ -33,6 +33,19 @@ public class FunctionDeclaration extends CompoundStatement {
         for (var parameter : parameters)
             fun.body.append(VariableDeclaration.from(parameter));
         return fun;
+    }
+
+    @Override
+    public String getDump(int indent) {
+        var builder = getIndentedBuilder(indent);
+        builder.append(String.format("function %s(", id));
+        for (var parameter : parameters)
+            builder.append(String.format("%s, ", parameter));
+        if (parameters.size() > 0)
+            builder = new StringBuilder(builder.substring(0, builder.lastIndexOf(",")));
+        builder.append(")");
+        builder.append(body.getDump(indent));
+        return builder.toString();
     }
 
     public Identifier getId() {

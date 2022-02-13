@@ -15,8 +15,13 @@ public class Identifier implements ASTNode, Expression {
     @Override
     public Object execute() {
         var entity = Interpreter.get().queryScope(this);
-        Assert(entity.isPresent());
+        ASSERT(entity.isPresent());
         return entity.get().execute();
+    }
+
+    @Override
+    public String getDump(int indent) {
+        return name;
     }
 
     public Identifier setName(final String name) {
@@ -46,7 +51,7 @@ public class Identifier implements ASTNode, Expression {
 
     public static Identifier from(String name) {
         Objects.requireNonNull(name);
-        Assertable._assert(!name.isEmpty());
+        Assertable._ASSERT(!name.isEmpty());
         return new Identifier().setName(name);
     }
 }

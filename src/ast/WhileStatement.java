@@ -10,12 +10,12 @@ public class WhileStatement extends CompoundStatement {
     public Object execute() {
         var interpreter = Interpreter.get();
         if (label != null)
-            interpreter.getCurrentScope().addEntry(label, this);
+            interpreter.getCurrentScope().addOrUpdateEntry(label, this);
         Object result = JSValue.undefined();
 
         while (true) {
             var valueOrError = conditionExpression.execute();
-            Assert(valueOrError instanceof JSValue);
+            ASSERT(valueOrError instanceof JSValue);
             var value = (JSValue) valueOrError;
             if (value.isFalsy())
                 break;
@@ -36,6 +36,14 @@ public class WhileStatement extends CompoundStatement {
         return result;
     }
 
+    @Override
+    public String getDump(int indent) {
+        var builder = getIndentedBuilder(indent);
+        builder.append("while (").append(conditionExpression.getDump(indent)).append(")");
+        builder.append(body.getDump(indent));
+        return builder.toString();
+    }
+
     public WhileStatement setConditionExpression(Expression expression) {
         Objects.requireNonNull(expression);
         conditionExpression = expression;
@@ -43,7 +51,6 @@ public class WhileStatement extends CompoundStatement {
     }
 
     public CompoundStatement setLabel(Identifier label) {
-        Objects.requireNonNull(label);
         this.label = label;
         return this;
     }

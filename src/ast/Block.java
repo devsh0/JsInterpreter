@@ -12,19 +12,32 @@ public class Block implements Statement {
     public Block(CompoundStatement owner) {
         Objects.requireNonNull(owner);
         this.owner = owner;
-        scope = new Scope();
+        scope = new Scope(owner);
     }
 
     @Override
     public Object execute() {
         var interpreter = Interpreter.get();
-        interpreter.enterScope(scope);
+        var clone = scope.clone();
+
+        interpreter.enterScope(clone);
         Object returnValue = JSValue.undefined();
-        for (var statement : statementList) {
+        for (var statement : statementList)
             returnValue = statement.execute();
-        }
         interpreter.exitCurrentScope();
         return returnValue;
+    }
+
+    @Override
+    public String getDump(int indent) {
+        var builder = new StringBuilder();
+        builder.append("\n").append(getIndent(indent)).append("{\n");
+        for (var statement : statementList) {
+            builder.append(statement.getDump(indent + Indent));
+            builder.append(statement instanceof CompoundStatement ? "\n" : ";");
+            builder.append("\n");
+        }
+        return builder.append(getIndent(indent)).append("}").toString();
     }
 
     public Block append(final Statement node) {

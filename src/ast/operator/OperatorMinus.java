@@ -5,11 +5,16 @@ import ast.value.JSValue;
 import myutils.Assertable;
 
 public class OperatorMinus implements BinaryOperator {
+    @Override
+    public String getDump(int indent) {
+        return " - ";
+    }
+
     public static interface Subtractable extends JSValue {
         public Expression subtract(Expression rhs);
 
         static Subtractable valueOf(Object value) {
-            Assertable._assert(value instanceof Subtractable);
+            Assertable._ASSERT(value instanceof Subtractable);
             return (Subtractable) value;
         }
     }

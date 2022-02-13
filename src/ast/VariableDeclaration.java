@@ -8,8 +8,17 @@ import java.util.Objects;
 public class VariableDeclaration implements Statement {
     @Override
     public Object execute() {
-        Interpreter.get().getCurrentScope().addEntry(id, initializer);
+        Interpreter.get().getCurrentScope().addOrUpdateEntry(id, initializer);
         return this;
+    }
+
+    @Override
+    public String getDump(int indent) {
+        var builder = getIndentedBuilder(indent);
+        builder.append("let ").append(id);
+        if (!initializer.getDump(indent).equals("undefined"))
+            builder.append(" = ").append(initializer.getDump(indent));
+        return builder.toString();
     }
 
     public VariableDeclaration setIdentifier(Identifier id) {

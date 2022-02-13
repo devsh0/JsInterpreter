@@ -5,11 +5,16 @@ import ast.value.JSValue;
 import myutils.Assertable;
 
 public class OperatorDivide implements BinaryOperator {
+    @Override
+    public String getDump(int indent) {
+        return " / ";
+    }
+
     public static interface Divisible extends JSValue {
         public Expression divide(Expression rhs);
 
         static Divisible valueOf(Object value) {
-            Assertable._assert(value instanceof Divisible);
+            Assertable._ASSERT(value instanceof Divisible);
             return (Divisible)value;
         }
     }

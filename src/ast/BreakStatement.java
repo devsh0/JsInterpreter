@@ -15,14 +15,23 @@ public class BreakStatement implements Statement {
         CompoundStatement breakableEntity;
         if (label != null) {
             var entityOrEmpty = Interpreter.get().queryScope(label);
-            Assert(entityOrEmpty.isPresent());
+            ASSERT(entityOrEmpty.isPresent());
             var entity = entityOrEmpty.get();
-            Assert(entity instanceof CompoundStatement);
+            ASSERT(entity instanceof CompoundStatement);
             breakableEntity = (CompoundStatement) entity;
         } else {
             breakableEntity = owner;
         }
         throw new BreakException(breakableEntity);
+    }
+
+    @Override
+    public String getDump(int indent) {
+        var builder = getIndentedBuilder(indent);
+        builder.append("break ");
+        if (label != null)
+            builder.append(label.getDump(indent));
+        return builder.toString();
     }
 
     public BreakStatement setLabel(Identifier label) {

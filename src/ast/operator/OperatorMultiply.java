@@ -5,11 +5,16 @@ import ast.value.JSValue;
 import myutils.Assertable;
 
 public class OperatorMultiply implements BinaryOperator {
+    @Override
+    public String getDump(int indent) {
+        return " * ";
+    }
+
     public static interface Multiplicable extends JSValue {
         public Expression multiply(Expression rhs);
 
         static Multiplicable valueOf(Object value) {
-            Assertable._assert(value instanceof Multiplicable);
+            Assertable._ASSERT(value instanceof Multiplicable);
             return (Multiplicable) value;
         }
     }
