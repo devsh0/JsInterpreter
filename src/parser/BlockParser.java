@@ -97,12 +97,23 @@ public class BlockParser extends Parser {
             var value = tokens.get(1).getValue();
 
             switch (value) {
+                case "+":
+                case "-":
+                case "*":
+                case "/":
+                case "%":
                 case "=":
+                case "==":
                 case "+=":
                 case "-=":
                 case "*=":
                 case "/=":
                 case "%=":
+                case ">":
+                case "<":
+                case ">=":
+                case "<=":
+                case "!=":
                 case "(":
                     return StatementType.ExpressionStatement;
             }
