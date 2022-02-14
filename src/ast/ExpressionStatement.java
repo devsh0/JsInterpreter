@@ -1,10 +1,10 @@
 package ast;
 
-import java.util.Objects;
-
 public class ExpressionStatement implements Statement, Expression {
     @Override
     public Object execute() {
+        if (expression == null)
+            return null;
         return expression.execute();
     }
 
