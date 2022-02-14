@@ -11,7 +11,8 @@ public class BlockParser extends Parser {
     private boolean hasMultipleStatement;
 
     private enum StatementType {
-        None,
+        Unrecognized,
+        Exit,
         BreakStatement,
         ContinueStatement,
         ReturnStatement,
@@ -44,7 +45,7 @@ public class BlockParser extends Parser {
 
     private StatementType nextStatementType() {
         if (eof())
-            return StatementType.None;
+            return StatementType.Exit;
 
         var nextToken = stream().peekNextToken();
         var tokenType = nextToken.getType();
@@ -53,7 +54,7 @@ public class BlockParser extends Parser {
         if (tokenType == Token.Type.LineCommentT) {
             while (true) {
                 if (eof())
-                    return StatementType.None;
+                    return StatementType.Exit;
                 nextToken = stream().peekNextToken();
                 tokenType = nextToken.getType();
                 tokenValue = nextToken.getValue();
@@ -64,10 +65,13 @@ public class BlockParser extends Parser {
         }
 
         if (tokenType == Token.Type.EOF)
-            return StatementType.None;
+            return StatementType.Exit;
 
-        if (tokenValue.equals("}"))
-            return StatementType.None;
+        if (tokenType == Token.Type.SemiColonT)
+            return StatementType.ExpressionStatement;
+
+        if (tokenType == Token.Type.RightCurlyT)
+            return StatementType.Exit;
 
         if (tokenValue.equals("return"))
             return StatementType.ReturnStatement;
@@ -109,7 +113,7 @@ public class BlockParser extends Parser {
             FIXME_REPORT_SYNTAX_ERROR();
         }
 
-        return StatementType.None;
+        return StatementType.Unrecognized;
     }
 
     private Optional<Statement> parseNextStatement() {
@@ -133,7 +137,7 @@ public class BlockParser extends Parser {
                 return Optional.of(new ContinueStatementParser().parse());
             case LabelStatement:
                 return Optional.of(new LabeledStatementParser().parse());
-            case None:
+            case Exit:
                 return Optional.empty();
             default:
                 FIXME_UNIMPLEMENTED();
