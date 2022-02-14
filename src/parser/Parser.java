@@ -14,9 +14,9 @@ public abstract class Parser implements Assertable {
         private final Stack<FunctionDeclaration> functionStack = new Stack<>();
         private final Stack<LoopStatement> loopStack = new Stack<>();
 
-        public void pushFunctionScope(CompoundStatement function) {
-            VERIFY(function instanceof FunctionDeclaration);
-            functionStack.push((FunctionDeclaration)function);
+        public void pushFunctionScope(FunctionDeclaration function) {
+            VERIFY(function != null);
+            functionStack.push(function);
         }
 
         public FunctionDeclaration getActiveFunctionScope() {

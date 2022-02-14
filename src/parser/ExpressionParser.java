@@ -173,11 +173,11 @@ public class ExpressionParser extends Parser {
             case "%=":
                 operator = BinaryOperator.ModEqual;
                 break;
-            case "||":
-            case "&&":
             case "!=":
                 operator = RelationalOperator.NotEquals;
                 break;
+            case "||":
+            case "&&":
             case "++":
             case "--":
             case "!":
