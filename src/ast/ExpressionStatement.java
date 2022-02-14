@@ -14,9 +14,12 @@ public class ExpressionStatement implements Statement, Expression {
     }
 
     public ExpressionStatement setSource(Expression expression) {
-        Objects.requireNonNull(expression);
         this.expression = expression;
         return this;
+    }
+
+    public Expression getSource() {
+        return this.expression;
     }
 
     protected Expression expression;
