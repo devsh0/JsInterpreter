@@ -27,6 +27,14 @@ public class VariableDeclaration implements Statement {
         return this;
     }
 
+    Identifier getIdentifier() {
+        return this.id;
+    }
+
+    Expression getInitializer() {
+        return this.initializer;
+    }
+
     public VariableDeclaration setInitializer(Expression expression) {
         Objects.requireNonNull(expression);
         this.initializer = expression;
