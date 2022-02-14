@@ -358,4 +358,32 @@ class MainTest {
         var program = constructForLoopAllHeaderExpressionsAreEmpty();
         assertEquals("3840.0", interpreter.run(program).toString());
     }
+
+    private Program constructLogicalAnd() {
+        var code = "let number = 10;\n" +
+                "let isPositiveAndEven = (number > 0) && (number % 2 == 0);\n" +
+                "isPositiveAndEven;";
+        return (Program) Parser.get(code).parse();
+    }
+
+    // FIXME: This test does not cover all the cases.
+    @Test
+    void testLogicalAnd() {
+        var program = constructLogicalAnd();
+        assertEquals("true", interpreter.run(program).toString());
+    }
+
+    private Program constructLogicalOr() {
+        var code = "let number = 10 - 20;\n" +
+                "let isPositiveOrEven = (number > 0) || (number % 2 == 0);\n" +
+                "isPositiveOrEven;";
+        return (Program) Parser.get(code).parse();
+    }
+
+    // FIXME: This test does not cover all the cases.
+    @Test
+    public void testLogicalOr() {
+        var program = constructLogicalOr();
+        assertEquals("true", interpreter.run(program).toString());
+    }
 }

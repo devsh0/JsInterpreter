@@ -176,8 +176,12 @@ public class ExpressionParser extends Parser {
             case "!=":
                 operator = RelationalOperator.NotEquals;
                 break;
-            case "||":
             case "&&":
+                operator = LogicalOperator.And;
+                break;
+            case "||":
+                operator = LogicalOperator.Or;
+                break;
             case "++":
             case "--":
             case "!":
