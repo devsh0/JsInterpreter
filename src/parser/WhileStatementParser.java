@@ -26,9 +26,11 @@ public class WhileStatementParser extends Parser {
 
         if (hasMultipleStatement)
             stream().consumeLeftCurly();
+
         scopeManager().pushLoopScope(whileStatement);
         var whileBody = new BlockParser(whileStatement, hasMultipleStatement).parse();
         scopeManager().popLoopScope();
+
         if (hasMultipleStatement)
             stream().consumeRightCurly();
 

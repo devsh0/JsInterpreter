@@ -159,13 +159,13 @@ class MainTest {
         return (Program) Parser.get(code).parse();
     }
 
-   @Test
+    @Test
     public void testWhileWithContinue() {
         var program = constructWhileWithContinue();
         assertEquals("51.0", interpreter.run(program).toString());
-   }
+    }
 
-   private Program constructSingleStatementInIfBlock() {
+    private Program constructSingleStatementInIfBlock() {
         var code = "let number = 27;\n" +
                 "let status = \"\";\n" +
                 "if (number % 2 == 0)\n" +
@@ -173,29 +173,29 @@ class MainTest {
                 "else status = \"odd\";\n" +
                 "status;";
         return (Program) Parser.get(code).parse();
-   }
+    }
 
-   @Test
+    @Test
     public void testSingleStatementInIfBlock() {
         var program = constructSingleStatementInIfBlock();
         assertEquals("odd", interpreter.run(program).toString());
-   }
+    }
 
-   private Program constructSingleStatementInWhileBlock() {
+    private Program constructSingleStatementInWhileBlock() {
         var code = "let number = 2;\n" +
                 "while (number < 200)\n" +
                 "    number += 20;\n" +
                 "number;";
         return (Program) Parser.get(code).parse();
-   }
+    }
 
-   @Test
+    @Test
     public void testSingleStatementInWhileBlock() {
         var program = constructSingleStatementInWhileBlock();
         assertEquals("202.0", interpreter.run(program).toString());
-   }
+    }
 
-   private Program constructBreakLabeledWhile() {
+    private Program constructBreakLabeledWhile() {
         var code = "let i = 2;\n" +
                 "top:\n" +
                 "    while (i < 5) {\n" +
@@ -208,13 +208,13 @@ class MainTest {
                 "\n" +
                 "i;";
         return (Program) Parser.get(code).parse();
-   }
+    }
 
-   @Test
+    @Test
     public void testBreakLabeledWhile() {
         var program = constructBreakLabeledWhile();
         assertEquals("4.0", interpreter.run(program).toString());
-   }
+    }
 
     private Program constructContinueLabeledWhile() {
         var code = "let i = 2;\n" +
@@ -235,5 +235,127 @@ class MainTest {
     public void testContinueLabeledWhile() {
         var program = constructContinueLabeledWhile();
         assertEquals("16.0", interpreter.run(program).toString());
+    }
+
+    private Program constructForLoop() {
+        var code = "let accumulator = 0;\n" +
+                "for (let i = 0; i < 100; i+=1)\n" +
+                "    accumulator += i;\n" +
+                "accumulator;";
+        return (Program) Parser.get(code).parse();
+    }
+
+    @Test
+    public void testForLoop() {
+        var program = constructForLoop();
+        assertEquals("4950.0", interpreter.run(program).toString());
+    }
+
+    private Program constructForLoopInitializerShadowsParentScopeVariable() {
+        var code = "let i = 10;\n" +
+                "\n" +
+                "function sum() {\n" +
+                "    let accumulator = 0;\n" +
+                "    for (let i = 0; i < 10; i += 1)\n" +
+                "        accumulator += i;\n" +
+                "    return accumulator;\n" +
+                "}\n" +
+                "\n" +
+                "let accumulator = 0;\n" +
+                "for (let i = 0; i < 10; i += 1)\n" +
+                "    accumulator += i;\n" +
+                "\n" +
+                "sum() + accumulator;";
+        return (Program) Parser.get(code).parse();
+    }
+
+    @Test
+    public void testForLoopInitializerShadowsParentScopeVariable() {
+        var program = constructForLoopInitializerShadowsParentScopeVariable();
+        assertEquals("90.0", interpreter.run(program).toString());
+    }
+
+    private Program constructForLoopInitializerIsNotVariableDeclaration() {
+        var code = "let i = 0;\n" +
+                "let accumulator = 0;\n" +
+                "for (i = 10; i < 100; i += 1)\n" +
+                "    accumulator += i;\n" +
+                "accumulator;";
+        return (Program) Parser.get(code).parse();
+    }
+
+    @Test
+    public void testForLoopInitializerIsNotVariableDeclaration() {
+        var program = constructForLoopInitializerIsNotVariableDeclaration();
+        assertEquals("4905.0", interpreter.run(program).toString());
+    }
+
+    private Program constructForLoopInitializerIsEmpty() {
+        var code = "let i = 0;\n" +
+                "let accumulator = 0;\n" +
+                "for (; i < 100; i += 1)\n" +
+                "    accumulator += i;\n" +
+                "accumulator;";
+        return (Program) Parser.get(code).parse();
+    }
+
+    @Test
+    void testForLoopInitializerIsEmpty() {
+        var program = constructForLoopInitializerIsEmpty();
+        assertEquals("4950.0", interpreter.run(program).toString());
+    }
+
+    private Program constructForLoopConditionExpressionIsEmpty() {
+        var code = "let accumulator = 0;\n" +
+                "for (let i = 0; ;i += 1) {\n" +
+                "    if (i > 100)\n" +
+                "        break;\n" +
+                "    accumulator += i;\n" +
+                "}\n" +
+                "accumulator;";
+        return (Program) Parser.get(code).parse();
+    }
+
+    @Test
+    void testForLoopConditionExpressionIsEmpty() {
+        var program = constructForLoopConditionExpressionIsEmpty();
+        assertEquals("5050.0", interpreter.run(program).toString());
+    }
+
+    private Program constructForLoopUpdateExpressionIsEmpty() {
+        var code = "let accumulator = 0;\n" +
+                "for (let i = 0; i < 100;) {\n" +
+                "    accumulator += i;\n" +
+                "    i += 1;\n" +
+                "}\n" +
+                "accumulator;";
+        return (Program) Parser.get(code).parse();
+    }
+
+    @Test
+    void testForLoopUpdateExpressionIsEmpty() {
+        var program = constructForLoopUpdateExpressionIsEmpty();
+        assertEquals("4950.0", interpreter.run(program).toString());
+    }
+
+    private Program constructForLoopAllHeaderExpressionsAreEmpty() {
+        var code = "let accumulator = 0;\n" +
+                "let i = 0;\n" +
+                "for (;;) {\n" +
+                "    if (accumulator > 10)\n" +
+                "        accumulator += accumulator;\n" +
+                "    else accumulator += i;\n" +
+                "    i += 1;\n" +
+                "    if (accumulator > 2000)\n" +
+                "        break;\n" +
+                "}\n" +
+                "accumulator;";
+        return (Program) Parser.get(code).parse();
+    }
+
+    @Test
+    void testForLoopAllHeaderExpressionsAreEmpty() {
+        var program = constructForLoopAllHeaderExpressionsAreEmpty();
+        assertEquals("3840.0", interpreter.run(program).toString());
     }
 }

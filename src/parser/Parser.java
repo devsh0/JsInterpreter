@@ -12,8 +12,7 @@ import java.util.Stack;
 public abstract class Parser implements Assertable {
     public static class ScopeManager implements Assertable {
         private final Stack<FunctionDeclaration> functionStack = new Stack<>();
-        // FIXME: This can also be a for loop.
-        private final Stack<WhileStatement> loopStack = new Stack<>();
+        private final Stack<LoopStatement> loopStack = new Stack<>();
 
         public void pushFunctionScope(CompoundStatement function) {
             VERIFY(function instanceof FunctionDeclaration);
@@ -32,15 +31,13 @@ public abstract class Parser implements Assertable {
             return functionStack.pop();
         }
 
-        public WhileStatement getActiveLoopScope() {
+        public LoopStatement getActiveLoopScope() {
             if (loopStack.isEmpty())
                 FIXME_REPORT_SEMANTIC_ERROR();
-            var loop = loopStack.peek();
-            VERIFY(loop instanceof WhileStatement);
-            return loop;
+            return loopStack.peek();
         }
 
-        public WhileStatement getLoopScope(Identifier label) {
+        public LoopStatement getLoopScope(Identifier label) {
             if (label == null)
                 return getActiveLoopScope();
             if (loopStack.isEmpty())
@@ -54,25 +51,12 @@ public abstract class Parser implements Assertable {
             return null;
         }
 
-        public void pushLoopScope(WhileStatement loop) {
-            // FIXME: This can also possible be a for loop.
-            VERIFY(loop instanceof WhileStatement);
+        public void pushLoopScope(LoopStatement loop) {
+            VERIFY(loop != null);
             loopStack.push(loop);
         }
 
-        public CompoundStatement popLoopScope(Identifier label) {
-            VERIFY(label != null);
-            while (true) {
-                var last = popLoopScope();
-                if (!(last instanceof WhileStatement))
-                    FIXME_UNIMPLEMENTED();
-                var lastLoop = (WhileStatement)last;
-                if (label.equals(lastLoop.getLabel()))
-                    return lastLoop;
-            }
-        }
-
-        public CompoundStatement popLoopScope() {
+        public LoopStatement popLoopScope() {
             if (loopStack.empty())
                 FIXME_REPORT_SYNTAX_ERROR();
             return loopStack.pop();

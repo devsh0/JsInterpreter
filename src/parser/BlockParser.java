@@ -22,6 +22,7 @@ public class BlockParser extends Parser {
         LabelStatement,
         IfStatement,
         WhileStatement,
+        ForStatement
     }
 
     BlockParser(CompoundStatement owner, boolean hasMultipleStatement) {
@@ -83,6 +84,8 @@ public class BlockParser extends Parser {
             return StatementType.IfStatement;
         if (tokenValue.equals("while"))
             return StatementType.WhileStatement;
+        if (tokenValue.equals("for"))
+            return StatementType.ForStatement;
         if (tokenValue.equals("break"))
             return StatementType.BreakStatement;
         if (tokenValue.equals("continue"))
@@ -131,6 +134,8 @@ public class BlockParser extends Parser {
                 return Optional.of(new ExpressionStatementParser().parse());
             case WhileStatement:
                 return Optional.of(new WhileStatementParser(null).parse());
+            case ForStatement:
+                return Optional.of(new ForStatementParser(null).parse());
             case BreakStatement:
                 return Optional.of(new BreakStatementParser().parse());
             case ContinueStatement:
