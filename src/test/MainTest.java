@@ -252,27 +252,27 @@ class MainTest {
     }
 
     private Program constructForLoopInitializerShadowsParentScopeVariable() {
-        var code = "let i = 10;\n" +
+        var code = "let success = false;\n" +
+                "let i = 0;\n" +
                 "\n" +
-                "function sum() {\n" +
+                "function test() {\n" +
+                "    let i = 1;\n" +
                 "    let accumulator = 0;\n" +
-                "    for (let i = 0; i < 10; i += 1)\n" +
+                "    for (let i = 0; i < 100; i += 1)\n" +
                 "        accumulator += i;\n" +
-                "    return accumulator;\n" +
+                "    success = accumulator == 4950;\n" +
+                "    success = success && (i == 1);\n" +
                 "}\n" +
                 "\n" +
-                "let accumulator = 0;\n" +
-                "for (let i = 0; i < 10; i += 1)\n" +
-                "    accumulator += i;\n" +
-                "\n" +
-                "sum() + accumulator;";
+                "test();\n" +
+                "success = success && (i == 0);";
         return (Program) Parser.get(code).parse();
     }
 
     @Test
     public void testForLoopInitializerShadowsParentScopeVariable() {
         var program = constructForLoopInitializerShadowsParentScopeVariable();
-        assertEquals("90.0", interpreter.run(program).toString());
+        assertEquals("true", interpreter.run(program).toString());
     }
 
     private Program constructForLoopInitializerIsNotVariableDeclaration() {
