@@ -115,7 +115,7 @@ public class JSNumber implements
     @Override
     public JSBoolean isEqualTo(Expression other) {
         var number = getJSNumber(other);
-        return JSBoolean.from(value.equals(number.value));
+        return JSBoolean.from(value.doubleValue() == number.value.doubleValue());
     }
 
     @Override
