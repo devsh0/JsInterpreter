@@ -5,7 +5,7 @@ import parser.Parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MainTest {
+public class ParserTest {
     private static final Interpreter interpreter = Interpreter.get();
 
     private Program constructFizzBuzz(int input) {
