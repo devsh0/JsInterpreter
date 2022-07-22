@@ -1,9 +1,19 @@
 ## Interpreter
-An interpreter built out of shear boredom. Initially the plan was to write a tree-walk JS engine, but then I just kept adding
-language constructs that made sense at the time and now I am not even sure what does the parser recognize. Pretty sure it's
-a close cousin of Javascript though. It's highly WIP and is missing a lot of features. I will come back to it when I have
-enough time to take another look.
+An interpreter that can recognize a JS-like language. It can parse a significant part of JavaScript but is missing
+a bunch of features. I intend to finish it once I have some time off freelancing. The plan is to have the parser recognize
+all the syntactical elements of ECMA-262 and once there, generate Java bytecode (or LLVM IR) based on the AST which can
+be interpreter by a VM (JVM or LLVM).
 
-## Build
-Neither Maven, nor Gradle...we do it the old way. Just clone the project, add Junit5 manually to your classpath and run
-the tests in `MainTest.java`, a mixed-bag of 20 or so tests that kept on growing as I added new language features.
+## Building and Running the Tests
+1. Clone the repository
+``` 
+$ git clone https://github.com/devsh0/JsInterpreter.git
+```
+
+2. Run tests
+```
+$ cd JsInterpreter
+$ mvn test
+```
+
+**Note:** Ubuntu doesn't play nice with maven 3.6.x. If you encounter an error, upgrade to maven 3.8.x.
