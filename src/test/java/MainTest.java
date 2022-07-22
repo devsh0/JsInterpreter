@@ -1,5 +1,3 @@
-package test;
-
 import ast.Program;
 import org.js.Interpreter;
 import org.junit.jupiter.api.Test;
@@ -7,7 +5,7 @@ import parser.Parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class MainTest {
+public class MainTest {
     private static final Interpreter interpreter = Interpreter.get();
 
     private Program constructFizzBuzz(int input) {
@@ -300,7 +298,7 @@ class MainTest {
     }
 
     @Test
-    void testForLoopInitializerIsEmpty() {
+    public void testForLoopInitializerIsEmpty() {
         var program = constructForLoopInitializerIsEmpty();
         assertEquals("4950.0", interpreter.run(program).toString());
     }
@@ -317,7 +315,7 @@ class MainTest {
     }
 
     @Test
-    void testForLoopConditionExpressionIsEmpty() {
+    public void testForLoopConditionExpressionIsEmpty() {
         var program = constructForLoopConditionExpressionIsEmpty();
         assertEquals("5050.0", interpreter.run(program).toString());
     }
@@ -333,7 +331,7 @@ class MainTest {
     }
 
     @Test
-    void testForLoopUpdateExpressionIsEmpty() {
+    public void testForLoopUpdateExpressionIsEmpty() {
         var program = constructForLoopUpdateExpressionIsEmpty();
         assertEquals("4950.0", interpreter.run(program).toString());
     }
@@ -354,7 +352,7 @@ class MainTest {
     }
 
     @Test
-    void testForLoopAllHeaderExpressionsAreEmpty() {
+    public void testForLoopAllHeaderExpressionsAreEmpty() {
         var program = constructForLoopAllHeaderExpressionsAreEmpty();
         assertEquals("3840.0", interpreter.run(program).toString());
     }
@@ -368,7 +366,7 @@ class MainTest {
 
     // FIXME: This test does not cover all the cases.
     @Test
-    void testLogicalAnd() {
+    public void testLogicalAnd() {
         var program = constructLogicalAnd();
         assertEquals("true", interpreter.run(program).toString());
     }
