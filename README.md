@@ -47,7 +47,7 @@ Also add this property to help the exec plugin find your main class.
 
 3. Create a JavaScript source file in your project root.
 ```javascript
-// fizzBuzz.js
+// fizzbuzz.js
 function fizzbuzz(input) {
     let value = "";
     if (input % 3 == 0)
