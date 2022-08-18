@@ -11,10 +11,10 @@ public class VariableDeclarationParser extends Parser {
         var identifier = Identifier.from(stream().consumeIdentifier().getValue());
         declaration.setIdentifier(identifier);
         if (stream().peekNextToken().getValue().equals("=")) {
-            stream().consumeAssignmentOperator();
+            stream().consumeAndMatch("=");
             declaration.setInitializer(new ExpressionParser().parse());
         }
-        stream().consumeSemiColon();
+        stream().consumeAndMatch(";");
         return declaration;
     }
 }

@@ -38,23 +38,23 @@ public class ForStatementParser extends Parser {
 
         stream().consumeNextToken(); // "for"
 
-        stream().consumeLeftParen();
+        stream().consumeAndMatch("(");
         forStatement.setInitializer(parseInitializer());
         forStatement.setConditionExpression(parseConditionExpression());
         forStatement.setUpdateExpression(parseUpdateExpression());
-        stream().consumeRightParen();
+        stream().consumeAndMatch(")");
 
         var hasMultipleStatement = stream().peekNextToken().getValue().equals("{");
 
         if (hasMultipleStatement)
-            stream().consumeLeftCurly();
+            stream().consumeAndMatch("{");
 
         scopeManager().pushLoopScope(forStatement);
         var forBody = new BlockParser(forStatement, hasMultipleStatement).parse();
         scopeManager().popLoopScope();
 
         if (hasMultipleStatement)
-            stream().consumeRightCurly();
+            stream().consumeAndMatch("}");
 
         forStatement.setBody(forBody);
         return forStatement;

@@ -73,26 +73,26 @@ public class ExpressionParser extends Parser {
         var argumentExpression = new ExpressionParser().parse();
         callExpression.addArgument(argumentExpression);
         if (stream().peekNextToken().getType() == Token.Type.CommaT) {
-            stream().consumeComma();
+            stream().consumeAndMatch(",");
             appendArgumentHelper(callExpression);
         }
     }
 
     private CallExpression parseCallExpression(String functionName) {
         var callExpression = new CallExpression().setCallee(Identifier.from(functionName));
-        stream().consumeLeftParen();
+        stream().consumeAndMatch("(");
         var nextToken = stream().peekNextToken();
         while (nextToken.getType() != Token.Type.RightParenT) {
             appendArgumentHelper(callExpression);
             nextToken = stream().peekNextToken();
         }
-        stream().consumeRightParen();
+        stream().consumeAndMatch(")");
         return callExpression;
     }
 
     private Expression parseGroupedExpression() {
         var expression = new ExpressionParser().parse();
-        stream().consumeRightParen();
+        stream().consumeAndMatch(")");
         return expression;
     }
 

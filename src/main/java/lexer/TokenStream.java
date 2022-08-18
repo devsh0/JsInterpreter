@@ -301,20 +301,8 @@ public class TokenStream implements Assertable {
         return peekTokens(1).get(0);
     }
 
-    public Token consumeComma() {
-        return consumeAndMatch(Token.Type.CommaT);
-    }
-
-    public Token consumeSemiColon() {
-        return consumeAndMatch(Token.Type.SemiColonT);
-    }
-
     public Token consumeIdentifier() {
         return consumeAndMatch(Token.Type.IdentifierT);
-    }
-
-    public Token consumeColon() {
-        return consumeAndMatch(Token.Type.ColonT);
     }
 
     private Token consumeAndMatch(Token.Type type) {
@@ -324,31 +312,11 @@ public class TokenStream implements Assertable {
         return nextToken;
     }
 
-    private Token consumeAndMatch(String tokenValue) {
+    public Token consumeAndMatch(String tokenValue) {
         var nextToken = consumeNextToken();
         if (!nextToken.getValue().equals(tokenValue))
             FIXME_REPORT_SYNTAX_ERROR();
         return nextToken;
-    }
-
-    public Token consumeLeftParen() {
-        return consumeAndMatch(Token.Type.LeftParenT);
-    }
-
-    public Token consumeRightParen() {
-        return consumeAndMatch(Token.Type.RightParenT);
-    }
-
-    public Token consumeLeftCurly() {
-        return consumeAndMatch(Token.Type.LeftCurlyT);
-    }
-
-    public Token consumeAssignmentOperator() {
-        return consumeAndMatch("=");
-    }
-
-    public Token consumeRightCurly() {
-        return consumeAndMatch(Token.Type.RightCurlyT);
     }
 
     public void dump() {

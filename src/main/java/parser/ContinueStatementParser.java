@@ -13,7 +13,7 @@ public class ContinueStatementParser extends Parser {
             label = Identifier.from(stream().consumeIdentifier().getValue());
 
         var targetLoop = scopeManager().getLoopScope(label);
-        stream().consumeSemiColon();
+        stream().consumeAndMatch(";");
         return new ContinueStatement(targetLoop);
     }
 }

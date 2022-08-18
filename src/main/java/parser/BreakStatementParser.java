@@ -15,7 +15,7 @@ public class BreakStatementParser extends Parser {
 
         var targetLoop = scopeManager().getLoopScope(label);
 
-        stream().consumeSemiColon();
+        stream().consumeAndMatch(";");
         return new BreakStatement(targetLoop);
     }
 }

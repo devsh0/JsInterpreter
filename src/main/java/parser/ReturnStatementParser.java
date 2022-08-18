@@ -14,7 +14,7 @@ public class ReturnStatementParser extends Parser {
             var expression = new ExpressionParser().parse();
             statement.setExpression(expression);
         }
-        stream().consumeSemiColon();
+        stream().consumeAndMatch(";");
         return statement;
     }
 }

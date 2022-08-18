@@ -6,9 +6,9 @@ import ast.Statement;
 
 public class IfStatementParser extends Parser {
     private Expression parseConditionExpression() {
-        stream().consumeLeftParen();
+        stream().consumeAndMatch("(");
         var expression = new ExpressionParser().parse();
-        stream().consumeRightParen();
+        stream().consumeAndMatch(")");
         return expression;
     }
 
@@ -23,13 +23,13 @@ public class IfStatementParser extends Parser {
         var hasMultipleStatement = stream().peekNextToken().getValue().equals("{");
 
         if (hasMultipleStatement) {
-            stream().consumeLeftCurly();
+            stream().consumeAndMatch("{");
         }
 
         ifStatement.setBody(new BlockParser(ifStatement, hasMultipleStatement).parse());
 
         if (hasMultipleStatement) {
-            stream().consumeRightCurly();
+            stream().consumeAndMatch("}");
         }
 
         if (stream().peekNextToken().getValue().equals("else")) {
@@ -40,10 +40,10 @@ public class IfStatementParser extends Parser {
 
             hasMultipleStatement = stream().peekNextToken().getValue().equals("{");
             if (hasMultipleStatement)
-                stream().consumeLeftCurly();
+                stream().consumeAndMatch("{");
             ifStatement.setAlternate(new BlockParser(ifStatement, hasMultipleStatement).parse());
             if (hasMultipleStatement)
-                stream().consumeRightCurly();
+                stream().consumeAndMatch("}");
         }
 
         return ifStatement;

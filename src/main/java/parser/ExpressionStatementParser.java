@@ -8,7 +8,7 @@ public class ExpressionStatementParser extends Parser {
         var statement = new ExpressionStatement();
         if (!stream().peekNextToken().getValue().equals(";"))
             statement.setSource(new ExpressionParser().parse());
-        stream().consumeSemiColon();
+        stream().consumeAndMatch(";");
         return statement;
     }
 }

@@ -16,23 +16,23 @@ public class WhileStatementParser extends Parser {
 
         stream().consumeNextToken(); // "while"
 
-        stream().consumeLeftParen();
+        stream().consumeAndMatch("(");
         var conditionExpression = new ExpressionParser().parse();
-        stream().consumeRightParen();
+        stream().consumeAndMatch(")");
 
         whileStatement.setConditionExpression(conditionExpression);
 
         var hasMultipleStatement = stream().peekNextToken().getValue().equals("{");
 
         if (hasMultipleStatement)
-            stream().consumeLeftCurly();
+            stream().consumeAndMatch("{");
 
         scopeManager().pushLoopScope(whileStatement);
         var whileBody = new BlockParser(whileStatement, hasMultipleStatement).parse();
         scopeManager().popLoopScope();
 
         if (hasMultipleStatement)
-            stream().consumeRightCurly();
+            stream().consumeAndMatch("}");
 
         whileStatement.setBody(whileBody);
         return whileStatement;

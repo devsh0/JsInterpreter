@@ -16,21 +16,21 @@ public class FunctionDeclarationParser extends Parser {
 
     private Identifier[] parseParameterList() {
         List<Identifier> parameterList = new ArrayList<>();
-        stream().consumeLeftParen();
+        stream().consumeAndMatch("(");
         var nextTokenType = stream().peekNextToken().getType();
         while (nextTokenType != Token.Type.RightParenT) {
             var nextParameter = stream().consumeIdentifier().getValue();
             parameterList.add(Identifier.from(nextParameter));
             nextTokenType = stream().peekNextToken().getType();
             if (nextTokenType == Token.Type.CommaT) {
-                stream().consumeComma();
+                stream().consumeAndMatch(",");
                 nextTokenType = stream().peekNextToken().getType();
                 continue;
             }
             if (nextTokenType != Token.Type.RightParenT)
                 FIXME_REPORT_SYNTAX_ERROR();
         }
-        stream().consumeRightParen();
+        stream().consumeAndMatch(")");
         var parameters = new Identifier[parameterList.size()];
         for (int i = 0; i < parameterList.size(); i++)
             parameters[i] = parameterList.get(i);
@@ -48,11 +48,11 @@ public class FunctionDeclarationParser extends Parser {
         function.setIdentifier(parseFunctionIdentifier());
         function.setParameters(parseParameterList());
 
-        stream().consumeLeftCurly();
+        stream().consumeAndMatch("{");
         scopeManager().pushFunctionScope(function);
         function.setBody(parseFunctionBody(function));
         scopeManager().popFunctionScope();
-        stream().consumeRightCurly();
+        stream().consumeAndMatch("}");
 
         return function;
     }
