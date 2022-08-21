@@ -7,15 +7,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import static myutils.Macro.verify;
+
 public class CallExpression extends ExpressionStatement {
     @Override
     public Object execute() {
         Objects.requireNonNull(callee);
         var interpreter = Interpreter.get();
         var functionOrEmpty = interpreter.queryScope(callee);
-        ASSERT(functionOrEmpty.isPresent());
+        verify(functionOrEmpty.isPresent());
         var entity = functionOrEmpty.get();
-        ASSERT(entity instanceof FunctionDeclaration);
+        verify(entity instanceof FunctionDeclaration);
         var function = (FunctionDeclaration) entity;
         var parameters = function.getParameters();
         var functionBody = function.getBody();

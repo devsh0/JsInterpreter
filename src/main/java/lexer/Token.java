@@ -1,12 +1,12 @@
 package lexer;
 
-import myutils.Assertable;
+import myutils.Macro;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Token implements Assertable {
+public class Token implements Macro {
     public static enum Type {
         ColonT,
         CommaT,

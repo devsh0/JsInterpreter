@@ -1,8 +1,8 @@
 package ast;
 
-import myutils.Assertable;
+import myutils.Macro;
 
-public interface ASTNode extends Assertable {
+public interface ASTNode {
     public static final int Indent = 4;
 
     public Object execute();

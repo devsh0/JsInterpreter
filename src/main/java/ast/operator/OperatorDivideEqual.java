@@ -5,6 +5,8 @@ import ast.Identifier;
 import ast.value.JSValue;
 import org.js.Interpreter;
 
+import static myutils.Macro.verify;
+
 public class OperatorDivideEqual extends AbstractBinaryOperator {
     public OperatorDivideEqual(Expression lhs, Expression rhs) {
         super(lhs, rhs);
@@ -12,7 +14,7 @@ public class OperatorDivideEqual extends AbstractBinaryOperator {
 
     @Override
     public Object execute() {
-        VERIFY(lhs instanceof Identifier);
+        verify(lhs instanceof Identifier);
         var dest = (Identifier) lhs;
 
         var src = (JSValue) (new OperatorDivide(lhs, rhs)).execute();

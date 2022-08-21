@@ -1,9 +1,10 @@
 package ast;
 
-import myutils.Assertable;
 import org.js.Interpreter;
 
 import java.util.Objects;
+
+import static myutils.Macro.verify;
 
 public class Identifier implements ASTNode, Expression {
     private String name;
@@ -15,7 +16,7 @@ public class Identifier implements ASTNode, Expression {
     @Override
     public Object execute() {
         var entity = Interpreter.get().queryScope(this);
-        ASSERT(entity.isPresent());
+        verify(entity.isPresent());
         return entity.get().execute();
     }
 
@@ -51,7 +52,7 @@ public class Identifier implements ASTNode, Expression {
 
     public static Identifier from(String name) {
         Objects.requireNonNull(name);
-        Assertable._ASSERT(!name.isEmpty());
+        verify(!name.isEmpty());
         return new Identifier().setName(name);
     }
 }

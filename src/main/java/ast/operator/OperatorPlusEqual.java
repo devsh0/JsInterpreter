@@ -1,10 +1,11 @@
 package ast.operator;
 
-import ast.BinaryExpression;
 import ast.Expression;
 import ast.Identifier;
 import ast.value.JSValue;
 import org.js.Interpreter;
+
+import static myutils.Macro.verify;
 
 public class OperatorPlusEqual extends AbstractBinaryOperator {
     public OperatorPlusEqual(Expression lhs, Expression rhs) {
@@ -13,7 +14,7 @@ public class OperatorPlusEqual extends AbstractBinaryOperator {
 
     @Override
     public Object execute() {
-        VERIFY(lhs instanceof Identifier);
+        verify(lhs instanceof Identifier);
         var dest = (Identifier)lhs;
         var src = (JSValue)(new OperatorPlus(lhs, rhs)).execute();
         Interpreter.get().rewrite(dest, src);

@@ -10,6 +10,9 @@ import lexer.TokenStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static myutils.Macro.todo_report_syntax_error;
+import static myutils.Macro.verify;
+
 public class CallExpressionParser extends Parser {
 
     public CallExpressionParser(TokenStream stream, ScopeManager scopeManager) {
@@ -24,7 +27,7 @@ public class CallExpressionParser extends Parser {
             if (stream().peekNextToken().getType() == Token.Type.CommaT) {
                 stream().consumeNextToken();
                 if(stream().peekNextToken().getType() == Token.Type.RightParenT)
-                    FIXME_REPORT_SYNTAX_ERROR();
+                    todo_report_syntax_error();
             }
         }
         return arguments;
@@ -33,7 +36,7 @@ public class CallExpressionParser extends Parser {
     @Override
     public ASTNode parse() {
         var token = stream().consumeNextToken();
-        VERIFY(token.getType() == Token.Type.IdentifierT);
+        verify(token.getType() == Token.Type.IdentifierT);
         var functionIdentifier = Identifier.from(token.getValue());
         var callExpression = new CallExpression().setIdentifier(functionIdentifier);
         stream().consumeAndMatch("(");

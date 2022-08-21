@@ -5,6 +5,9 @@ import ast.operator.*;
 
 import java.util.Objects;
 
+import static myutils.Macro.unreachable;
+import static myutils.Macro.verify;
+
 public class JSString implements
         OperatorPlus.Interface,
         OperatorLessThanOrEqual.Interface,
@@ -28,7 +31,7 @@ public class JSString implements
             var otherString = ((JSNumber) rhs).asString();
             return JSString.from(value + otherString.value);
         } else {
-            ASSERT(false);
+            unreachable();
             return null;
         }
     }
@@ -51,7 +54,7 @@ public class JSString implements
     @Override
     public JSString setValue(Object value) {
         Objects.requireNonNull(value);
-        ASSERT(value instanceof String);
+        verify(value instanceof String);
         this.value = (String) value;
         return this;
     }
@@ -76,10 +79,10 @@ public class JSString implements
     }
 
     private JSString getJSString(Expression expr) {
-        Objects.requireNonNull(expr);
+        verify(expr != null);
         var valueOrError = expr.execute();
         // TODO: Handle type casts.
-        ASSERT(valueOrError instanceof JSString);
+        verify(valueOrError instanceof JSString);
         return (JSString) valueOrError;
     }
 

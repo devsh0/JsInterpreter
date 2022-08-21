@@ -3,12 +3,14 @@ package ast;
 import ast.value.JSValue;
 import java.util.Objects;
 
+import static myutils.Macro.verify;
+
 public class IfStatement extends CompoundStatement {
     @Override
     public Object execute() {
-        var valueOrError = conditionExpression.execute();
         // FIXME: Shouldn't `truthy` and `falsy` properties be defined on `Expression` rather than `JSValue`?
-        ASSERT(valueOrError instanceof JSValue);
+        var valueOrError = conditionExpression.execute();
+        verify(valueOrError instanceof JSValue);
         var value = (JSValue)valueOrError;
         if (value.isTruthy())
             return body.execute();
@@ -26,14 +28,14 @@ public class IfStatement extends CompoundStatement {
     }
 
     public IfStatement setConditionExpression(Expression condition) {
-        Objects.requireNonNull(condition);
+        verify(condition != null);
         this.conditionExpression = condition;
         return this;
     }
 
     public IfStatement setAlternate(Statement statement) {
-        Objects.requireNonNull(statement);
-        ASSERT(statement instanceof IfStatement || statement instanceof Block);
+        verify(statement != null);
+        verify(statement instanceof IfStatement || statement instanceof Block);
         this.alternate = statement;
         return this;
     }

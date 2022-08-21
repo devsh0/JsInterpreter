@@ -3,8 +3,9 @@ package ast.operator;
 import ast.ASTNode;
 import ast.Expression;
 import lexer.Token;
-import myutils.Assertable;
-import org.junit.jupiter.api.Assertions;
+
+import static myutils.Macro.unimplemented;
+import static myutils.Macro.unreachable;
 
 public interface BinaryOperator extends ASTNode {
     public Expression getLHS();
@@ -59,7 +60,7 @@ public interface BinaryOperator extends ASTNode {
             case "||":
                 return new OperatorOr(lhs, rhs);
             default:
-                Assertable._FIXME_UNIMPLEMENTED();
+                unimplemented();
                 return null;
         }
     }
@@ -126,7 +127,7 @@ public interface BinaryOperator extends ASTNode {
         if (isFactorOperator(token))
             return 12;
 
-        Assertable._ASSERT_NOT_REACHED();
+        unreachable();
         return 0;
     }
 

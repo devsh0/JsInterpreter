@@ -3,7 +3,8 @@ package ast.operator;
 import ast.Expression;
 import ast.value.JSBoolean;
 import ast.value.JSValue;
-import myutils.Assertable;
+
+import static myutils.Macro.verify;
 
 public class OperatorEquals extends AbstractBinaryOperator {
     public OperatorEquals(Expression lhs, Expression rhs) {
@@ -26,7 +27,7 @@ public class OperatorEquals extends AbstractBinaryOperator {
         public JSBoolean isEqualTo(Expression other);
 
         static Interface valueOf(Object value) {
-            Assertable._ASSERT(value instanceof Interface);
+            verify(value instanceof Interface);
             return (Interface) value;
         }
     }

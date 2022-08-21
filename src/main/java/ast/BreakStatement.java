@@ -4,6 +4,8 @@ import org.js.Interpreter;
 
 import java.util.Objects;
 
+import static myutils.Macro.verify;
+
 public class BreakStatement implements Statement {
     public BreakStatement(CompoundStatement owner) {
         Objects.requireNonNull(owner);
@@ -15,9 +17,9 @@ public class BreakStatement implements Statement {
         CompoundStatement breakableEntity;
         if (label != null) {
             var entityOrEmpty = Interpreter.get().queryScope(label);
-            ASSERT(entityOrEmpty.isPresent());
+            verify(entityOrEmpty.isPresent());
             var entity = entityOrEmpty.get();
-            ASSERT(entity instanceof CompoundStatement);
+            verify(entity instanceof CompoundStatement);
             breakableEntity = (CompoundStatement) entity;
         } else {
             breakableEntity = owner;

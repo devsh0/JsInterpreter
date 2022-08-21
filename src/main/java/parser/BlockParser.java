@@ -7,6 +7,9 @@ import lexer.TokenStream;
 import java.util.Objects;
 import java.util.Optional;
 
+import static myutils.Macro.todo_report_syntax_error;
+import static myutils.Macro.unimplemented;
+
 public class BlockParser extends Parser {
     private CompoundStatement owner;
     private boolean hasMultipleStatement;
@@ -40,7 +43,7 @@ public class BlockParser extends Parser {
     private boolean eof() {
         if (stream().eof()) {
             if (!(owner instanceof Program))
-                FIXME_REPORT_SYNTAX_ERROR();
+                todo_report_syntax_error();
             return true;
         }
         return false;
@@ -126,7 +129,7 @@ public class BlockParser extends Parser {
             if (type == Token.Type.ColonT)
                 return StatementType.LabelStatement;
 
-            FIXME_REPORT_SYNTAX_ERROR();
+            todo_report_syntax_error();
         }
 
         return StatementType.Unrecognized;
@@ -158,7 +161,7 @@ public class BlockParser extends Parser {
             case Exit:
                 return Optional.empty();
             default:
-                FIXME_UNIMPLEMENTED();
+                unimplemented();
                 return Optional.empty();
         }
     }

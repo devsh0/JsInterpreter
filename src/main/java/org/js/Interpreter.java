@@ -1,13 +1,15 @@
 package org.js;
 
 import ast.*;
-import myutils.Assertable;
+import myutils.Macro;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Interpreter implements Assertable {
+import static myutils.Macro.*;
+
+public class Interpreter implements Macro {
     private static Interpreter interpreter = null;
     private List<Scope> stack = new ArrayList<>();
 
@@ -27,7 +29,7 @@ public class Interpreter implements Assertable {
     }
 
     public Scope getCurrentScope () {
-        ASSERT(stack.size() >= 1);
+        verify(stack.size() >= 1);
         return stack.get(stack.size() - 1);
     }
 
@@ -44,12 +46,12 @@ public class Interpreter implements Assertable {
     }
 
     public Scope exitCurrentScope() {
-        ASSERT(stack.size() > 0);
+        verify(stack.size() > 0);
         return stack.remove(stack.size() - 1);
     }
 
     public Object run (final ASTNode programNode) {
-        VERIFY(programNode instanceof Program);
+        verify(programNode instanceof Program);
         Program program = (Program)programNode;
         stack.add(new Scope(program));
         return program.execute();

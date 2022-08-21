@@ -6,6 +6,8 @@ import ast.Identifier;
 import ast.value.JSValue;
 import org.js.Interpreter;
 
+import static myutils.Macro.verify;
+
 public class OperatorModEqual extends AbstractBinaryOperator {
     public OperatorModEqual(Expression lhs, Expression rhs) {
         super(lhs, rhs);
@@ -13,7 +15,7 @@ public class OperatorModEqual extends AbstractBinaryOperator {
 
     @Override
     public Object execute() {
-        VERIFY(lhs instanceof Identifier);
+        verify(lhs instanceof Identifier);
         var dest = (Identifier)lhs;
         var src = (JSValue)(new OperatorMod(lhs, rhs)).execute();
         Interpreter.get().rewrite(dest, src);

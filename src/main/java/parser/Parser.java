@@ -2,38 +2,36 @@ package parser;
 
 import ast.*;
 import lexer.TokenStream;
-import myutils.Assertable;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Stack;
 
-public abstract class Parser implements Assertable {
-    public static class ScopeManager implements Assertable {
+import static myutils.Macro.todo_report_semantic_error;
+import static myutils.Macro.verify;
+
+public abstract class Parser {
+    public static class ScopeManager {
         private final Stack<FunctionDeclaration> functionStack = new Stack<>();
         private final Stack<LoopStatement> loopStack = new Stack<>();
 
         public void pushFunctionScope(FunctionDeclaration function) {
-            VERIFY(function != null);
+            verify(function != null);
             functionStack.push(function);
         }
 
         public FunctionDeclaration getActiveFunctionScope() {
             if (functionStack.isEmpty())
-                FIXME_REPORT_SEMANTIC_ERROR();
+                todo_report_semantic_error();
             return functionStack.peek();
         }
 
         public FunctionDeclaration popFunctionScope() {
             if (functionStack.isEmpty())
-                FIXME_REPORT_SEMANTIC_ERROR();
+                todo_report_semantic_error();
             return functionStack.pop();
         }
 
         public LoopStatement getActiveLoopScope() {
             if (loopStack.isEmpty())
-                FIXME_REPORT_SEMANTIC_ERROR();
+                todo_report_semantic_error();
             return loopStack.peek();
         }
 
@@ -41,24 +39,24 @@ public abstract class Parser implements Assertable {
             if (label == null)
                 return getActiveLoopScope();
             if (loopStack.isEmpty())
-                FIXME_REPORT_SEMANTIC_ERROR();
+                todo_report_semantic_error();
             for (var cursor = loopStack.size() - 1; cursor >= 0; cursor--) {
                 var current = loopStack.elementAt(cursor);
                 if (label.equals(current.getLabel()))
                     return current;
             }
-            FIXME_REPORT_SEMANTIC_ERROR();
+            todo_report_semantic_error();
             return null;
         }
 
         public void pushLoopScope(LoopStatement loop) {
-            VERIFY(loop != null);
+            verify(loop != null);
             loopStack.push(loop);
         }
 
         public LoopStatement popLoopScope() {
             if (loopStack.empty())
-                FIXME_REPORT_SYNTAX_ERROR();
+                todo_report_semantic_error();
             return loopStack.pop();
         }
     }

@@ -5,6 +5,8 @@ import ast.Identifier;
 import ast.value.JSValue;
 import org.js.Interpreter;
 
+import static myutils.Macro.verify;
+
 public class OperatorAssignment extends AbstractBinaryOperator {
     public OperatorAssignment(Expression lhs, Expression rhs) {
         super(lhs, rhs);
@@ -12,7 +14,7 @@ public class OperatorAssignment extends AbstractBinaryOperator {
 
     @Override
     public Object execute() {
-        VERIFY(lhs instanceof Identifier);
+        verify(lhs instanceof Identifier);
         var dest = (Identifier) lhs;
         var src = (JSValue) rhs.execute();
         Interpreter.get().rewrite(dest, src);

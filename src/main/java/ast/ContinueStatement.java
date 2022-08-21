@@ -4,6 +4,8 @@ import org.js.Interpreter;
 
 import java.util.Objects;
 
+import static myutils.Macro.verify;
+
 public class ContinueStatement implements Statement {
     public ContinueStatement(CompoundStatement owner) {
         Objects.requireNonNull(owner);
@@ -15,9 +17,9 @@ public class ContinueStatement implements Statement {
         CompoundStatement continuableEntity;
         if (label != null) {
             var entityOrEmpty = Interpreter.get().queryScope(label);
-            ASSERT(entityOrEmpty.isPresent());
+            verify(entityOrEmpty.isPresent());
             var entity = entityOrEmpty.get();
-            ASSERT(entity instanceof CompoundStatement);
+            verify(entity instanceof CompoundStatement);
             continuableEntity = (CompoundStatement) entity;
         } else {
             continuableEntity = owner;

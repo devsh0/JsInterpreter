@@ -6,6 +6,8 @@ import ast.Identifier;
 import ast.value.JSValue;
 import org.js.Interpreter;
 
+import static myutils.Macro.verify;
+
 public class OperatorMultiplyEqual extends AbstractBinaryOperator {
     public OperatorMultiplyEqual(Expression lhs, Expression rhs) {
         super(lhs, rhs);
@@ -13,7 +15,7 @@ public class OperatorMultiplyEqual extends AbstractBinaryOperator {
 
     @Override
     public Object execute() {
-        VERIFY(lhs instanceof Identifier);
+        verify(lhs instanceof Identifier);
         var dest = (Identifier)lhs;
         var src = (JSValue)(new OperatorMultiply(lhs, rhs)).execute();
         Interpreter.get().rewrite(dest, src);

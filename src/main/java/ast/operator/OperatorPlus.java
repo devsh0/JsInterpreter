@@ -2,7 +2,8 @@ package ast.operator;
 
 import ast.Expression;
 import ast.value.JSValue;
-import myutils.Assertable;
+
+import static myutils.Macro.verify;
 
 public class OperatorPlus extends AbstractBinaryOperator {
     public OperatorPlus(Expression lhs, Expression rhs) {
@@ -25,7 +26,7 @@ public class OperatorPlus extends AbstractBinaryOperator {
         public Expression add(Expression rhs);
 
         static Interface valueOf(Object value) {
-            Assertable._ASSERT(value instanceof Interface);
+            verify(value instanceof Interface);
             return (Interface) value;
         }
     }

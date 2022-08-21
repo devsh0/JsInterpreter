@@ -5,6 +5,9 @@ import ast.operator.*;
 
 import java.util.Objects;
 
+import static myutils.Macro.unreachable;
+import static myutils.Macro.verify;
+
 public class JSNumber implements
         OperatorLessThan.Interface,
         OperatorGreaterThan.Interface,
@@ -43,7 +46,7 @@ public class JSNumber implements
             var otherString = ((JSString) other).getValue();
             return JSString.from(asString() + (String) otherString);
         } else {
-            ASSERT(false);
+            unreachable();
             return null;
         }
     }
@@ -74,7 +77,7 @@ public class JSNumber implements
 
     @Override
     public JSNumber setValue(Object value) {
-        ASSERT(value instanceof Number);
+        verify(value instanceof Number);
         this.value = ((Number) value).doubleValue();
         return this;
     }
@@ -108,7 +111,7 @@ public class JSNumber implements
         Objects.requireNonNull(expr);
         var valueOrError = expr.execute();
         // TODO: Handle type casts.
-        ASSERT(valueOrError instanceof JSNumber);
+        verify(valueOrError instanceof JSNumber);
         return (JSNumber) valueOrError;
     }
 

@@ -9,6 +9,8 @@ import lexer.TokenStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static myutils.Macro.todo_report_syntax_error;
+
 public class FunctionDeclarationParser extends Parser {
     public FunctionDeclarationParser(TokenStream stream, ScopeManager scopeManager) {
         super(stream, scopeManager);
@@ -33,7 +35,7 @@ public class FunctionDeclarationParser extends Parser {
                 continue;
             }
             if (nextTokenType != Token.Type.RightParenT)
-                FIXME_REPORT_SYNTAX_ERROR();
+                todo_report_syntax_error();
         }
         stream().consumeAndMatch(")");
         var parameters = new Identifier[parameterList.size()];

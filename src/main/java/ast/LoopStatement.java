@@ -5,6 +5,8 @@ import org.js.Interpreter;
 
 import java.util.Objects;
 
+import static myutils.Macro.verify;
+
 public abstract class LoopStatement extends CompoundStatement {
     protected Identifier label;
     protected Expression conditionExpression;
@@ -20,7 +22,7 @@ public abstract class LoopStatement extends CompoundStatement {
         Object result = JSValue.undefined();
         while (true) {
             var valueOrError = conditionExpression.execute();
-            VERIFY(valueOrError instanceof JSValue);
+            verify(valueOrError instanceof JSValue);
             var value = (JSValue) valueOrError;
             if (value.isFalsy())
                 break;

@@ -1,17 +1,18 @@
 package lexer;
 
-import myutils.Assertable;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class TokenStream implements Assertable {
+import static myutils.Macro.todo_report_syntax_error;
+import static myutils.Macro.verify;
+
+public class TokenStream {
     private int cursor = 0;
     private String text;
     private StringBuilder accumulator;
 
     public TokenStream(String text) {
-        ASSERT(text != null && !text.isEmpty());
+        verify(text != null && !text.isEmpty());
         this.text = text.trim();
     }
 
@@ -21,7 +22,7 @@ public class TokenStream implements Assertable {
 
     String peek(int count) {
         if ((cursor + count) > text.length())
-            FIXME_REPORT_SYNTAX_ERROR();
+            todo_report_syntax_error();
         int oldCursor = cursor;
         StringBuilder builder = new StringBuilder();
         while (count != 0) {
@@ -34,7 +35,7 @@ public class TokenStream implements Assertable {
 
     char consumeNextChar() {
         if (eof())
-            FIXME_REPORT_SYNTAX_ERROR();
+            todo_report_syntax_error();
         return text.charAt(cursor++);
     }
 
@@ -133,16 +134,16 @@ public class TokenStream implements Assertable {
                     case "|":
                         next = accumulate();
                         if (next != '|')
-                            FIXME_REPORT_SYNTAX_ERROR();
+                            todo_report_syntax_error();
                         return new Token(Token.Type.BinaryOperatorT, accumulatedString());
 
                     case "&":
                         next = accumulate();
                         if (next != '&')
-                            FIXME_REPORT_SYNTAX_ERROR();
+                            todo_report_syntax_error();
                         return new Token(Token.Type.BinaryOperatorT, accumulatedString());
                     default:
-                        FIXME_REPORT_SYNTAX_ERROR();
+                        todo_report_syntax_error();
                         return null;
                 }
             }
@@ -165,7 +166,7 @@ public class TokenStream implements Assertable {
                             case '"':
                                 break;
                             default:
-                                FIXME_REPORT_SYNTAX_ERROR();
+                                todo_report_syntax_error();
                         }
                     }
                 }
@@ -214,7 +215,7 @@ public class TokenStream implements Assertable {
                             if (nextChar.matches("[0-9]")) {
                                 accumulate();
                                 state = States.SEEN_DIGIT_AFTER_DECIMAL;
-                            } else FIXME_REPORT_SYNTAX_ERROR();
+                            } else todo_report_syntax_error();
                             break;
                         }
 
@@ -236,7 +237,7 @@ public class TokenStream implements Assertable {
                             } else if (nextChar.matches("[0-9]")) {
                                 state = States.SEEN_DIGIT_AFTER_E;
                                 accumulate();
-                            } else FIXME_REPORT_SYNTAX_ERROR();
+                            } else todo_report_syntax_error();
                             break;
                         }
 
@@ -254,7 +255,7 @@ public class TokenStream implements Assertable {
                             if (nextChar.matches("[0-9]")) {
                                 state = States.SEEN_DIGIT_AFTER_ESIGN;
                                 accumulate();
-                            } else FIXME_REPORT_SYNTAX_ERROR();
+                            } else todo_report_syntax_error();
                             break;
                         }
                     }
@@ -308,14 +309,14 @@ public class TokenStream implements Assertable {
     private Token consumeAndMatch(Token.Type type) {
         var nextToken = consumeNextToken();
         if (nextToken.getType() != type)
-            FIXME_REPORT_SYNTAX_ERROR();
+            todo_report_syntax_error();
         return nextToken;
     }
 
     public Token consumeAndMatch(String tokenValue) {
         var nextToken = consumeNextToken();
         if (!nextToken.getValue().equals(tokenValue))
-            FIXME_REPORT_SYNTAX_ERROR();
+            todo_report_syntax_error();
         return nextToken;
     }
 

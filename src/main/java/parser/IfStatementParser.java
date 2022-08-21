@@ -5,6 +5,8 @@ import ast.IfStatement;
 import ast.Statement;
 import lexer.TokenStream;
 
+import static myutils.Macro.todo_report_syntax_error;
+
 public class IfStatementParser extends Parser {
     public IfStatementParser(TokenStream stream, ScopeManager scopeManager) {
         super(stream, scopeManager);
@@ -20,7 +22,7 @@ public class IfStatementParser extends Parser {
     @Override
     public Statement parse() {
         if (!stream().consumeNextToken().getValue().equals("if"))
-            FIXME_REPORT_SYNTAX_ERROR();
+            todo_report_syntax_error();
 
         var ifStatement = new IfStatement();
         ifStatement.setConditionExpression(parseConditionExpression());

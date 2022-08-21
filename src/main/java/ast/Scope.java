@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import static myutils.Macro.verify;
+
 public class Scope implements ASTNode {
     private CompoundStatement owner;
 
@@ -25,7 +27,7 @@ public class Scope implements ASTNode {
     }
 
     public Scope(CompoundStatement owner) {
-        VERIFY(owner != null);
+        verify(owner != null);
         this.owner = owner;
     }
 

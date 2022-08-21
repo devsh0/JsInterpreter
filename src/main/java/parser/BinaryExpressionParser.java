@@ -11,6 +11,8 @@ import ast.value.JSString;
 import lexer.Token;
 import lexer.TokenStream;
 
+import static myutils.Macro.*;
+
 /*
  * Precedence aware BNF :
  * ---------------------------------------------------------------
@@ -42,7 +44,7 @@ public class BinaryExpressionParser extends Parser {
 
     private Identifier parseIdentifier() {
         var identifier = stream().consumeNextToken();
-        VERIFY(identifier.getType() == Token.Type.IdentifierT);
+        verify(identifier.getType() == Token.Type.IdentifierT);
         return Identifier.from(identifier.getValue());
     }
 
@@ -71,7 +73,7 @@ public class BinaryExpressionParser extends Parser {
             case StringLiteralT: return parseStringLiteral();
             case KeywordT: return parseBooleanLiteral();
         }
-        ASSERT_NOT_REACHED();
+        unreachable();
         return null;
     }
 
@@ -79,7 +81,7 @@ public class BinaryExpressionParser extends Parser {
         var tokens = stream().peekTokens(2);
         if (tokens.get(0).getType() == Token.Type.IdentifierT) {
             // PrimaryExpression => Identifier.
-            FIXME_UNIMPLEMENTED();
+            unimplemented();
         }
         // PrimaryExpression => Literal.
         return parseLiteral();
@@ -89,7 +91,7 @@ public class BinaryExpressionParser extends Parser {
         var nextToken = stream().peekNextToken();
         if (nextToken.getType() == Token.Type.LeftParenT) {
             // GroupedExpression => '(' BinaryExpression ')'.
-            FIXME_UNIMPLEMENTED();
+            unimplemented();
             return null;
         }
         // GroupedExpression => PrimaryExpression.

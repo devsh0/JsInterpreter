@@ -5,6 +5,8 @@ import ast.operator.*;
 
 import java.util.Objects;
 
+import static myutils.Macro.verify;
+
 public class JSBoolean implements
         JSValue,
         OperatorGreaterThan.Interface,
@@ -41,7 +43,7 @@ public class JSBoolean implements
 
     @Override
     public JSBoolean setValue(Object value) {
-        ASSERT(value instanceof Boolean);
+        verify(value instanceof Boolean);
         this.value = (Boolean) value;
         return this;
     }
@@ -75,7 +77,7 @@ public class JSBoolean implements
         Objects.requireNonNull(expr);
         var valueOrError = expr.execute();
         // TODO: Handle type casts.
-        ASSERT(valueOrError instanceof JSBoolean);
+        verify(valueOrError instanceof JSBoolean);
         return (JSBoolean)valueOrError;
     }
 

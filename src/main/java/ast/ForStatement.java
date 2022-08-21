@@ -1,5 +1,7 @@
 package ast;
 
+import static myutils.Macro.verify;
+
 public class ForStatement extends LoopStatement {
     @Override
     public Object execute() {
@@ -24,7 +26,7 @@ public class ForStatement extends LoopStatement {
     }
 
     public ForStatement setInitializer(Statement initializer) {
-        VERIFY(initializer != null);
+        verify(initializer != null);
         this.initializer = initializer;
         return this;
     }

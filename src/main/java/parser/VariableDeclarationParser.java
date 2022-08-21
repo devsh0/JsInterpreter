@@ -5,6 +5,8 @@ import ast.Identifier;
 import ast.VariableDeclaration;
 import lexer.TokenStream;
 
+import static myutils.Macro.verify;
+
 public class VariableDeclarationParser extends Parser {
     public VariableDeclarationParser(TokenStream stream, ScopeManager scopeManager) {
         super(stream, scopeManager);
@@ -12,7 +14,7 @@ public class VariableDeclarationParser extends Parser {
 
     @Override
     public VariableDeclaration parse() {
-        VERIFY(stream().consumeNextToken().getValue().equals("let"));
+        verify(stream().consumeNextToken().getValue().equals("let"));
         var declaration = new VariableDeclaration();
         var nextTokens = stream().peekTokens(2);
         if (nextTokens.get(1).getValue().equals("=")) {

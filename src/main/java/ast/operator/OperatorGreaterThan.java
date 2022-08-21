@@ -3,7 +3,8 @@ package ast.operator;
 import ast.Expression;
 import ast.value.JSBoolean;
 import ast.value.JSValue;
-import myutils.Assertable;
+
+import static myutils.Macro.verify;
 
 public class OperatorGreaterThan extends AbstractBinaryOperator {
     public OperatorGreaterThan(Expression lhs, Expression rhs) {
@@ -26,7 +27,7 @@ public class OperatorGreaterThan extends AbstractBinaryOperator {
         public JSBoolean isGreaterThan(Expression other);
 
         static Interface valueOf(Object value) {
-            Assertable._ASSERT(value instanceof Interface);
+            verify(value instanceof Interface);
             return (Interface) value;
         }
     }
