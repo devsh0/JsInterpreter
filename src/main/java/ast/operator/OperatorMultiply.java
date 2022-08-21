@@ -4,7 +4,18 @@ import ast.Expression;
 import ast.value.JSValue;
 import myutils.Assertable;
 
-public class OperatorMultiply implements BinaryOperator {
+public class OperatorMultiply extends AbstractBinaryOperator {
+    public OperatorMultiply(Expression lhs, Expression rhs) {
+        super(lhs, rhs);
+    }
+
+    @Override
+    public Object execute() {
+        var lhsValue = Multiplicable.valueOf(lhs.execute());
+        var rhsValue = Multiplicable.valueOf(rhs.execute());
+        return lhsValue.multiply(rhsValue);
+    }
+
     @Override
     public String getDump(int indent) {
         return " * ";
@@ -20,9 +31,7 @@ public class OperatorMultiply implements BinaryOperator {
     }
 
     @Override
-    public Expression apply(Expression lhs, Expression rhs) {
-        var lhsValue = Multiplicable.valueOf(lhs.execute());
-        var rhsValue = Multiplicable.valueOf(rhs.execute());
-        return lhsValue.multiply(rhsValue);
+    public String toString() {
+        return "*";
     }
 }

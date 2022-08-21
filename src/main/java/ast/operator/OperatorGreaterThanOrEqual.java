@@ -5,7 +5,18 @@ import ast.value.JSBoolean;
 import ast.value.JSValue;
 import myutils.Assertable;
 
-public class OperatorGreaterThanOrEqual implements RelationalOperator {
+public class OperatorGreaterThanOrEqual extends AbstractBinaryOperator {
+    public OperatorGreaterThanOrEqual(Expression lhs, Expression rhs) {
+        super(lhs, rhs);
+    }
+
+    @Override
+    public Object execute() {
+        var lhsValue = SupportsGreaterThanOrEqualTest.valueOf(lhs.execute());
+        var rhsValue = SupportsGreaterThanOrEqualTest.valueOf(rhs.execute());
+        return lhsValue.isGreaterThanOrEqual(rhsValue);
+    }
+
     @Override
     public String getDump(int indent) {
         return " >= ";
@@ -19,10 +30,9 @@ public class OperatorGreaterThanOrEqual implements RelationalOperator {
             return (SupportsGreaterThanOrEqualTest) value;
         }
     }
+
     @Override
-    public Expression apply(Expression lhs, Expression rhs) {
-        var lhsValue = SupportsGreaterThanOrEqualTest.valueOf(lhs.execute());
-        var rhsValue = SupportsGreaterThanOrEqualTest.valueOf(rhs.execute());
-        return lhsValue.isGreaterThanOrEqual(rhsValue);
+    public String toString() {
+        return ">=";
     }
 }

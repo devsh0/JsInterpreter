@@ -3,8 +3,13 @@ package parser;
 import ast.BreakStatement;
 import ast.Identifier;
 import lexer.Token;
+import lexer.TokenStream;
 
 public class BreakStatementParser extends Parser {
+    public BreakStatementParser(TokenStream stream, ScopeManager scopeManager) {
+        super(stream, scopeManager);
+    }
+
     @Override
     public BreakStatement parse() {
         stream().consumeNextToken(); // "break"

@@ -5,7 +5,18 @@ import ast.value.JSBoolean;
 import ast.value.JSValue;
 import myutils.Assertable;
 
-public class OperatorLessThan implements RelationalOperator {
+public class OperatorLessThan extends AbstractBinaryOperator {
+    public OperatorLessThan(Expression lhs, Expression rhs) {
+        super(lhs, rhs);
+    }
+
+    @Override
+    public Object execute() {
+        var lhsValue = SupportsLessThanTest.valueOf(lhs.execute());
+        var rhsValue = SupportsLessThanTest.valueOf(rhs.execute());
+        return lhsValue.isLessThan(rhsValue);
+    }
+
     @Override
     public String getDump(int indent) {
         return " < ";
@@ -19,10 +30,9 @@ public class OperatorLessThan implements RelationalOperator {
             return (SupportsLessThanTest) value;
         }
     }
+
     @Override
-    public Expression apply(Expression lhs, Expression rhs) {
-        var lhsValue = SupportsLessThanTest.valueOf(lhs.execute());
-        var rhsValue = SupportsLessThanTest.valueOf(rhs.execute());
-        return lhsValue.isLessThan(rhsValue);
+    public String toString() {
+        return "<";
     }
 }

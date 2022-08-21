@@ -1,13 +1,18 @@
 package parser;
 
 import ast.ExpressionStatement;
+import lexer.TokenStream;
 
 public class ExpressionStatementParser extends Parser {
+    public ExpressionStatementParser(TokenStream stream, ScopeManager scopeManager) {
+        super(stream, scopeManager);
+    }
+
     @Override
     public ExpressionStatement parse() {
         var statement = new ExpressionStatement();
         if (!stream().peekNextToken().getValue().equals(";"))
-            statement.setSource(new ExpressionParser().parse());
+            statement.setSource(new ExpressionParser(stream(), scopeManager()).parse());
         stream().consumeAndMatch(";");
         return statement;
     }

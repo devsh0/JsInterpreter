@@ -6,18 +6,27 @@ import ast.Identifier;
 import ast.value.JSValue;
 import org.js.Interpreter;
 
-public class OperatorModEqual implements BinaryOperator {
-    @Override
-    public String getDump(int indent) {
-        return " += ";
+public class OperatorModEqual extends AbstractBinaryOperator {
+    public OperatorModEqual(Expression lhs, Expression rhs) {
+        super(lhs, rhs);
     }
 
     @Override
-    public Expression apply(Expression lhs, Expression rhs) {
+    public Object execute() {
         VERIFY(lhs instanceof Identifier);
         var dest = (Identifier)lhs;
-        var src = (JSValue)(new BinaryExpression().setOperator(Mod).setLhs(dest).setRhs(rhs)).execute();
+        var src = (JSValue)(new OperatorMod(lhs, rhs)).execute();
         Interpreter.get().rewrite(dest, src);
         return src;
+    }
+
+    @Override
+    public String getDump(int indent) {
+        return " %= ";
+    }
+
+    @Override
+    public String toString() {
+        return "%=";
     }
 }

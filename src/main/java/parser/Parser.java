@@ -63,31 +63,21 @@ public abstract class Parser implements Assertable {
         }
     }
 
-    private static TokenStream stream;
-    private static ScopeManager scopeManager;
+    private final TokenStream stream;
+    private final ScopeManager scopeManager;
 
     public abstract ASTNode parse();
 
-    public static TokenStream stream() {
+    public TokenStream stream() {
         return stream;
     }
 
-    public static ScopeManager scopeManager() {
+    public ScopeManager scopeManager() {
         return scopeManager;
     }
 
-    public static Parser get(String code) {
-        stream = new TokenStream(code);
-        scopeManager = new ScopeManager();
-        return new ProgramParser();
-    }
-
-    public static Parser get(Path path) {
-        try {
-            String code = Files.readString(path);
-            return get(code);
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
-        }
+    public Parser(TokenStream stream, ScopeManager scopeManager) {
+        this.stream = stream;
+        this.scopeManager = scopeManager;
     }
 }

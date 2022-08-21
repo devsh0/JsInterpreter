@@ -3,8 +3,13 @@ package parser;
 import ast.ContinueStatement;
 import ast.Identifier;
 import lexer.Token;
+import lexer.TokenStream;
 
 public class ContinueStatementParser extends Parser {
+    public ContinueStatementParser(TokenStream stream, ScopeManager scopeManager) {
+        super(stream, scopeManager);
+    }
+
     @Override
     public ContinueStatement parse() {
         stream().consumeNextToken(); // "continue"

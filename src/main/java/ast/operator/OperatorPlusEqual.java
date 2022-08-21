@@ -6,18 +6,27 @@ import ast.Identifier;
 import ast.value.JSValue;
 import org.js.Interpreter;
 
-public class OperatorPlusEqual implements BinaryOperator {
+public class OperatorPlusEqual extends AbstractBinaryOperator {
+    public OperatorPlusEqual(Expression lhs, Expression rhs) {
+        super(lhs, rhs);
+    }
+
+    @Override
+    public Object execute() {
+        VERIFY(lhs instanceof Identifier);
+        var dest = (Identifier)lhs;
+        var src = (JSValue)(new OperatorPlus(lhs, rhs)).execute();
+        Interpreter.get().rewrite(dest, src);
+        return src;
+    }
+
     @Override
     public String getDump(int indent) {
         return " += ";
     }
 
     @Override
-    public Expression apply(Expression lhs, Expression rhs) {
-        VERIFY(lhs instanceof Identifier);
-        var dest = (Identifier)lhs;
-        var src = (JSValue)(new BinaryExpression().setOperator(Plus).setLhs(dest).setRhs(rhs)).execute();
-        Interpreter.get().rewrite(dest, src);
-        return src;
+    public String toString() {
+        return "+=";
     }
 }

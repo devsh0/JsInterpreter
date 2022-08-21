@@ -7,12 +7,12 @@ import java.util.Objects;
 public class BinaryExpression implements Expression {
     @Override
     public Object execute() {
-        return operator.apply(lhs, rhs);
+        return operator.execute();
     }
 
     @Override
     public String getDump(int indent) {
-        return lhs.getDump(indent) + operator.getDump(indent) + rhs.getDump(indent);
+        return operator.getDump(indent);
     }
 
     public BinaryExpression setOperator(final BinaryOperator operator) {
@@ -21,23 +21,17 @@ public class BinaryExpression implements Expression {
         return this;
     }
 
-    public BinaryExpression setLhs(final Expression lhs) {
-        Objects.requireNonNull(lhs);
-        this.lhs = lhs;
-        return this;
+    public Expression getLHS() {
+        return this.operator.getLHS();
     }
 
-    public BinaryExpression setRhs(final Expression rhs) {
-        Objects.requireNonNull(rhs);
-        this.rhs = rhs;
-        return this;
+    public Expression getRHS() {
+        return this.operator.getRHS();
     }
 
-    public static BinaryExpression from(BinaryOperator operator, Expression lhs, Expression rhs) {
-        return new BinaryExpression().setOperator(operator).setLhs(lhs).setRhs(rhs);
+    public BinaryOperator getOperator() {
+        return operator;
     }
 
     private BinaryOperator operator;
-    private Expression lhs;
-    private Expression rhs;
 }

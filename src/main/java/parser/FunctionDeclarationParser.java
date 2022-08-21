@@ -4,11 +4,16 @@ import ast.Block;
 import ast.FunctionDeclaration;
 import ast.Identifier;
 import lexer.Token;
+import lexer.TokenStream;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FunctionDeclarationParser extends Parser {
+    public FunctionDeclarationParser(TokenStream stream, ScopeManager scopeManager) {
+        super(stream, scopeManager);
+    }
+
     private Identifier parseFunctionIdentifier() {
         var idToken = stream().consumeIdentifier();
         return Identifier.from(idToken.getValue());
@@ -38,7 +43,7 @@ public class FunctionDeclarationParser extends Parser {
     }
 
     private Block parseFunctionBody(FunctionDeclaration function) {
-        return new BlockParser(function).parse();
+        return new BlockParser(stream(), scopeManager(), function).parse();
     }
 
     @Override

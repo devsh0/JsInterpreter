@@ -6,18 +6,27 @@ import ast.Identifier;
 import ast.value.JSValue;
 import org.js.Interpreter;
 
-public class OperatorMultiplyEqual implements BinaryOperator {
-    @Override
-    public String getDump(int indent) {
-        return " += ";
+public class OperatorMultiplyEqual extends AbstractBinaryOperator {
+    public OperatorMultiplyEqual(Expression lhs, Expression rhs) {
+        super(lhs, rhs);
     }
 
     @Override
-    public Expression apply(Expression lhs, Expression rhs) {
+    public Object execute() {
         VERIFY(lhs instanceof Identifier);
         var dest = (Identifier)lhs;
-        var src = (JSValue)(new BinaryExpression().setOperator(Multiply).setLhs(dest).setRhs(rhs)).execute();
+        var src = (JSValue)(new OperatorMultiply(lhs, rhs)).execute();
         Interpreter.get().rewrite(dest, src);
         return src;
+    }
+
+    @Override
+    public String getDump(int indent) {
+        return " *= ";
+    }
+
+    @Override
+    public String toString() {
+        return "*=";
     }
 }

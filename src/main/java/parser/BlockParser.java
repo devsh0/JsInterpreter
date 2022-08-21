@@ -2,6 +2,7 @@ package parser;
 
 import ast.*;
 import lexer.Token;
+import lexer.TokenStream;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -25,14 +26,15 @@ public class BlockParser extends Parser {
         ForStatement
     }
 
-    BlockParser(CompoundStatement owner, boolean hasMultipleStatement) {
+    BlockParser(TokenStream stream, ScopeManager scopeManager, CompoundStatement owner, boolean hasMultipleStatement) {
+        super(stream, scopeManager);
         Objects.requireNonNull(owner);
         this.owner = owner;
         this.hasMultipleStatement = hasMultipleStatement;
     }
 
-    BlockParser(CompoundStatement owner) {
-        this(owner, true);
+    BlockParser(TokenStream stream, ScopeManager scopeManager, CompoundStatement owner) {
+        this(stream, scopeManager, owner, true);
     }
 
     private boolean eof() {
@@ -134,25 +136,25 @@ public class BlockParser extends Parser {
         var statementType = nextStatementType();
         switch (statementType) {
             case ReturnStatement:
-                return Optional.of(new ReturnStatementParser().parse());
+                return Optional.of(new ReturnStatementParser(stream(), scopeManager()).parse());
             case IfStatement:
-                return Optional.of(new IfStatementParser().parse());
+                return Optional.of(new IfStatementParser(stream(), scopeManager()).parse());
             case FunctionDeclarationStatement:
-                return Optional.of(new FunctionDeclarationParser().parse());
+                return Optional.of(new FunctionDeclarationParser(stream(), scopeManager()).parse());
             case VariableDeclarationStatement:
-                return Optional.of(new VariableDeclarationParser().parse());
+                return Optional.of(new VariableDeclarationParser(stream(), scopeManager()).parse());
             case ExpressionStatement:
-                return Optional.of(new ExpressionStatementParser().parse());
+                return Optional.of(new ExpressionStatementParser(stream(), scopeManager()).parse());
             case WhileStatement:
-                return Optional.of(new WhileStatementParser(null).parse());
+                return Optional.of(new WhileStatementParser(stream(), scopeManager(), null).parse());
             case ForStatement:
-                return Optional.of(new ForStatementParser(null).parse());
+                return Optional.of(new ForStatementParser(stream(), scopeManager(), null).parse());
             case BreakStatement:
-                return Optional.of(new BreakStatementParser().parse());
+                return Optional.of(new BreakStatementParser(stream(), scopeManager()).parse());
             case ContinueStatement:
-                return Optional.of(new ContinueStatementParser().parse());
+                return Optional.of(new ContinueStatementParser(stream(), scopeManager()).parse());
             case LabelStatement:
-                return Optional.of(new LabeledStatementParser().parse());
+                return Optional.of(new LabeledStatementParser(stream(), scopeManager()).parse());
             case Exit:
                 return Optional.empty();
             default:

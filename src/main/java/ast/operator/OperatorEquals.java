@@ -5,7 +5,18 @@ import ast.value.JSBoolean;
 import ast.value.JSValue;
 import myutils.Assertable;
 
-public class OperatorEquals implements RelationalOperator {
+public class OperatorEquals extends AbstractBinaryOperator {
+    public OperatorEquals(Expression lhs, Expression rhs) {
+        super(lhs, rhs);
+    }
+
+    @Override
+    public Object execute() {
+        var lhsValue = SupportsEqualityTest.valueOf(lhs.execute());
+        var rhsValue = SupportsEqualityTest.valueOf(rhs.execute());
+        return lhsValue.isEqualTo(rhsValue);
+    }
+
     @Override
     public String getDump(int indent) {
         return " == ";
@@ -21,9 +32,7 @@ public class OperatorEquals implements RelationalOperator {
     }
 
     @Override
-    public Expression apply(Expression lhs, Expression rhs) {
-        var lhsValue = SupportsEqualityTest.valueOf(lhs.execute());
-        var rhsValue = SupportsEqualityTest.valueOf(rhs.execute());
-        return lhsValue.isEqualTo(rhsValue);
+    public String toString() {
+        return "==";
     }
 }

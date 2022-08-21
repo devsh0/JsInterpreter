@@ -34,13 +34,13 @@ public class CallExpression extends ExpressionStatement {
         return returnVal;
     }
 
-    public CallExpression setCallee(final Identifier id) {
+    public CallExpression setIdentifier(final Identifier id) {
         Objects.requireNonNull(id);
         callee = id;
         return this;
     }
 
-    public CallExpression addArgument(Expression arg) {
+    public CallExpression appendArgument(Expression arg) {
         Objects.requireNonNull(arg);
         arguments.add(arg);
         return this;
