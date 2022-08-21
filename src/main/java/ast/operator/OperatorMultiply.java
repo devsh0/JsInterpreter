@@ -11,8 +11,8 @@ public class OperatorMultiply extends AbstractBinaryOperator {
 
     @Override
     public Object execute() {
-        var lhsValue = Multiplicable.valueOf(lhs.execute());
-        var rhsValue = Multiplicable.valueOf(rhs.execute());
+        var lhsValue = Interface.valueOf(lhs.execute());
+        var rhsValue = Interface.valueOf(rhs.execute());
         return lhsValue.multiply(rhsValue);
     }
 
@@ -21,12 +21,12 @@ public class OperatorMultiply extends AbstractBinaryOperator {
         return " * ";
     }
 
-    public static interface Multiplicable extends JSValue {
+    public static interface Interface extends JSValue {
         public Expression multiply(Expression rhs);
 
-        static Multiplicable valueOf(Object value) {
-            Assertable._ASSERT(value instanceof Multiplicable);
-            return (Multiplicable) value;
+        static Interface valueOf(Object value) {
+            Assertable._ASSERT(value instanceof Interface);
+            return (Interface) value;
         }
     }
 

@@ -6,16 +6,16 @@ import ast.operator.*;
 import java.util.Objects;
 
 public class JSNumber implements
-        OperatorLessThan.SupportsLessThanTest,
-        OperatorGreaterThan.SupportsGreaterThanTest,
-        OperatorGreaterThanOrEqual.SupportsGreaterThanOrEqualTest,
-        OperatorLessThanOrEqual.SupportsLessThanOrEqualTest,
-        OperatorEquals.SupportsEqualityTest,
-        OperatorPlus.Addable,
-        OperatorMinus.Subtractable,
-        OperatorMultiply.Multiplicable,
-        OperatorDivide.Divisible,
-        OperatorMod.Modable {
+        OperatorLessThan.Interface,
+        OperatorGreaterThan.Interface,
+        OperatorGreaterThanOrEqual.Interface,
+        OperatorLessThanOrEqual.Interface,
+        OperatorEquals.Interface,
+        OperatorPlus.Interface,
+        OperatorMinus.Interface,
+        OperatorMultiply.Interface,
+        OperatorDivide.Interface,
+        OperatorMod.Interface {
 
     private Double value;
 

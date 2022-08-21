@@ -12,8 +12,8 @@ public class OperatorGreaterThan extends AbstractBinaryOperator {
 
     @Override
     public Object execute() {
-        var lhsValue = SupportsGreaterThanTest.valueOf(lhs.execute());
-        var rhsValue = SupportsGreaterThanTest.valueOf(rhs.execute());
+        var lhsValue = Interface.valueOf(lhs.execute());
+        var rhsValue = Interface.valueOf(rhs.execute());
         return lhsValue.isGreaterThan(rhsValue);
     }
 
@@ -22,12 +22,12 @@ public class OperatorGreaterThan extends AbstractBinaryOperator {
         return " > ";
     }
 
-    public static interface SupportsGreaterThanTest extends JSValue {
+    public static interface Interface extends JSValue {
         public JSBoolean isGreaterThan(Expression other);
 
-        static SupportsGreaterThanTest valueOf(Object value) {
-            Assertable._ASSERT(value instanceof SupportsGreaterThanTest);
-            return (SupportsGreaterThanTest) value;
+        static Interface valueOf(Object value) {
+            Assertable._ASSERT(value instanceof Interface);
+            return (Interface) value;
         }
     }
 

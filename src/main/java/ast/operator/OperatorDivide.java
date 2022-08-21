@@ -11,8 +11,8 @@ public class OperatorDivide extends AbstractBinaryOperator {
 
     @Override
     public Object execute() {
-        var lhsValue = Divisible.valueOf(lhs.execute());
-        var rhsValue = Divisible.valueOf(rhs.execute());
+        var lhsValue = Interface.valueOf(lhs.execute());
+        var rhsValue = Interface.valueOf(rhs.execute());
         return lhsValue.divide(rhsValue);
     }
 
@@ -21,12 +21,12 @@ public class OperatorDivide extends AbstractBinaryOperator {
         return " / ";
     }
 
-    public static interface Divisible extends JSValue {
+    public static interface Interface extends JSValue {
         public Expression divide(Expression rhs);
 
-        static Divisible valueOf(Object value) {
-            Assertable._ASSERT(value instanceof Divisible);
-            return (Divisible) value;
+        static Interface valueOf(Object value) {
+            Assertable._ASSERT(value instanceof Interface);
+            return (Interface) value;
         }
     }
 

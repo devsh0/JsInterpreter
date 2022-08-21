@@ -11,8 +11,8 @@ public class OperatorMinus extends AbstractBinaryOperator {
 
     @Override
     public Object execute() {
-        var lhsValue = Subtractable.valueOf(lhs.execute());
-        var rhsValue = Subtractable.valueOf(rhs.execute());
+        var lhsValue = Interface.valueOf(lhs.execute());
+        var rhsValue = Interface.valueOf(rhs.execute());
         return lhsValue.subtract(rhsValue);
     }
 
@@ -21,12 +21,12 @@ public class OperatorMinus extends AbstractBinaryOperator {
         return " - ";
     }
 
-    public static interface Subtractable extends JSValue {
+    public static interface Interface extends JSValue {
         public Expression subtract(Expression rhs);
 
-        static Subtractable valueOf(Object value) {
-            Assertable._ASSERT(value instanceof Subtractable);
-            return (Subtractable) value;
+        static Interface valueOf(Object value) {
+            Assertable._ASSERT(value instanceof Interface);
+            return (Interface) value;
         }
     }
 

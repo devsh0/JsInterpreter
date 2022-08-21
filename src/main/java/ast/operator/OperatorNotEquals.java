@@ -10,8 +10,8 @@ public class OperatorNotEquals extends AbstractBinaryOperator {
 
     @Override
     public Object execute() {
-        var lhsValue = OperatorEquals.SupportsEqualityTest.valueOf(lhs.execute());
-        var rhsValue = OperatorEquals.SupportsEqualityTest.valueOf(rhs.execute());
+        var lhsValue = OperatorEquals.Interface.valueOf(lhs.execute());
+        var rhsValue = OperatorEquals.Interface.valueOf(rhs.execute());
         return JSBoolean.from(lhsValue.isEqualTo(rhsValue).isFalsy());
     }
 

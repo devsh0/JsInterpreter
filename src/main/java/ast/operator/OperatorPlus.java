@@ -11,8 +11,8 @@ public class OperatorPlus extends AbstractBinaryOperator {
 
     @Override
     public Object execute() {
-        var lhsValue = Addable.valueOf(lhs.execute());
-        var rhsValue = Addable.valueOf(rhs.execute());
+        var lhsValue = Interface.valueOf(lhs.execute());
+        var rhsValue = Interface.valueOf(rhs.execute());
         return lhsValue.add(rhsValue);
     }
 
@@ -21,12 +21,12 @@ public class OperatorPlus extends AbstractBinaryOperator {
         return " + ";
     }
 
-    public static interface Addable extends JSValue {
+    public static interface Interface extends JSValue {
         public Expression add(Expression rhs);
 
-        static Addable valueOf(Object value) {
-            Assertable._ASSERT(value instanceof Addable);
-            return (Addable) value;
+        static Interface valueOf(Object value) {
+            Assertable._ASSERT(value instanceof Interface);
+            return (Interface) value;
         }
     }
 

@@ -7,11 +7,11 @@ import java.util.Objects;
 
 public class JSBoolean implements
         JSValue,
-        OperatorGreaterThan.SupportsGreaterThanTest,
-        OperatorGreaterThanOrEqual.SupportsGreaterThanOrEqualTest,
-        OperatorLessThanOrEqual.SupportsLessThanOrEqualTest,
-        OperatorLessThan.SupportsLessThanTest,
-        OperatorEquals.SupportsEqualityTest {
+        OperatorGreaterThan.Interface,
+        OperatorGreaterThanOrEqual.Interface,
+        OperatorLessThanOrEqual.Interface,
+        OperatorLessThan.Interface,
+        OperatorEquals.Interface {
     private boolean value;
 
     @Override

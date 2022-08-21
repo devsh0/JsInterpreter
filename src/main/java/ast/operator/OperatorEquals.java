@@ -12,8 +12,8 @@ public class OperatorEquals extends AbstractBinaryOperator {
 
     @Override
     public Object execute() {
-        var lhsValue = SupportsEqualityTest.valueOf(lhs.execute());
-        var rhsValue = SupportsEqualityTest.valueOf(rhs.execute());
+        var lhsValue = Interface.valueOf(lhs.execute());
+        var rhsValue = Interface.valueOf(rhs.execute());
         return lhsValue.isEqualTo(rhsValue);
     }
 
@@ -22,12 +22,12 @@ public class OperatorEquals extends AbstractBinaryOperator {
         return " == ";
     }
 
-    public static interface SupportsEqualityTest extends JSValue {
+    public static interface Interface extends JSValue {
         public JSBoolean isEqualTo(Expression other);
 
-        static SupportsEqualityTest valueOf(Object value) {
-            Assertable._ASSERT(value instanceof SupportsEqualityTest);
-            return (SupportsEqualityTest) value;
+        static Interface valueOf(Object value) {
+            Assertable._ASSERT(value instanceof Interface);
+            return (Interface) value;
         }
     }
 

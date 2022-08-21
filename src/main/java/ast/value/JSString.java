@@ -6,12 +6,12 @@ import ast.operator.*;
 import java.util.Objects;
 
 public class JSString implements
-        OperatorPlus.Addable,
-        OperatorLessThanOrEqual.SupportsLessThanOrEqualTest,
-        OperatorGreaterThan.SupportsGreaterThanTest,
-        OperatorGreaterThanOrEqual.SupportsGreaterThanOrEqualTest,
-        OperatorEquals.SupportsEqualityTest,
-        OperatorLessThan.SupportsLessThanTest {
+        OperatorPlus.Interface,
+        OperatorLessThanOrEqual.Interface,
+        OperatorGreaterThan.Interface,
+        OperatorGreaterThanOrEqual.Interface,
+        OperatorEquals.Interface,
+        OperatorLessThan.Interface {
     private String value;
 
     @Override

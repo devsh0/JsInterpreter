@@ -11,8 +11,8 @@ public class OperatorMod extends AbstractBinaryOperator {
 
     @Override
     public Object execute() {
-        var lhsValue = Modable.valueOf(lhs.execute());
-        var rhsValue = Modable.valueOf(rhs.execute());
+        var lhsValue = Interface.valueOf(lhs.execute());
+        var rhsValue = Interface.valueOf(rhs.execute());
         return lhsValue.mod(rhsValue);
     }
 
@@ -21,12 +21,12 @@ public class OperatorMod extends AbstractBinaryOperator {
         return " % ";
     }
 
-    public static interface Modable extends JSValue {
+    public static interface Interface extends JSValue {
         public Expression mod(Expression rhs);
 
-        static Modable valueOf(Object value) {
-            Assertable._ASSERT(value instanceof Modable);
-            return (Modable) value;
+        static Interface valueOf(Object value) {
+            Assertable._ASSERT(value instanceof Interface);
+            return (Interface) value;
         }
     }
 

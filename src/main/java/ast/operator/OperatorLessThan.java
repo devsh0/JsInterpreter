@@ -12,8 +12,8 @@ public class OperatorLessThan extends AbstractBinaryOperator {
 
     @Override
     public Object execute() {
-        var lhsValue = SupportsLessThanTest.valueOf(lhs.execute());
-        var rhsValue = SupportsLessThanTest.valueOf(rhs.execute());
+        var lhsValue = Interface.valueOf(lhs.execute());
+        var rhsValue = Interface.valueOf(rhs.execute());
         return lhsValue.isLessThan(rhsValue);
     }
 
@@ -22,12 +22,12 @@ public class OperatorLessThan extends AbstractBinaryOperator {
         return " < ";
     }
 
-    public static interface SupportsLessThanTest extends JSValue {
+    public interface Interface extends JSValue {
         public JSBoolean isLessThan(Expression other);
 
-        static SupportsLessThanTest valueOf(Object value) {
-            Assertable._ASSERT(value instanceof SupportsLessThanTest);
-            return (SupportsLessThanTest) value;
+        static Interface valueOf(Object value) {
+            Assertable._ASSERT(value instanceof Interface);
+            return (Interface) value;
         }
     }
 
