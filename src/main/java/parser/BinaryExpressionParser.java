@@ -91,8 +91,10 @@ public class BinaryExpressionParser extends Parser {
         var nextToken = stream().peekNextToken();
         if (nextToken.getType() == Token.Type.LeftParenT) {
             // GroupedExpression => '(' BinaryExpression ')'.
-            unimplemented();
-            return null;
+            stream().consumeAndMatch("(");
+            var binaryExpression = (BinaryExpression)parse();
+            stream().consumeAndMatch(")");
+            return binaryExpression;
         }
         // GroupedExpression => PrimaryExpression.
         return parsePrimaryExpression();
