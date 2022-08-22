@@ -1,5 +1,3 @@
-### Note: The guide to build and test the interpreter has been rendered obsolete due to a recent patch. A fix is on the way.
-
 ## Interpreter
 An interpreter that can recognize a JS-like language. It can parse very simple JavaScript programs but is still missing
 a bunch of features. I intend to finish it once I have some time off freelancing. The plan is to have the parser recognize
@@ -40,10 +38,10 @@ mvn install
 </dependency>
 ```
 
-Also add this property to help the exec plugin find your main class.
+Also add this property to help the exec plugin find your main class. Replace `com.my.package` with your own package specifier.
 ```xml
 <properties>
-    <exec.mainClass>Main</exec.mainClass>
+    <exec.mainClass>com.my.package.Main</exec.mainClass>
 </properties>
 ```
 
@@ -81,4 +79,9 @@ public class Main {
 mvn exec:java
 ```
 
-This should run the application and print "buzz" somewhere in stdout.
+This should run the application and print "buzz" somewhere in stdout. If you encounter a `ClassNotFoundExecption` pointing
+to `Main`, you probably need this instead:
+
+```shell
+mvn -X clean install exec:java -Dexec.mainClass="com.my.package.Main" -Dexec.classpathScope=test -e
+```
