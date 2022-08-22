@@ -1,3 +1,5 @@
+### Note: The guide to build and test the interpreter has been rendered obsolete due to a recent patch. A fix is on the way.
+
 ## Interpreter
 An interpreter that can recognize a JS-like language. It can parse very simple JavaScript programs but is still missing
 a bunch of features. I intend to finish it once I have some time off freelancing. The plan is to have the parser recognize
