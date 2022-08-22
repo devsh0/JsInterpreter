@@ -23,7 +23,11 @@ import static myutils.Macro.*;
  * TermExpression           ::=     FactorExpression TermOp FactorExpression | FactorExpression
  * FactorExpression         ::=     GroupedExpression FactorOp GroupedExpression | GroupedExpression
  * GroupedExpression        ::=     '(' BinaryExpression ')' | PrimaryExpression
- * PrimaryExpression        ::=     Identifier | Literal
+ * PrimaryExpression        ::=     IdentifierExpression | Literal
+ * IdentifierExpression     ::=     CallExpression | VariableExpression
+ * CallExpression           ::=     Identifier '(' ArgumentList ')'
+ * ArgumentList             ::=     BinaryExpression [',' ArgumentList] | <empty>
+ * VariableExpression       ::=     Identifier
  * Literal                  ::=     Number | String | Boolean
  * AssignmentOp             ::=     '=' | '+=' | '-=' | '*=' '/=' | '%='
  * LogicalOp                ::=     '&&' | '||'
@@ -77,12 +81,24 @@ public class BinaryExpressionParser extends Parser {
         return null;
     }
 
-    private Expression parsePrimaryExpression() {
+    private Expression parseVariableExpression() {
+        return parseIdentifier();
+    }
+
+
+    private Expression parseIdentifierExpression() {
         var tokens = stream().peekTokens(2);
-        if (tokens.get(0).getType() == Token.Type.IdentifierT) {
-            // PrimaryExpression => Identifier.
-            unimplemented();
-        }
+        if (tokens.get(1).getType() == Token.Type.LeftParenT)
+            // IdentifierExpression => CallExpression.
+            return (Expression)new CallExpressionParser(stream(), scopeManager()).parse();
+        return parseVariableExpression();
+    }
+
+    private Expression parsePrimaryExpression() {
+        var nextToken = stream().peekNextToken();
+        if (nextToken.getType() == Token.Type.IdentifierT)
+            // PrimaryExpression => IdentifierExpression.
+            return parseIdentifierExpression();
         // PrimaryExpression => Literal.
         return parseLiteral();
     }
