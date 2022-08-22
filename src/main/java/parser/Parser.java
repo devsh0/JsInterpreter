@@ -78,4 +78,10 @@ public abstract class Parser {
         this.stream = stream;
         this.scopeManager = scopeManager;
     }
+
+    public static Program parse(String code) {
+        TokenStream stream = new TokenStream(code);
+        ScopeManager manager = new ScopeManager();
+        return new ProgramParser(stream, manager).parse();
+    }
 }

@@ -45,9 +45,8 @@ Also add this property to help the exec plugin find your main class.
 </properties>
 ```
 
-3. Create a JavaScript source file in your project root.
+3. Create a JavaScript source file in your project root and paste the following code.
 ```javascript
-// fizzbuzz.js
 function fizzbuzz(input) {
     let value = "";
     if (input % 3 == 0)
@@ -60,19 +59,17 @@ function fizzbuzz(input) {
 fizzbuzz(10);
 ```
 
-4. Create `Main.java` for your main class in `src/java`.
+4. Create `Main.java` for your main class in `src/main/java` and paste the following code.
 
 ```java
-// Main.java
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException  {
         String code = Files.readString(Paths.get("fizzbuzz.js"));
-        Program program = (Program)Parser.get(code).parse();
-        
+        Program program = Parser.parse(code);
+
         Interpreter interpreter = Interpreter.get();
         var output = interpreter.run(program);
         System.out.println(output.toString()); // "buzz".
-        return 0;
     }
 }
 ```
