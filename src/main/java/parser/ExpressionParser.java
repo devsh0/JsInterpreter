@@ -16,11 +16,11 @@ import static myutils.Macro.*;
  * Expression               ::=     AssignmentExpression BinaryExpressionTail?
  * AssignmentExpression     ::=     Identifier AssignmentExpressionTail | LogicalExpression
  * AssignmentExpressionTail ::=     AssignmentOp LogicalExpression BinaryExpressionTail?
- * LogicalExpression        ::=     RelationalExpression LogicalExpressionTail | RelationalExpression
+ * LogicalExpression        ::=     RelationalExpression LogicalExpressionTail
  * LogicalExpressionTail    ::=     LogicalOp RelationalExpression BinaryExpressionTail?
- * RelationalExpression     ::=     TermExpression RelationalExpressionTail | TermExpression
+ * RelationalExpression     ::=     TermExpression RelationalExpressionTail
  * RelationalExpressionTail ::=     RelationalOp TermExpression BinaryExpressionTail?
- * TermExpression           ::=     FactorExpression TermExpressionTail | FactorExpression
+ * TermExpression           ::=     FactorExpression TermExpressionTail
  * TermExpressionTail       ::=     TermOp FactorExpression BinaryExpressionTail?
  * FactorExpression         ::=     GroupedExpression FactorExpressionTail | GroupedExpression
  * FactorExpressionTail     ::=     FactorOp GroupedExpression BinaryExpressionTail?
@@ -158,9 +158,9 @@ public class ExpressionParser extends Parser {
         if (nextToken.getType() == Token.Type.LeftParenT) {
             // GroupedExpression => '(' Expression ')'.
             stream().consumeAndMatch("(");
-            var binaryExpression = (BinaryExpression) parse();
+            var expression = parse();
             stream().consumeAndMatch(")");
-            return binaryExpression;
+            return expression;
         }
         // GroupedExpression => PrimaryExpression.
         return parseUnaryExpression();
@@ -170,7 +170,8 @@ public class ExpressionParser extends Parser {
         var opToken = parseOperator();
         var rhs = parseGroupedExpression();
         var operator = BinaryOperator.construct(opToken, lhs, rhs);
-        return new BinaryExpression().setOperator(operator);
+        var expression = new BinaryExpression().setOperator(operator);
+        return maybeParseBinaryExpressionTail(expression);
     }
 
     private Expression parseFactorExpression() {
@@ -188,7 +189,8 @@ public class ExpressionParser extends Parser {
         var opToken = parseOperator();
         var rhs = parseFactorExpression();
         var operator = BinaryOperator.construct(opToken, lhs, rhs);
-        return new BinaryExpression().setOperator(operator);
+        var expression = new BinaryExpression().setOperator(operator);
+        return maybeParseBinaryExpressionTail(expression);
     }
 
     private Expression parseTermExpression() {
@@ -206,7 +208,8 @@ public class ExpressionParser extends Parser {
         var opToken = parseOperator();
         var rhs = parseTermExpression();
         var operator = BinaryOperator.construct(opToken, lhs, rhs);
-        return new BinaryExpression().setOperator(operator);
+        var expression = new BinaryExpression().setOperator(operator);
+        return maybeParseBinaryExpressionTail(expression);
     }
 
     private Expression parseRelationalExpression() {
@@ -224,7 +227,8 @@ public class ExpressionParser extends Parser {
         var opToken = parseOperator();
         var rhs = parseRelationalExpression();
         var operator = BinaryOperator.construct(opToken, lhs, rhs);
-        return new BinaryExpression().setOperator(operator);
+        var expression = new BinaryExpression().setOperator(operator);
+        return maybeParseBinaryExpressionTail(expression);
     }
 
     private Expression parseLogicalExpression() {
@@ -242,7 +246,8 @@ public class ExpressionParser extends Parser {
         var opToken = parseOperator();
         var rhs = parseLogicalExpression();
         var operator = BinaryOperator.construct(opToken, lhs, rhs);
-        return new BinaryExpression().setOperator(operator);
+        var expression = new BinaryExpression().setOperator(operator);
+        return maybeParseBinaryExpressionTail(expression);
     }
 
     private Expression parseAssignmentExpression() {
@@ -256,26 +261,25 @@ public class ExpressionParser extends Parser {
         return parseLogicalExpression();
     }
 
+    public Expression maybeParseBinaryExpressionTail(Expression lhs) {
+        var nextToken = stream().peekNextToken();
+        var binaryExpression = lhs;
+        if (BinaryOperator.isAssignmentOperator(nextToken))
+            binaryExpression = parseAssignmentExpressionTail(lhs);
+        else if (BinaryOperator.isLogicalOperator(nextToken))
+            binaryExpression = parseLogicalExpressionTail(lhs);
+        else if (BinaryOperator.isRelationalOperator(nextToken))
+            binaryExpression = parseRelationalExpressionTail(lhs);
+        else if (BinaryOperator.isTermOperator(nextToken))
+            binaryExpression = parseTermExpressionTail(lhs);
+        else if (BinaryOperator.isFactorOperator(nextToken))
+            binaryExpression = parseFactorExpressionTail(lhs);
+        return binaryExpression;
+    }
+
     @Override
     public Expression parse() {
-        var expression = parseAssignmentExpression();
-        var nextToken = stream().peekNextToken();
-
-        // Expression => AssignmentExpression BinaryExpressionTail.
-        while (BinaryOperator.isBinaryOperator(nextToken)) {
-            if (BinaryOperator.isAssignmentOperator(nextToken))
-                expression = parseAssignmentExpressionTail(expression);
-            else if (BinaryOperator.isLogicalOperator(nextToken))
-                expression = parseLogicalExpressionTail(expression);
-            else if (BinaryOperator.isRelationalOperator(nextToken))
-                expression = parseRelationalExpressionTail(expression);
-            else if (BinaryOperator.isTermOperator(nextToken))
-                expression = parseTermExpressionTail(expression);
-            else if (BinaryOperator.isFactorOperator(nextToken))
-                expression = parseFactorExpressionTail(expression);
-            nextToken = stream().peekNextToken();
-        }
-
-        return expression;
+        var binaryExpression = parseAssignmentExpression();
+        return maybeParseBinaryExpressionTail(binaryExpression);
     }
 }
