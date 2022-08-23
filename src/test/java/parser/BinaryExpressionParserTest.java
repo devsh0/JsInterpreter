@@ -2,6 +2,7 @@ package parser;
 
 import ast.BinaryExpression;
 import ast.Identifier;
+import ast.UnaryExpression;
 import ast.value.JSBoolean;
 import ast.value.JSNumber;
 import ast.value.JSString;
@@ -114,8 +115,7 @@ class BinaryExpressionParserTest {
         var code = "value = 10 + 2;";
         var stream = new TokenStream(code);
         var parser = new BinaryExpressionParser(stream, null);
-        var expression = parser.parse();
-        var binaryExpression = (BinaryExpression)expression;
+        var binaryExpression = (BinaryExpression)parser.parse();
 
         var value = (Identifier)binaryExpression.getLHS();
         var equal = binaryExpression.getOperator();
@@ -131,5 +131,57 @@ class BinaryExpressionParserTest {
         assertEquals("10.0", ten.toString());
         assertEquals("+", plus.toString());
         assertEquals("2.0", two.toString());
+    }
+
+    @Test
+    public void testSimplePrefixIncrement() {
+        var code = "++value;";
+        var stream = new TokenStream(code);
+        var parser = new BinaryExpressionParser(stream, null);
+        var unaryExpression = (UnaryExpression)parser.parse();
+        var plusPlus = unaryExpression.getOperator();
+        var value = (Identifier)unaryExpression.getOperand();
+        assertEquals("++", plusPlus.toString());
+        assertEquals("value", value.toString());
+    }
+
+    @Test
+    public void testSimplePrefixDecrement() {
+        var code = "--value;";
+        var stream = new TokenStream(code);
+        var parser = new BinaryExpressionParser(stream, null);
+        var unaryExpression = (UnaryExpression)parser.parse();
+        var minusMinus = unaryExpression.getOperator();
+        var value = (Identifier)unaryExpression.getOperand();
+        assertEquals("--", minusMinus.toString());
+        assertEquals("value", value.toString());
+    }
+
+    @Test
+    public void testSimpleBooleanNot() {
+        var code = "!value;";
+        var stream = new TokenStream(code);
+        var parser = new BinaryExpressionParser(stream, null);
+        var unaryExpression = (UnaryExpression)parser.parse();
+        var not = unaryExpression.getOperator();
+        var value = (Identifier)unaryExpression.getOperand();
+        assertEquals("!", not.toString());
+        assertEquals("value", value.toString());
+    }
+
+    @Test
+    public void testChainedBooleanNot() {
+        var code = "!!value;";
+        var stream = new TokenStream(code);
+        var parser = new BinaryExpressionParser(stream, null);
+        var unaryExpression = (UnaryExpression)parser.parse();
+
+        var outerNot = unaryExpression.getOperator();
+        unaryExpression = (UnaryExpression)outerNot.getOperand();
+        var innerNot = unaryExpression.getOperator();
+        var value = unaryExpression.getOperand();
+        assertEquals("!", outerNot.toString());
+        assertEquals("!", innerNot.toString());
+        assertEquals("value", value.toString());
     }
 }

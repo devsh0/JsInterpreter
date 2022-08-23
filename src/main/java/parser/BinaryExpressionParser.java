@@ -1,9 +1,6 @@
 package parser;
 
-import ast.ASTNode;
-import ast.BinaryExpression;
-import ast.Expression;
-import ast.Identifier;
+import ast.*;
 import ast.operator.*;
 import ast.value.JSBoolean;
 import ast.value.JSNumber;
@@ -22,7 +19,15 @@ import static myutils.Macro.*;
  * RelationalExpression     ::=     TermExpression RelationalOp TermExpression | TermExpression
  * TermExpression           ::=     FactorExpression TermOp FactorExpression | FactorExpression
  * FactorExpression         ::=     GroupedExpression FactorOp GroupedExpression | GroupedExpression
- * GroupedExpression        ::=     '(' BinaryExpression ')' | PrimaryExpression
+ * GroupedExpression        ::=     '(' BinaryExpression ')' | UnaryExpression
+ * UnaryExpression          ::=     PrefixedExpression | PostfixedExpression | PrimaryExpression
+ * PrefixedExpression       ::=     BooleanExpression | PrefixIncrement | PrefixDecrement
+ * BooleanExpression        ::=     '!' UnaryExpression
+ * PrefixIncrement          ::=     '++' VariableExpression
+ * PrefixDecrement          ::=     '--' VariableExpression
+ * PostfixedExpression      ::=     PostfixIncrement | PostfixDecrement
+ * PostfixIncrement         ::=     VariableExpression '++'
+ * PostfixDecrement         ::=     VariableExpression '--'
  * PrimaryExpression        ::=     IdentifierExpression | Literal
  * IdentifierExpression     ::=     CallExpression | VariableExpression
  * CallExpression           ::=     Identifier '(' ArgumentList ')'
@@ -90,7 +95,7 @@ public class BinaryExpressionParser extends Parser {
         var tokens = stream().peekTokens(2);
         if (tokens.get(1).getType() == Token.Type.LeftParenT)
             // IdentifierExpression => CallExpression.
-            return (Expression)new CallExpressionParser(stream(), scopeManager()).parse();
+            return (Expression) new CallExpressionParser(stream(), scopeManager()).parse();
         return parseVariableExpression();
     }
 
@@ -103,17 +108,56 @@ public class BinaryExpressionParser extends Parser {
         return parseLiteral();
     }
 
+    private Expression parsePrefixIncrementOrDecrement() {
+        var opToken = stream().consumeNextToken();
+        var variableExpression = parseVariableExpression();
+        var operator = UnaryOperator.construct(opToken, variableExpression, true);
+        return new UnaryExpression().setOperator(operator);
+    }
+
+    private Expression parseBooleanExpression() {
+        var opToken = stream().consumeNextToken();
+        var unaryExpression = parseUnaryExpression();
+        var operator = UnaryOperator.construct(opToken, unaryExpression, true);
+        return new UnaryExpression().setOperator(operator);
+    }
+
+
+    private Expression parsePrefixedExpression() {
+        var nextToken = stream().peekNextToken();
+        if (nextToken.getValue().equals("!"))
+            // PrefixedExpression => BooleanExpression.
+            return parseBooleanExpression();
+
+        // PrefixedExpression => PrefixIncrement | PrefixDecrement.
+        return parsePrefixIncrementOrDecrement();
+    }
+
+    private Expression parseUnaryExpression() {
+        var tokens = stream().peekTokens(2);
+        if (tokens.get(0).getType() == Token.Type.UnaryOperatorT)
+            return parsePrefixedExpression();
+
+        if (tokens.get(1).getType() == Token.Type.UnaryOperatorT) {
+            // UnaryExpression => PostfixedExpression.
+            unimplemented();
+            return null;
+        }
+
+        return parsePrimaryExpression();
+    }
+
     private Expression parseGroupedExpression() {
         var nextToken = stream().peekNextToken();
         if (nextToken.getType() == Token.Type.LeftParenT) {
             // GroupedExpression => '(' BinaryExpression ')'.
             stream().consumeAndMatch("(");
-            var binaryExpression = (BinaryExpression)parse();
+            var binaryExpression = (BinaryExpression) parse();
             stream().consumeAndMatch(")");
             return binaryExpression;
         }
         // GroupedExpression => PrimaryExpression.
-        return parsePrimaryExpression();
+        return parseUnaryExpression();
     }
 
     private Expression parseFactorExpression() {
