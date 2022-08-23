@@ -13,6 +13,8 @@ public class JSBoolean implements
         OperatorGreaterThanOrEqual.Interface,
         OperatorLessThanOrEqual.Interface,
         OperatorLessThan.Interface,
+        OperatorPlus.Interface,
+        OperatorMinus.Interface,
         OperatorEquals.Interface {
     private boolean value;
 
@@ -78,7 +80,7 @@ public class JSBoolean implements
         var valueOrError = expr.execute();
         // TODO: Handle type casts.
         verify(valueOrError instanceof JSBoolean);
-        return (JSBoolean)valueOrError;
+        return (JSBoolean) valueOrError;
     }
 
     @Override
@@ -118,5 +120,15 @@ public class JSBoolean implements
         if (isLessThan(other).isTruthy())
             return from(true);
         return from(isEqualTo(other).isTruthy());
+    }
+
+    @Override
+    public Expression subtract(Expression rhs) {
+        return JSNumber.from(this).subtract(rhs);
+    }
+
+    @Override
+    public Expression add(Expression rhs) {
+        return JSNumber.from(this).add(rhs);
     }
 }

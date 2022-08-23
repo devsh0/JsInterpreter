@@ -45,6 +45,8 @@ public class JSNumber implements
         } else if (other instanceof JSString) {
             var otherString = ((JSString) other).getValue();
             return JSString.from(asString() + (String) otherString);
+        } else if (other instanceof JSBoolean otherBoolean) {
+            return JSNumber.from(value + (otherBoolean.isTruthy() ? 1 : 0));
         } else {
             unreachable();
             return null;
@@ -143,5 +145,9 @@ public class JSNumber implements
     public JSBoolean isLessThanOrEqual(Expression other) {
         var number = getJSNumber(other);
         return JSBoolean.from(value <= number.value);
+    }
+
+    public static JSNumber from(JSBoolean value) {
+        return JSNumber.from(value.isTruthy() ? 1 : 0);
     }
 }
