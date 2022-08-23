@@ -232,16 +232,32 @@ public class ExpressionParser extends Parser {
 
     @Override
     public Expression parse() {
-        var assignmentExpression = parseAssignmentExpression();
+        var lhs = parseAssignmentExpression();
         var nextToken = stream().peekNextToken();
         if (BinaryOperator.isBinaryOperator(nextToken)) {
             // BinaryExpression => AssignmentExpression BinaryOp BinaryExpression.
             var opToken = stream().consumeNextToken();
+            var precedence = BinaryOperator.getPrecedenceOf(opToken);
             var rhs = (Expression) parse();
-            var operator = BinaryOperator.construct(opToken, assignmentExpression, rhs);
+
+            if (rhs instanceof BinaryExpression binaryExpression) {
+                var opTokenTemp = new Token(Token.Type.BinaryOperatorT, binaryExpression.getOperator().toString());
+                var precedenceTemp = BinaryOperator.getPrecedenceOf(opTokenTemp);
+                if (precedence > precedenceTemp) {
+                    // We need to decompose the RHS and rearrange our expression.
+                    var lhsTemp = binaryExpression.getLHS();
+                    var operatorTmp = BinaryOperator.construct(opToken, lhs, lhsTemp);
+
+                    lhs = new BinaryExpression().setOperator(operatorTmp);
+                    opToken = opTokenTemp;
+                    rhs = binaryExpression.getRHS();
+                }
+            }
+
+            var operator = BinaryOperator.construct(opToken, lhs, rhs);
             return new BinaryExpression().setOperator(operator);
         }
         // BinaryExpression => AssignmentExpression.
-        return assignmentExpression;
+        return lhs;
     }
 }
