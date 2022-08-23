@@ -67,24 +67,23 @@ class ExpressionParserTest {
         var parser = new ExpressionParser(stream, null);
         var onePlusTwoMinusThreePlusSix = (BinaryExpression)parser.parse();
 
-        var onePlusTwo = (BinaryExpression)onePlusTwoMinusThreePlusSix.getLHS();
-        var minus = onePlusTwoMinusThreePlusSix.getOperator();
-        var threePlusSix = (BinaryExpression)onePlusTwoMinusThreePlusSix.getRHS();
-        assertEquals("-", minus.toString());
-
+        var onePlusTwoMinusThree = (BinaryExpression)onePlusTwoMinusThreePlusSix.getLHS();
+        var onePlusTwo = (BinaryExpression)onePlusTwoMinusThree.getLHS();
         var one = (JSNumber)onePlusTwo.getLHS();
         var plus = onePlusTwo.getOperator();
         var two = (JSNumber)onePlusTwo.getRHS();
+        var minus = onePlusTwoMinusThree.getOperator();
+        var three = (JSNumber)onePlusTwoMinusThree.getRHS();
 
         assertEquals("1.0", one.toString());
         assertEquals("+", plus.toString());
         assertEquals("2.0", two.toString());
-
-        var three = (JSNumber)threePlusSix.getLHS();
-        plus = threePlusSix.getOperator();
-        var six = (JSNumber)threePlusSix.getRHS();
-
+        assertEquals("-", minus.toString());
         assertEquals("3.0", three.toString());
+
+
+        plus = onePlusTwoMinusThreePlusSix.getOperator();
+        var six = (JSNumber)onePlusTwoMinusThreePlusSix.getRHS();
         assertEquals("+", plus.toString());
         assertEquals("6.0", six.toString());
     }
