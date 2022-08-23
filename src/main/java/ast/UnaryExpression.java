@@ -7,7 +7,7 @@ public class UnaryExpression implements Expression {
 
     @Override
     public Object execute() {
-        return null;
+        return operator.execute();
     }
 
     public UnaryExpression setOperator(UnaryOperator operator) {

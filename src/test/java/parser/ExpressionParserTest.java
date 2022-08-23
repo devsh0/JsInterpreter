@@ -13,12 +13,12 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BinaryExpressionParserTest {
+class ExpressionParserTest {
     @Test
     public void testNumberLiteral() {
         var code = "10;";
         var stream = new TokenStream(code);
-        var parser = new BinaryExpressionParser(stream, null);
+        var parser = new ExpressionParser(stream, null);
         var ten = (JSNumber)parser.parse();
         assertEquals("10.0", ten.toString());
     }
@@ -27,7 +27,7 @@ class BinaryExpressionParserTest {
     public void testStringLiteral() {
         var code = "\"alice in wonderland\";";
         var stream = new TokenStream(code);
-        var parser = new BinaryExpressionParser(stream, null);
+        var parser = new ExpressionParser(stream, null);
         var alice = (JSString)parser.parse();
         assertEquals("alice in wonderland", alice.toString());
     }
@@ -37,7 +37,7 @@ class BinaryExpressionParserTest {
         String[] codes = {"true;", "false;"};
         Arrays.stream(codes).forEach(code -> {
             var stream = new TokenStream(code);
-            var parser = new BinaryExpressionParser(stream, null);
+            var parser = new ExpressionParser(stream, null);
             var bool = (JSBoolean)parser.parse();
             assertEquals(code.replace(";", ""), bool.toString());
         });
@@ -49,7 +49,7 @@ class BinaryExpressionParserTest {
         Arrays.stream(operators).forEach(operator -> {
             String code = "1" + operator + "2;";
             var stream = new TokenStream(code);
-            var parser = new BinaryExpressionParser(stream, null);
+            var parser = new ExpressionParser(stream, null);
             var oneOpTwo = (BinaryExpression)parser.parse();
             var one = (JSNumber)oneOpTwo.getLHS();
             var op = oneOpTwo.getOperator();
@@ -64,7 +64,7 @@ class BinaryExpressionParserTest {
     public void testAdditiveExpressionWithMultipleOperators() {
         var code = "1 + 2 - 3 + 6;";
         var stream = new TokenStream(code);
-        var parser = new BinaryExpressionParser(stream, null);
+        var parser = new ExpressionParser(stream, null);
         var onePlusTwoMinusThreePlusSix = (BinaryExpression)parser.parse();
 
         var onePlusTwo = (BinaryExpression)onePlusTwoMinusThreePlusSix.getLHS();
@@ -93,7 +93,7 @@ class BinaryExpressionParserTest {
     public void factorPrecedesTerm() {
         var code = "1 + 2 * 3;";
         var stream = new TokenStream(code);
-        var parser = new BinaryExpressionParser(stream, null);
+        var parser = new ExpressionParser(stream, null);
 
         var onePlusTwoTimesThree = (BinaryExpression)parser.parse();
         var one = (JSNumber)onePlusTwoTimesThree.getLHS();
@@ -114,7 +114,7 @@ class BinaryExpressionParserTest {
     public void testAssignmentWithBinaryExpressionOnTheRHS() {
         var code = "value = 10 + 2;";
         var stream = new TokenStream(code);
-        var parser = new BinaryExpressionParser(stream, null);
+        var parser = new ExpressionParser(stream, null);
         var binaryExpression = (BinaryExpression)parser.parse();
 
         var value = (Identifier)binaryExpression.getLHS();
@@ -137,7 +137,7 @@ class BinaryExpressionParserTest {
     public void testSimplePrefixIncrement() {
         var code = "++value;";
         var stream = new TokenStream(code);
-        var parser = new BinaryExpressionParser(stream, null);
+        var parser = new ExpressionParser(stream, null);
         var unaryExpression = (UnaryExpression)parser.parse();
         var plusPlus = unaryExpression.getOperator();
         var value = (Identifier)unaryExpression.getOperand();
@@ -149,7 +149,7 @@ class BinaryExpressionParserTest {
     public void testSimplePrefixDecrement() {
         var code = "--value;";
         var stream = new TokenStream(code);
-        var parser = new BinaryExpressionParser(stream, null);
+        var parser = new ExpressionParser(stream, null);
         var unaryExpression = (UnaryExpression)parser.parse();
         var minusMinus = unaryExpression.getOperator();
         var value = (Identifier)unaryExpression.getOperand();
@@ -161,7 +161,7 @@ class BinaryExpressionParserTest {
     public void testSimpleBooleanNot() {
         var code = "!value;";
         var stream = new TokenStream(code);
-        var parser = new BinaryExpressionParser(stream, null);
+        var parser = new ExpressionParser(stream, null);
         var unaryExpression = (UnaryExpression)parser.parse();
         var not = unaryExpression.getOperator();
         var value = (Identifier)unaryExpression.getOperand();
@@ -173,7 +173,7 @@ class BinaryExpressionParserTest {
     public void testChainedBooleanNot() {
         var code = "!!value;";
         var stream = new TokenStream(code);
-        var parser = new BinaryExpressionParser(stream, null);
+        var parser = new ExpressionParser(stream, null);
         var unaryExpression = (UnaryExpression)parser.parse();
 
         var outerNot = unaryExpression.getOperator();

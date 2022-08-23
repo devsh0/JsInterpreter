@@ -34,7 +34,7 @@ public class CallExpressionParser extends Parser {
     }
 
     @Override
-    public ASTNode parse() {
+    public Expression parse() {
         var token = stream().consumeNextToken();
         verify(token.getType() == Token.Type.IdentifierT);
         var functionIdentifier = Identifier.from(token.getValue());

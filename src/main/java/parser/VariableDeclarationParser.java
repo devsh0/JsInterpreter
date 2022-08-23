@@ -18,7 +18,7 @@ public class VariableDeclarationParser extends Parser {
         var declaration = new VariableDeclaration();
         var nextTokens = stream().peekTokens(2);
         if (nextTokens.get(1).getValue().equals("=")) {
-            var assignmentExpression = new BinaryExpressionParser(stream(), scopeManager()).parse();
+            var assignmentExpression = new ExpressionParser(stream(), scopeManager()).parse();
             declaration.setInitializer((BinaryExpression)assignmentExpression);
         }
         var idStr = nextTokens.get(0).getValue();
