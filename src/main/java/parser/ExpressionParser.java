@@ -13,17 +13,17 @@ import static myutils.Macro.*;
 /*
  * Expression Grammar :
  * ---------------------------------------------------------------
- * Expression               ::=     AssignmentExpression BinaryExpressionTail?
- * AssignmentExpression     ::=     Identifier AssignmentExpressionTail | LogicalExpression
- * AssignmentExpressionTail ::=     AssignmentOp LogicalExpression BinaryExpressionTail?
- * LogicalExpression        ::=     RelationalExpression LogicalExpressionTail
- * LogicalExpressionTail    ::=     LogicalOp RelationalExpression BinaryExpressionTail?
+ * Expression               ::=     AssignmentExpression
+ * AssignmentExpression     ::=     LogicalExpression [AssignmentExpressionTail]
+ * AssignmentExpressionTail ::=     AssignmentOp LogicalExpression [BinaryExpressionTail]
+ * LogicalExpression        ::=     RelationalExpression [LogicalExpressionTail]
+ * LogicalExpressionTail    ::=     LogicalOp RelationalExpression [BinaryExpressionTail]
  * RelationalExpression     ::=     TermExpression RelationalExpressionTail
- * RelationalExpressionTail ::=     RelationalOp TermExpression BinaryExpressionTail?
+ * RelationalExpressionTail ::=     RelationalOp TermExpression [BinaryExpressionTail]
  * TermExpression           ::=     FactorExpression TermExpressionTail
- * TermExpressionTail       ::=     TermOp FactorExpression BinaryExpressionTail?
+ * TermExpressionTail       ::=     TermOp FactorExpression [BinaryExpressionTail]
  * FactorExpression         ::=     GroupedExpression FactorExpressionTail | GroupedExpression
- * FactorExpressionTail     ::=     FactorOp GroupedExpression BinaryExpressionTail?
+ * FactorExpressionTail     ::=     FactorOp GroupedExpression [BinaryExpressionTail]
  * BinaryExpressionTail     ::=     AssignmentExpressionTail | LogicalExpressionTail | RelationalExpressionTail | TermExpressionTail | FactoExpressionTail
  * GroupedExpression        ::=     '(' Expression ')' | UnaryExpression
  * UnaryExpression          ::=     PrefixedExpression | PostfixedExpression | PrimaryExpression
@@ -191,14 +191,11 @@ public class ExpressionParser extends Parser {
     }
 
     private Expression parseTermExpression() {
-        var tokens = stream().peekTokens(2);
-        if (BinaryOperator.isTermOperator(tokens.get(1))) {
-            // TermExpression => FactorExpression TermExpressionTail.
-            var lhs = parseFactorExpression();
-            return parseTermExpressionTail(lhs);
-        }
-        // TermExpression => FactorExpression.
-        return parseFactorExpression();
+        var expression = parseFactorExpression();
+        var nextToken = stream().peekNextToken();
+        if (BinaryOperator.isTermOperator(nextToken))
+            expression = parseTermExpressionTail(expression);
+        return expression;
     }
 
     private Expression parseRelationalExpressionTail(Expression lhs) {
@@ -210,14 +207,11 @@ public class ExpressionParser extends Parser {
     }
 
     private Expression parseRelationalExpression() {
-        var tokens = stream().peekTokens(2);
-        if (BinaryOperator.isRelationalOperator(tokens.get(1))) {
-            // RelationalExpression => TermExpression RelationalExpressionTail.
-            var lhs = parseTermExpression();
-            return parseRelationalExpressionTail(lhs);
-        }
-        // RelationalExpression => TermExpression.
-        return parseTermExpression();
+        var expression = parseTermExpression();
+        var nextToken = stream().peekNextToken();
+        if (BinaryOperator.isRelationalOperator(nextToken))
+            expression = parseRelationalExpressionTail(expression);
+        return expression;
     }
 
     private Expression parseLogicalExpressionTail(Expression lhs) {
@@ -229,14 +223,11 @@ public class ExpressionParser extends Parser {
     }
 
     private Expression parseLogicalExpression() {
-        var tokens = stream().peekTokens(2);
-        if (BinaryOperator.isLogicalOperator(tokens.get(1))) {
-            // LogicalExpression => RelationalExpression LogicalExpressionTail.
-            var lhs = parseRelationalExpression();
-            return parseLogicalExpressionTail(lhs);
-        }
-        // LogicalExpression => RelationalExpression.
-        return parseRelationalExpression();
+        var expression =  parseRelationalExpression();
+        var nextToken = stream().peekNextToken();
+        if (BinaryOperator.isLogicalOperator(nextToken))
+            expression = parseLogicalExpressionTail(expression);
+        return expression;
     }
 
     private Expression parseAssignmentExpressionTail(Expression lhs) {
@@ -248,14 +239,11 @@ public class ExpressionParser extends Parser {
     }
 
     private Expression parseAssignmentExpression() {
-        var tokens = stream().peekTokens(2);
-        if (BinaryOperator.isAssignmentOperator(tokens.get(1))) {
-            // AssignmentExpression => Identifier AssignmentExpressionTail.
-            var lhs = parseIdentifier();
-            return parseAssignmentExpressionTail(lhs);
-        }
-        // AssignmentExpression => LogicalExpression.
-        return parseLogicalExpression();
+        var expression = parseLogicalExpression();
+        var nextToken = stream().peekNextToken();
+        if (BinaryOperator.isAssignmentOperator(nextToken))
+            expression = parseAssignmentExpressionTail(expression);
+        return expression;
     }
 
     public Expression maybeParseBinaryExpressionTail(Expression lhs) {
@@ -276,7 +264,6 @@ public class ExpressionParser extends Parser {
 
     @Override
     public Expression parse() {
-        var binaryExpression = parseAssignmentExpression();
-        return maybeParseBinaryExpressionTail(binaryExpression);
+        return parseAssignmentExpression();
     }
 }
