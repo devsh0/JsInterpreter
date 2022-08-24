@@ -89,7 +89,28 @@ class ExpressionParserTest {
     }
 
     @Test
-    public void factorPrecedesTerm() {
+    public void testGroupPrecedesFactor() {
+        var code = "(1 + 6) * 2;";
+        var stream = new TokenStream(code);
+        var parser = new ExpressionParser(stream, null);
+
+        var onePlusSixTimesTwo = (BinaryExpression)parser.parse();
+        var onePlusSix = (BinaryExpression)onePlusSixTimesTwo.getLHS();
+        var one = (JSNumber)onePlusSix.getLHS();
+        var plus = onePlusSix.getOperator();
+        var six = (JSNumber)onePlusSix.getRHS();
+        var times = onePlusSixTimesTwo.getOperator();
+        var two = (JSNumber)onePlusSixTimesTwo.getRHS();
+
+        assertEquals("1", one.toString());
+        assertEquals("+", plus.toString());
+        assertEquals("6", six.toString());
+        assertEquals("*", times.toString());
+        assertEquals("2", two.toString());
+    }
+
+    @Test
+    public void testFactorPrecedesTerm() {
         var code = "1 + 2 * 3;";
         var stream = new TokenStream(code);
         var parser = new ExpressionParser(stream, null);
@@ -107,6 +128,69 @@ class ExpressionParserTest {
         assertEquals("2", two.toString());
         assertEquals("*", times.toString());
         assertEquals("3", three.toString());
+    }
+
+    @Test
+    public void testTermPrecedesRelational() {
+        var code = "1 > 2 + 3;";
+        var stream = new TokenStream(code);
+        var parser = new ExpressionParser(stream, null);
+
+        var oneGtTwoPlusThree = (BinaryExpression)parser.parse();
+        var one = (JSNumber)oneGtTwoPlusThree.getLHS();
+        var gt = oneGtTwoPlusThree.getOperator();
+        var twoPlusThree = (BinaryExpression)oneGtTwoPlusThree.getRHS();
+        var two = (JSNumber)twoPlusThree.getLHS();
+        var plus = twoPlusThree.getOperator();
+        var three = (JSNumber)twoPlusThree.getRHS();
+
+        assertEquals("1", one.toString());
+        assertEquals(">", gt.toString());
+        assertEquals("2", two.toString());
+        assertEquals("+", plus.toString());
+        assertEquals("3", three.toString());
+    }
+
+    @Test
+    public void testRelationalPrecedesLogical() {
+        var code = "1 || 2 > 6;";
+        var stream = new TokenStream(code);
+        var parser = new ExpressionParser(stream, null);
+
+        var oneOrTwoGtSix = (BinaryExpression)parser.parse();
+        var one = (JSNumber)oneOrTwoGtSix.getLHS();
+        var or = oneOrTwoGtSix.getOperator();
+        var twoGtSix = (BinaryExpression)oneOrTwoGtSix.getRHS();
+        var two = (JSNumber)twoGtSix.getLHS();
+        var gt = twoGtSix.getOperator();
+        var six = (JSNumber)twoGtSix.getRHS();
+
+        assertEquals("1", one.toString());
+        assertEquals("||", or.toString());
+        assertEquals("2", two.toString());
+        assertEquals(">", gt.toString());
+        assertEquals("6", six.toString());
+    }
+
+    @Test
+    public void testLogicalPrecedesAssignment() {
+        var code = "value = 1 || 2;";
+        var stream = new TokenStream(code);
+        var parser = new ExpressionParser(stream, null);
+
+        var valueEqOneOrTwo = (BinaryExpression)parser.parse();
+        var value = (Identifier)valueEqOneOrTwo.getLHS();
+        var eq = valueEqOneOrTwo.getOperator();
+        var oneOrTwo = (BinaryExpression)valueEqOneOrTwo.getRHS();
+        var one = (JSNumber)oneOrTwo.getLHS();
+        var or = oneOrTwo.getOperator();
+        var two = oneOrTwo.getRHS();
+
+        assertEquals("value", value.toString());
+        assertEquals("=", eq.toString());
+        assertEquals("1", one.toString());
+        assertEquals("||", or.toString());
+        assertEquals("2", two.toString());
     }
 
     @Test
