@@ -1,9 +1,6 @@
 package parser;
 
-import ast.Expression;
-import ast.ForStatement;
-import ast.Identifier;
-import ast.Statement;
+import ast.*;
 import lexer.Token;
 import lexer.TokenStream;
 
@@ -33,32 +30,29 @@ public class ForStatementParser extends Parser {
         return new ExpressionParser(stream(), scopeManager()).parse();
     }
 
+    private Block parseBody(ForStatement forStatement) {
+        var hasBlock = stream().peekNextToken().getValue().equals("{");
+        if (hasBlock)
+            stream().consumeAndMatch("{");
+        scopeManager().pushLoopScope(forStatement);
+        var forBody = new BlockParser(stream(), scopeManager(), forStatement, hasBlock).parse();
+        scopeManager().popLoopScope();
+        if (hasBlock)
+            stream().consumeAndMatch("}");
+        return forBody;
+    }
+
     @Override
     public ForStatement parse() {
         var forStatement = new ForStatement();
         forStatement.setLabel(label);
-
         stream().consumeNextToken(); // "for"
-
         stream().consumeAndMatch("(");
         forStatement.setInitializer(parseInitializer());
         forStatement.setConditionExpression(parseConditionExpression());
         forStatement.setUpdateExpression(parseUpdateExpression());
         stream().consumeAndMatch(")");
-
-        var hasMultipleStatement = stream().peekNextToken().getValue().equals("{");
-
-        if (hasMultipleStatement)
-            stream().consumeAndMatch("{");
-
-        scopeManager().pushLoopScope(forStatement);
-        var forBody = new BlockParser(stream(), scopeManager(), forStatement, hasMultipleStatement).parse();
-        scopeManager().popLoopScope();
-
-        if (hasMultipleStatement)
-            stream().consumeAndMatch("}");
-
-        forStatement.setBody(forBody);
+        forStatement.setBody(parseBody(forStatement));
         return forStatement;
     }
 }
