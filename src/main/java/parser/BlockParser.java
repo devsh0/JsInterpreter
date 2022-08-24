@@ -96,7 +96,11 @@ public class BlockParser extends Parser {
         if (tokenValue.equals("continue"))
             return StatementType.ContinueStatement;
 
-        if (tokenType == Token.Type.IdentifierT) {
+        if (tokenType == Token.Type.IdentifierT ||
+                tokenType == Token.Type.NumberLiteralT ||
+                tokenType == Token.Type.StringLiteralT ||
+                tokenValue.equals("true") || tokenValue.equals("false")
+        ) {
             var tokens = stream().peekTokens(2);
             var type = tokens.get(1).getType();
             var value = tokens.get(1).getValue();
