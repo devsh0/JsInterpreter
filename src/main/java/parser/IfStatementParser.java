@@ -1,9 +1,12 @@
 package parser;
 
+import ast.Block;
 import ast.Expression;
 import ast.IfStatement;
 import ast.Statement;
 import lexer.TokenStream;
+
+import java.util.Optional;
 
 import static myutils.Macro.todo_report_syntax_error;
 
@@ -19,40 +22,36 @@ public class IfStatementParser extends Parser {
         return expression;
     }
 
-    @Override
-    public Statement parse() {
-        if (!stream().consumeNextToken().getValue().equals("if"))
-            todo_report_syntax_error();
-
-        var ifStatement = new IfStatement();
-        ifStatement.setConditionExpression(parseConditionExpression());
-
-        var hasMultipleStatement = stream().peekNextToken().getValue().equals("{");
-
-        if (hasMultipleStatement) {
+    private Block parseBody(IfStatement ifStatement) {
+        boolean hasBlock = stream().peekNextToken().getValue().equals("{");
+        if (hasBlock)
             stream().consumeAndMatch("{");
-        }
-
-        ifStatement.setBody(new BlockParser(stream(), scopeManager(), ifStatement, hasMultipleStatement).parse());
-
-        if (hasMultipleStatement) {
+        Block block = new BlockParser(stream(), scopeManager(), ifStatement, hasBlock).parse();
+        if (hasBlock) {
             stream().consumeAndMatch("}");
         }
+        return block;
+    }
 
+    private Optional<Statement> maybeParseAlternate(IfStatement ifStatement) {
         if (stream().peekNextToken().getValue().equals("else")) {
-            // We have a chain of if-else.
-            stream().consumeNextToken(); // "else"
-            if (stream().peekNextToken().getValue().equals("if"))
-                return ifStatement.setAlternate(new IfStatementParser(stream(), scopeManager()).parse());
-
-            hasMultipleStatement = stream().peekNextToken().getValue().equals("{");
-            if (hasMultipleStatement)
-                stream().consumeAndMatch("{");
-            ifStatement.setAlternate(new BlockParser(stream(), scopeManager(), ifStatement, hasMultipleStatement).parse());
-            if (hasMultipleStatement)
-                stream().consumeAndMatch("}");
+            stream().consumeNextToken();
+            var hasIfStatementNext = stream().peekNextToken().getValue().equals("if");
+            return Optional.of(hasIfStatementNext ? parse() : parseBody(ifStatement));
         }
+        return Optional.empty();
+    }
 
+
+    @Override
+    public IfStatement parse() {
+        var ifStatement = new IfStatement();
+        if (!stream().consumeNextToken().getValue().equals("if"))
+            todo_report_syntax_error();
+        ifStatement.setConditionExpression(parseConditionExpression());
+        ifStatement.setBody(parseBody(ifStatement));
+        var maybeAlternate = maybeParseAlternate(ifStatement);
+        ifStatement.setAlternate(maybeAlternate.orElse(null));
         return ifStatement;
     }
 }
