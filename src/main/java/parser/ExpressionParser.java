@@ -175,14 +175,11 @@ public class ExpressionParser extends Parser {
     }
 
     private Expression parseFactorExpression() {
-        var tokens = stream().peekTokens(2);
-        if (BinaryOperator.isFactorOperator(tokens.get(1))) {
-            // FactorExpression => GroupedExpression FactorExpressionTail.
-            var lhs = parseGroupedExpression();
-            return parseFactorExpressionTail(lhs);
-        }
-        // FactorExpression => GroupedExpression.
-        return parseGroupedExpression();
+        var expression = parseGroupedExpression();
+        var nextToken = stream().peekNextToken();
+        if (BinaryOperator.isFactorOperator(nextToken))
+            expression = parseFactorExpressionTail(expression);
+        return expression;
     }
 
     private Expression parseTermExpressionTail(Expression lhs) {
