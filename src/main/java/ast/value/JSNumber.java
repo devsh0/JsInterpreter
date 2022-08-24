@@ -101,7 +101,10 @@ public class JSNumber implements
 
     @Override
     public String toString() {
-        return value + "";
+        String valueStr = value.toString();
+        if (valueStr.endsWith(".0"))
+            valueStr = valueStr.substring(0, valueStr.length() - 2);
+        return valueStr;
     }
 
     public static JSNumber from(Number number) {

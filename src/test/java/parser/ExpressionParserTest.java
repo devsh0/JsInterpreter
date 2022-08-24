@@ -20,7 +20,7 @@ class ExpressionParserTest {
         var stream = new TokenStream(code);
         var parser = new ExpressionParser(stream, null);
         var ten = (JSNumber)parser.parse();
-        assertEquals("10.0", ten.toString());
+        assertEquals("10", ten.toString());
     }
 
     @Test
@@ -54,9 +54,9 @@ class ExpressionParserTest {
             var one = (JSNumber)oneOpTwo.getLHS();
             var op = oneOpTwo.getOperator();
             var two = (JSNumber)oneOpTwo.getRHS();
-            assertEquals("1.0", one.toString());
+            assertEquals("1", one.toString());
             assertEquals(operator, op.toString());
-            assertEquals("2.0", two.toString());
+            assertEquals("2", two.toString());
         });
     }
 
@@ -75,17 +75,17 @@ class ExpressionParserTest {
         var minus = onePlusTwoMinusThree.getOperator();
         var three = (JSNumber)onePlusTwoMinusThree.getRHS();
 
-        assertEquals("1.0", one.toString());
+        assertEquals("1", one.toString());
         assertEquals("+", plus.toString());
-        assertEquals("2.0", two.toString());
+        assertEquals("2", two.toString());
         assertEquals("-", minus.toString());
-        assertEquals("3.0", three.toString());
+        assertEquals("3", three.toString());
 
 
         plus = onePlusTwoMinusThreePlusSix.getOperator();
         var six = (JSNumber)onePlusTwoMinusThreePlusSix.getRHS();
         assertEquals("+", plus.toString());
-        assertEquals("6.0", six.toString());
+        assertEquals("6", six.toString());
     }
 
     @Test
@@ -102,11 +102,11 @@ class ExpressionParserTest {
         var times = twoTimesThree.getOperator();
         var three = (JSNumber)twoTimesThree.getRHS();
 
-        assertEquals("1.0", one.toString());
+        assertEquals("1", one.toString());
         assertEquals("+", plus.toString());
-        assertEquals("2.0", two.toString());
+        assertEquals("2", two.toString());
         assertEquals("*", times.toString());
-        assertEquals("3.0", three.toString());
+        assertEquals("3", three.toString());
     }
 
     @Test
@@ -127,9 +127,9 @@ class ExpressionParserTest {
         var plus = tenPlusTwo.getOperator();
         var two = (JSNumber)tenPlusTwo.getRHS();
 
-        assertEquals("10.0", ten.toString());
+        assertEquals("10", ten.toString());
         assertEquals("+", plus.toString());
-        assertEquals("2.0", two.toString());
+        assertEquals("2", two.toString());
     }
 
     @Test
