@@ -18,11 +18,6 @@ public class OperatorGreaterThanOrEqual extends AbstractBinaryOperator {
         return lhsValue.isGreaterThanOrEqual(rhsValue);
     }
 
-    @Override
-    public String getDump(int indent) {
-        return " >= ";
-    }
-
     public static interface Interface extends JSValue {
         public JSBoolean isGreaterThanOrEqual(Expression other);
 

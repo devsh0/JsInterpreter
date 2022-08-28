@@ -54,17 +54,6 @@ public class CallExpression extends ExpressionStatement {
         return this;
     }
 
-    @Override
-    public String getDump(int indent) {
-        var builder = getIndentedBuilder(indent);
-        builder.append(callee.getDump(indent)).append("(");
-        for (var arg : arguments)
-            builder.append(arg.getDump(indent)).append(", ");
-        if (arguments.size() > 0)
-            builder = new StringBuilder(builder.substring(0, builder.lastIndexOf(",")));
-        return builder.append(")").toString();
-    }
-
     private Identifier callee;
     private List<Expression> arguments = new ArrayList<>();
 }

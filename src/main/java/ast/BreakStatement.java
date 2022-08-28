@@ -27,15 +27,6 @@ public class BreakStatement implements Statement {
         throw new BreakException(breakableEntity);
     }
 
-    @Override
-    public String getDump(int indent) {
-        var builder = getIndentedBuilder(indent);
-        builder.append("break ");
-        if (label != null)
-            builder.append(label.getDump(indent));
-        return builder.toString();
-    }
-
     public BreakStatement setLabel(Identifier label) {
         Objects.requireNonNull(label);
         this.label = label;

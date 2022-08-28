@@ -18,11 +18,6 @@ public class OperatorLessThan extends AbstractBinaryOperator {
         return lhsValue.isLessThan(rhsValue);
     }
 
-    @Override
-    public String getDump(int indent) {
-        return " < ";
-    }
-
     public interface Interface extends JSValue {
         public JSBoolean isLessThan(Expression other);
 

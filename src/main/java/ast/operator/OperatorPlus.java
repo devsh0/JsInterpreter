@@ -17,11 +17,6 @@ public class OperatorPlus extends AbstractBinaryOperator {
         return lhsValue.add(rhsValue);
     }
 
-    @Override
-    public String getDump(int indent) {
-        return " + ";
-    }
-
     public static interface Interface extends JSValue {
         public Expression add(Expression rhs);
 

@@ -8,11 +8,6 @@ public class ExpressionStatement implements Statement, Expression {
         return expression.execute();
     }
 
-    @Override
-    public String getDump(int indent) {
-        return expression.getDump(indent);
-    }
-
     public ExpressionStatement setSource(Expression expression) {
         this.expression = expression;
         return this;

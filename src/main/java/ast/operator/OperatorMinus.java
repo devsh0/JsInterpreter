@@ -17,11 +17,6 @@ public class OperatorMinus extends AbstractBinaryOperator {
         return lhsValue.subtract(rhsValue);
     }
 
-    @Override
-    public String getDump(int indent) {
-        return " - ";
-    }
-
     public static interface Interface extends JSValue {
         public Expression subtract(Expression rhs);
 

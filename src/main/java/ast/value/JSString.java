@@ -69,11 +69,6 @@ public class JSString implements
         return value;
     }
 
-    @Override
-    public String getDump(int indent) {
-        return "\"" + value + "\"";
-    }
-
     public static JSString from(String string) {
         return new JSString().setValue(string);
     }

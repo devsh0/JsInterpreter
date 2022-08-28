@@ -24,11 +24,6 @@ public class JSBoolean implements
     }
 
     @Override
-    public String getDump(int indent) {
-        return value + "";
-    }
-
-    @Override
     public boolean isTruthy() {
         return value;
     }

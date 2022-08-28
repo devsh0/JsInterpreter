@@ -12,15 +12,6 @@ public class VariableDeclaration implements Statement {
         return this;
     }
 
-    @Override
-    public String getDump(int indent) {
-        var builder = getIndentedBuilder(indent);
-        builder.append("let ").append(id);
-        if (!initializer.getDump(indent).equals("undefined"))
-            builder.append(" = ").append(initializer.getDump(indent));
-        return builder.toString();
-    }
-
     public VariableDeclaration setIdentifier(Identifier id) {
         Objects.requireNonNull(id);
         this.id = id;

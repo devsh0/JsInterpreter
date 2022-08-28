@@ -15,17 +15,6 @@ public class Scope implements ASTNode {
         return null;
     }
 
-    @Override
-    public String getDump(int indent) {
-        StringBuilder builder = new StringBuilder();
-        builder.append("owner: ").append(owner).append("\n");
-        builder.append("{\n");
-        for (var key : identifierMap.keySet())
-            builder.append("\t" + key).append(":").append(identifierMap.get(key).getDump(0)).append("\n");
-        builder.append("}");
-        return builder.toString();
-    }
-
     public Scope(CompoundStatement owner) {
         verify(owner != null);
         this.owner = owner;

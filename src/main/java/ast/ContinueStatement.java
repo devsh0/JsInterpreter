@@ -27,15 +27,6 @@ public class ContinueStatement implements Statement {
         throw new ContinueException(continuableEntity);
     }
 
-    @Override
-    public String getDump(int indent) {
-        var builder = getIndentedBuilder(indent);
-        builder.append("continue ");
-        if (label != null)
-            builder.append(label.getDump(indent));
-        return builder.toString();
-    }
-
     public ContinueStatement setLabel(Identifier label) {
         Objects.requireNonNull(label);
         this.label = label;

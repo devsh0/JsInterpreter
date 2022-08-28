@@ -95,11 +95,6 @@ public class JSNumber implements
     }
 
     @Override
-    public String getDump(int indent) {
-        return value + "";
-    }
-
-    @Override
     public String toString() {
         String valueStr = value.toString();
         if (valueStr.endsWith(".0"))

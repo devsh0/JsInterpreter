@@ -23,8 +23,4 @@ public class UnaryExpression implements Expression {
         return operator;
     }
 
-    @Override
-    public String getDump(int indent) {
-        return operator.getDump(indent);
-    }
 }

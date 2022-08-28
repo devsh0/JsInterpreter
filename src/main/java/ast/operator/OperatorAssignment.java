@@ -22,11 +22,6 @@ public class OperatorAssignment extends AbstractBinaryOperator {
     }
 
     @Override
-    public String getDump(int indent) {
-        return " = ";
-    }
-
-    @Override
     public String toString() {
         return "=";
     }

@@ -18,11 +18,6 @@ public class OperatorEquals extends AbstractBinaryOperator {
         return lhsValue.isEqualTo(rhsValue);
     }
 
-    @Override
-    public String getDump(int indent) {
-        return " == ";
-    }
-
     public static interface Interface extends JSValue {
         public JSBoolean isEqualTo(Expression other);
 

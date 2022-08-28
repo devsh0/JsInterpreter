@@ -10,11 +10,6 @@ public class BinaryExpression implements Expression {
         return operator.execute();
     }
 
-    @Override
-    public String getDump(int indent) {
-        return operator.getDump(indent);
-    }
-
     public BinaryExpression setOperator(final BinaryOperator operator) {
         Objects.requireNonNull(operator);
         this.operator = operator;

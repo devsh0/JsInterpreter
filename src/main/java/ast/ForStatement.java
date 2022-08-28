@@ -11,20 +11,6 @@ public class ForStatement extends LoopStatement {
         return super.execute();
     }
 
-    @Override
-    public String getDump(int indent) {
-        var builder = getIndentedBuilder(indent);
-        builder.append("for (");
-        if (initializer != null)
-            builder.append(initializer.getDump(0)).append("; ");
-        if (conditionExpression != null)
-            builder.append(conditionExpression.getDump(0)).append(";");
-        if (updateExpression != null)
-            builder.append(updateExpression.getDump(0)).append(")");
-        builder.append(body.getDump(indent));
-        return builder.toString();
-    }
-
     public ForStatement setInitializer(Statement initializer) {
         verify(initializer != null);
         this.initializer = initializer;

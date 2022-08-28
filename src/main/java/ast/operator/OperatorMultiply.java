@@ -17,11 +17,6 @@ public class OperatorMultiply extends AbstractBinaryOperator {
         return lhsValue.multiply(rhsValue);
     }
 
-    @Override
-    public String getDump(int indent) {
-        return " * ";
-    }
-
     public static interface Interface extends JSValue {
         public Expression multiply(Expression rhs);
 

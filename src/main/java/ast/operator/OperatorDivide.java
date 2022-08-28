@@ -17,11 +17,6 @@ public class OperatorDivide extends AbstractBinaryOperator {
         return lhsValue.divide(rhsValue);
     }
 
-    @Override
-    public String getDump(int indent) {
-        return " / ";
-    }
-
     public static interface Interface extends JSValue {
         public Expression divide(Expression rhs);
 

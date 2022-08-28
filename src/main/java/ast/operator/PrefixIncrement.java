@@ -27,11 +27,6 @@ public class PrefixIncrement extends AbstractUnaryOperator {
     }
 
     @Override
-    public String getDump(int indent) {
-        return " ++" + operand.getDump(indent);
-    }
-
-    @Override
     public String toString() {
         return "++";
     }

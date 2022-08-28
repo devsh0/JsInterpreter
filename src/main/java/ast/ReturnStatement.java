@@ -13,13 +13,6 @@ public class ReturnStatement implements Statement {
         throw new ReturnException(functionRef, expression.execute());
     }
 
-    @Override
-    public String getDump(int indent) {
-        var builder = getIndentedBuilder(indent);
-        builder.append("return ").append(expression.getDump(indent));
-        return builder.toString();
-    }
-
     public ReturnStatement setExpression(final Expression expression) {
         Objects.requireNonNull(expression);
         this.expression = expression;
