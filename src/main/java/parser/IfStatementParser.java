@@ -23,11 +23,11 @@ public class IfStatementParser extends Parser {
     }
 
     private Block parseBody(IfStatement ifStatement) {
-        boolean hasBlock = stream().peekNextToken().getValue().equals("{");
-        if (hasBlock)
+        boolean hasCurlyEnclosedBlock = stream().peekNextToken().getValue().equals("{");
+        if (hasCurlyEnclosedBlock)
             stream().consumeAndMatch("{");
-        Block block = new BlockParser(stream(), scopeManager(), ifStatement, hasBlock).parse();
-        if (hasBlock) {
+        Block block = new BlockParser(stream(), scopeManager(), ifStatement, hasCurlyEnclosedBlock).parse();
+        if (hasCurlyEnclosedBlock) {
             stream().consumeAndMatch("}");
         }
         return block;

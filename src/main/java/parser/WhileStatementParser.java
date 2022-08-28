@@ -14,13 +14,13 @@ public class WhileStatementParser extends Parser {
     }
 
     private Block parseBody(WhileStatement whileStatement) {
-        var hasBlock = stream().peekNextToken().getValue().equals("{");
-        if (hasBlock)
+        var hasCurlyEnclosedBlock = stream().peekNextToken().getValue().equals("{");
+        if (hasCurlyEnclosedBlock)
             stream().consumeAndMatch("{");
         scopeManager().pushLoopScope(whileStatement);
-        var whileBody = new BlockParser(stream(), scopeManager(), whileStatement, hasBlock).parse();
+        var whileBody = new BlockParser(stream(), scopeManager(), whileStatement, hasCurlyEnclosedBlock).parse();
         scopeManager().popLoopScope();
-        if (hasBlock)
+        if (hasCurlyEnclosedBlock)
             stream().consumeAndMatch("}");
         return whileBody;
     }

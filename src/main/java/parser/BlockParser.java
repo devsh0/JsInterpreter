@@ -12,7 +12,7 @@ import static myutils.Macro.unimplemented;
 
 public class BlockParser extends Parser {
     private CompoundStatement owner;
-    private boolean hasMultipleStatement;
+    private boolean isCurlyEnclosed;
 
     private enum StatementType {
         Unrecognized,
@@ -29,11 +29,11 @@ public class BlockParser extends Parser {
         ForStatement
     }
 
-    BlockParser(TokenStream stream, ScopeManager scopeManager, CompoundStatement owner, boolean hasMultipleStatement) {
+    BlockParser(TokenStream stream, ScopeManager scopeManager, CompoundStatement owner, boolean isCurlyEnclosed) {
         super(stream, scopeManager);
         Objects.requireNonNull(owner);
         this.owner = owner;
-        this.hasMultipleStatement = hasMultipleStatement;
+        this.isCurlyEnclosed = isCurlyEnclosed;
     }
 
     BlockParser(TokenStream stream, ScopeManager scopeManager, CompoundStatement owner) {
@@ -174,13 +174,10 @@ public class BlockParser extends Parser {
     public Block parse() {
         var block = new Block(owner);
         var nextStatement = parseNextStatement();
+        nextStatement.ifPresent(block::append);
 
-        while (nextStatement.isPresent()) {
+        while (isCurlyEnclosed && (nextStatement = parseNextStatement()).isPresent())
             block.append(nextStatement.get());
-            if (!hasMultipleStatement)
-                break;
-            nextStatement = parseNextStatement();
-        }
 
         return block;
     }

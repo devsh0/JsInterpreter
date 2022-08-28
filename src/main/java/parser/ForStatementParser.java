@@ -31,13 +31,13 @@ public class ForStatementParser extends Parser {
     }
 
     private Block parseBody(ForStatement forStatement) {
-        var hasBlock = stream().peekNextToken().getValue().equals("{");
-        if (hasBlock)
+        var hasCurlyEnclosedBlock = stream().peekNextToken().getValue().equals("{");
+        if (hasCurlyEnclosedBlock)
             stream().consumeAndMatch("{");
         scopeManager().pushLoopScope(forStatement);
-        var forBody = new BlockParser(stream(), scopeManager(), forStatement, hasBlock).parse();
+        var forBody = new BlockParser(stream(), scopeManager(), forStatement, hasCurlyEnclosedBlock).parse();
         scopeManager().popLoopScope();
-        if (hasBlock)
+        if (hasCurlyEnclosedBlock)
             stream().consumeAndMatch("}");
         return forBody;
     }
