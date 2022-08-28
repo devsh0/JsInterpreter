@@ -28,5 +28,9 @@ public class BinaryExpression implements Expression {
         return operator;
     }
 
+    public String getString(int indent) {
+        return operator.getString(indent);
+    }
+
     private BinaryOperator operator;
 }

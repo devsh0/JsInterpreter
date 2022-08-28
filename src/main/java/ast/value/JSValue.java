@@ -29,4 +29,6 @@ public interface JSValue extends Expression {
         return new JSUndefined();
     }
 
+    @Override
+    public String getString(int indent);
 }

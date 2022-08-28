@@ -30,4 +30,9 @@ public class JSUndefined implements JSValue {
     public JSString asString() {
         return JSString.from("undefined");
     }
+
+    @Override
+    public String getString(int indent) {
+        return "undefined";
+    }
 }

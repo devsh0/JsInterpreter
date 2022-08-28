@@ -18,4 +18,16 @@ public class ExpressionStatement implements Statement, Expression {
     }
 
     protected Expression expression;
+
+    @Override
+    public String getString(int indent) {
+        if (expression == null)
+            return "";
+
+        var builder = new StringBuilder("\n");
+        builder.append(" ".repeat(indent));
+        builder.append(expression.getString(indent));
+        builder.append(";");
+        return builder.toString();
+    }
 }

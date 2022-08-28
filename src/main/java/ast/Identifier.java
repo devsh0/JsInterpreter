@@ -45,6 +45,11 @@ public class Identifier implements ASTNode, Expression {
         return name;
     }
 
+    @Override
+    public String getString(int indent) {
+        return name;
+    }
+
     public static Identifier from(String name) {
         Objects.requireNonNull(name);
         verify(!name.isEmpty());

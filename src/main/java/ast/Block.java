@@ -44,6 +44,17 @@ public class Block implements Statement {
         return scope;
     }
 
+    public String getString(int indent) {
+        var builder = new StringBuilder();
+        builder.append(" {");
+        statementList.forEach(statement -> builder.append(statement.getString(indent + 4)));
+        builder.append("\n");
+        builder.append(" ".repeat(indent));
+        builder.append("}");
+        builder.append("\n");
+        return builder.toString();
+    }
+
     private List<Statement> statementList = new ArrayList<>();
     private CompoundStatement owner;
     private Scope scope;

@@ -14,4 +14,9 @@ public abstract class AbstractUnaryOperator implements UnaryOperator {
     }
 
     public abstract String toString();
+
+    @Override
+    public String getString(int indent) {
+        return this + operand.getString(indent);
+    }
 }

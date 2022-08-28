@@ -126,4 +126,9 @@ public class JSBoolean implements
     public Expression add(Expression rhs) {
         return JSNumber.from(this).add(rhs);
     }
+
+    @Override
+    public String getString(int indent) {
+        return toString();
+    }
 }

@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-// Fixme: Is there a difference between function declaration and definition in JS?
 public class FunctionDeclaration extends CompoundStatement {
     @Override
     public Object execute() {
@@ -41,6 +40,25 @@ public class FunctionDeclaration extends CompoundStatement {
 
     public List<Identifier> getParameters() {
         return parameters;
+    }
+
+    @Override
+    public String getString(int indent) {
+        var builder = new StringBuilder("\n");
+        builder.append(" ".repeat(indent));
+        builder.append("function ");
+        builder.append(id);
+        builder.append("(");
+
+        for (int i = 0; i < parameters.size() - 1; i++) {
+            builder.append(parameters.get(i).getString(indent));
+            builder.append(", ");
+        }
+
+        builder.append(parameters.get(parameters.size() - 1).getString(indent));
+        builder.append(")");
+        builder.append(this.body.getString(indent));
+        return builder.toString();
     }
 
     private Identifier id;

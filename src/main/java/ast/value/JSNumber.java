@@ -148,4 +148,9 @@ public class JSNumber implements
     public static JSNumber from(JSBoolean value) {
         return JSNumber.from(value.isTruthy() ? 1 : 0);
     }
+
+    @Override
+    public String getString(int indent) {
+        return toString();
+    }
 }

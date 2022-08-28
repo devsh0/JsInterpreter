@@ -50,6 +50,11 @@ public class Scope implements ASTNode {
     }
 
     @Override
+    public String getString(int indent) {
+        return "";
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(owner, identifierMap);
     }

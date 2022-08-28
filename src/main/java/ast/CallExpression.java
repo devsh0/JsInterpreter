@@ -56,4 +56,17 @@ public class CallExpression extends ExpressionStatement {
 
     private Identifier callee;
     private List<Expression> arguments = new ArrayList<>();
+
+    @Override
+    public String getString(int indent) {
+        var builder = new StringBuilder(callee.toString());
+        builder.append("(");
+        for (int i = 0; i < arguments.size() - 1; i++) {
+            builder.append(arguments.get(i).getString(indent));
+            builder.append(", ");
+        }
+        builder.append(arguments.get(arguments.size() - 1).getString(indent));
+        builder.append(")");
+        return builder.toString();
+    }
 }

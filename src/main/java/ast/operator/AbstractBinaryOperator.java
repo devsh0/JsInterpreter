@@ -27,4 +27,9 @@ abstract public class AbstractBinaryOperator implements BinaryOperator {
 
     @Override
     abstract public String toString();
+
+    @Override
+    public String getString(int indent) {
+        return lhs.getString(indent) + " " + this + " " + rhs.getString(indent);
+    }
 }

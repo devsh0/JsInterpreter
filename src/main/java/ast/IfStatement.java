@@ -34,6 +34,17 @@ public class IfStatement extends CompoundStatement {
         return statement;
     }
 
+    @Override
+    public String getString(int indent) {
+        var builder = new StringBuilder("\n");
+        builder.append(" ".repeat(indent));
+        builder.append("if (");
+        builder.append(conditionExpression.getString(indent));
+        builder.append(")");
+        builder.append(this.body.getString(indent));
+        return builder.toString();
+    }
+
     private Expression conditionExpression;
     private Statement alternate;
 }

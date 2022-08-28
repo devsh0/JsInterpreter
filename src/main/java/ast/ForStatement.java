@@ -27,6 +27,33 @@ public class ForStatement extends LoopStatement {
         return this;
     }
 
+    @Override
+    public String getString(int indent) {
+        var builder = new StringBuilder("\n");
+
+        if (label != null) {
+            builder.append(" ".repeat(indent));
+            builder.append(label);
+            builder.append(":\n");
+        }
+
+        builder.append(" ".repeat(indent));
+        builder.append("for (");
+        var initString = initializer == null ? "" : initializer.getString(indent);
+        if (initializer instanceof VariableDeclaration) {
+            initString = initString.replace("\n", "");
+            initString = initString.replace(";", "");
+        }
+        builder.append(initString.trim());
+        builder.append("; ");
+        builder.append(conditionExpression == null ? "" : conditionExpression.getString(indent));
+        builder.append("; ");
+        builder.append(updateExpression == null ? "" : updateExpression.getString(indent));
+        builder.append(")");
+        builder.append(this.body.getString(indent));
+        return builder.toString();
+    }
+
     public Identifier getLabel() {
         return label;
     }

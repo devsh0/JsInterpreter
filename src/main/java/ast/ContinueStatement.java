@@ -33,6 +33,19 @@ public class ContinueStatement implements Statement {
         return this;
     }
 
+    @Override
+    public String getString(int indent) {
+        var builder = new StringBuilder("\n");
+        builder.append(" ".repeat(indent));
+        builder.append("continue");
+        if (label != null) {
+            builder.append(" ");
+            builder.append(label);
+        }
+        builder.append(";");
+        return builder.toString();
+    }
+
     private CompoundStatement owner;
     private Identifier label;
 }

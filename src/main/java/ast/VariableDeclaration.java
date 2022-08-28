@@ -1,6 +1,7 @@
 package ast;
 
 import ast.value.JSUndefined;
+import ast.value.JSValue;
 import org.js.Interpreter;
 
 import java.util.Objects;
@@ -30,6 +31,17 @@ public class VariableDeclaration implements Statement {
         Objects.requireNonNull(expression);
         this.initializer = expression;
         return this;
+    }
+
+    @Override
+    public String getString(int indent) {
+        var builder = new StringBuilder("\n");
+        builder.append(" ".repeat(indent));
+        builder.append("let ");
+        if (!initializer.equals(JSValue.undefined()))
+            builder.append(initializer.getString(indent));
+        builder.append(";");
+        return builder.toString();
     }
 
     private Identifier id;

@@ -15,6 +15,11 @@ public class UnaryExpression implements Expression {
         return this;
     }
 
+    @Override
+    public String getString(int indent) {
+        return operator.getString(indent);
+    }
+
     public Expression getOperand() {
         return operator.getOperand();
     }

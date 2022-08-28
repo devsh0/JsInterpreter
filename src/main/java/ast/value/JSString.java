@@ -131,4 +131,9 @@ public class JSString implements
             return JSBoolean.from(true);
         return JSBoolean.from(isEqualTo(other).isTruthy());
     }
+
+    @Override
+    public String getString(int indent) {
+        return "\"" + this + "\"";
+    }
 }

@@ -16,4 +16,7 @@ public abstract class CompoundStatement implements Statement {
     public Block getBody() {
         return body;
     }
+
+    @Override
+    abstract public String getString(int indent);
 }

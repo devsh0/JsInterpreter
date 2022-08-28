@@ -62,4 +62,7 @@ public abstract class LoopStatement extends CompoundStatement {
     public Identifier getLabel() {
         return label;
     }
+
+    @Override
+    abstract public String getString(int indent);
 }
