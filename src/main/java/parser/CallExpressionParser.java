@@ -1,6 +1,5 @@
 package parser;
 
-import ast.ASTNode;
 import ast.CallExpression;
 import ast.Expression;
 import ast.Identifier;
@@ -26,7 +25,7 @@ public class CallExpressionParser extends Parser {
             arguments.add(argument);
             if (stream().peekNextToken().getType() == Token.Type.CommaT) {
                 stream().consumeNextToken();
-                if(stream().peekNextToken().getType() == Token.Type.RightParenT)
+                if (stream().peekNextToken().getType() == Token.Type.RightParenT)
                     todo_report_syntax_error();
             }
         }

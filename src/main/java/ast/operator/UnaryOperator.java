@@ -8,6 +8,7 @@ import static myutils.Macro.unimplemented;
 
 public interface UnaryOperator extends ASTNode {
     public Expression getOperand();
+
     public static UnaryOperator construct(Token opToken, Expression operand, boolean isPrefix) {
         switch (opToken.getValue()) {
             case "++":

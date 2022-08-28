@@ -1,6 +1,5 @@
 package ast.operator;
 
-import ast.BinaryExpression;
 import ast.Expression;
 import ast.Identifier;
 import ast.value.JSValue;
@@ -16,8 +15,8 @@ public class OperatorModEqual extends AbstractBinaryOperator {
     @Override
     public Object execute() {
         verify(lhs instanceof Identifier);
-        var dest = (Identifier)lhs;
-        var src = (JSValue)(new OperatorMod(lhs, rhs)).execute();
+        var dest = (Identifier) lhs;
+        var src = (JSValue) (new OperatorMod(lhs, rhs)).execute();
         Interpreter.get().rewrite(dest, src);
         return src;
     }

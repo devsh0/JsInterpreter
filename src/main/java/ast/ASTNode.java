@@ -1,11 +1,10 @@
 package ast;
 
-import myutils.Macro;
-
 public interface ASTNode {
     public static final int Indent = 4;
 
     public Object execute();
+
     public String getDump(int indent);
 
     public default void dump() {

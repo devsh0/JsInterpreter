@@ -15,12 +15,12 @@ public class PrefixDecrement extends AbstractUnaryOperator {
     @Override
     public Object execute() {
         verify(operand instanceof Identifier);
-        var variable = (Identifier)operand;
+        var variable = (Identifier) operand;
         var value = variable.execute();
         // FIXME: Allowed on other JsValues, returns NaN.
         verify(value instanceof JSNumber);
-        var number = (JSNumber)value;
-        var oldValue = (Double)number.getValue();
+        var number = (JSNumber) value;
+        var oldValue = (Double) number.getValue();
         var newValue = JSNumber.from(oldValue - 1);
         Interpreter.get().rewrite(variable, newValue);
         return newValue;

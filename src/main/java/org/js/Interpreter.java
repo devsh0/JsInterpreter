@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static myutils.Macro.*;
+import static myutils.Macro.verify;
 
 public class Interpreter implements Macro {
     private static Interpreter interpreter = null;
@@ -28,7 +28,7 @@ public class Interpreter implements Macro {
         return Optional.empty();
     }
 
-    public Scope getCurrentScope () {
+    public Scope getCurrentScope() {
         verify(stack.size() >= 1);
         return stack.get(stack.size() - 1);
     }
@@ -50,9 +50,9 @@ public class Interpreter implements Macro {
         return stack.remove(stack.size() - 1);
     }
 
-    public Object run (final ASTNode programNode) {
+    public Object run(final ASTNode programNode) {
         verify(programNode instanceof Program);
-        Program program = (Program)programNode;
+        Program program = (Program) programNode;
         stack.add(new Scope(program));
         return program.execute();
     }

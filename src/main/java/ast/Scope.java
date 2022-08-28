@@ -56,7 +56,7 @@ public class Scope implements ASTNode {
             return true;
         if (other == null || getClass() != other.getClass())
             return false;
-        Scope scope = (Scope)other;
+        Scope scope = (Scope) other;
         return owner == scope.owner;
     }
 

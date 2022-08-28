@@ -5,7 +5,7 @@ import ast.operator.*;
 
 import java.util.Objects;
 
-import static myutils.Macro.*;
+import static myutils.Macro.verify;
 
 public class JSBoolean implements
         JSValue,

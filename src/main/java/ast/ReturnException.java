@@ -1,7 +1,5 @@
 package ast;
 
-import ast.value.JSValue;
-
 public class ReturnException extends EarlyExitException {
     private Object returnValue;
 

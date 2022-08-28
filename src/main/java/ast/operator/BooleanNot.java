@@ -1,11 +1,8 @@
 package ast.operator;
 
 import ast.Expression;
-import ast.Identifier;
 import ast.value.JSBoolean;
-import ast.value.JSNumber;
 import ast.value.JSValue;
-import org.js.Interpreter;
 
 import static myutils.Macro.verify;
 
@@ -18,7 +15,7 @@ public class BooleanNot extends AbstractUnaryOperator {
     public Object execute() {
         var entity = operand.execute();
         verify(entity instanceof JSValue);
-        var value = (JSValue)entity;
+        var value = (JSValue) entity;
         return JSBoolean.from(value.isTruthy() ? false : true);
     }
 

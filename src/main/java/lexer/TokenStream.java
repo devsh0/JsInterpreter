@@ -76,7 +76,7 @@ public class TokenStream {
                 char next = peek();
                 if (next == '/') {
                     // This is a line comment.
-                    while(!eof() && accumulate() != '\n');
+                    while (!eof() && accumulate() != '\n') ;
                     return new Token(Token.Type.LineCommentT, accumulatedString());
                 }
             }

@@ -1,7 +1,11 @@
 package parser;
 
-import ast.*;
-import ast.operator.*;
+import ast.BinaryExpression;
+import ast.Expression;
+import ast.Identifier;
+import ast.UnaryExpression;
+import ast.operator.BinaryOperator;
+import ast.operator.UnaryOperator;
 import ast.value.JSBoolean;
 import ast.value.JSNumber;
 import ast.value.JSString;
@@ -223,7 +227,7 @@ public class ExpressionParser extends Parser {
     }
 
     private Expression parseLogicalExpression() {
-        var expression =  parseRelationalExpression();
+        var expression = parseRelationalExpression();
         var nextToken = stream().peekNextToken();
         if (BinaryOperator.isLogicalOperator(nextToken))
             expression = parseLogicalExpressionTail(expression);

@@ -15,8 +15,8 @@ public class OperatorPlusEqual extends AbstractBinaryOperator {
     @Override
     public Object execute() {
         verify(lhs instanceof Identifier);
-        var dest = (Identifier)lhs;
-        var src = (JSValue)(new OperatorPlus(lhs, rhs)).execute();
+        var dest = (Identifier) lhs;
+        var src = (JSValue) (new OperatorPlus(lhs, rhs)).execute();
         Interpreter.get().rewrite(dest, src);
         return src;
     }

@@ -24,14 +24,14 @@ public class CallExpression extends ExpressionStatement {
         var functionScope = functionBody.getScope();
         var iterCount = Math.min(arguments.size(), parameters.size());
         for (int i = 0; i < iterCount; i++)
-            functionScope.addOrUpdateEntry(parameters.get(i), (ASTNode)arguments.get(i).execute());
+            functionScope.addOrUpdateEntry(parameters.get(i), (ASTNode) arguments.get(i).execute());
 
         Object returnVal;
         try {
             returnVal = functionBody.execute();
         } catch (ReturnException exception) {
             returnVal = exception.getReturnValue();
-            while (!interpreter.exitCurrentScope().equals(functionScope));
+            while (!interpreter.exitCurrentScope().equals(functionScope)) ;
         }
         return returnVal;
     }
@@ -58,7 +58,7 @@ public class CallExpression extends ExpressionStatement {
     public String getDump(int indent) {
         var builder = getIndentedBuilder(indent);
         builder.append(callee.getDump(indent)).append("(");
-        for (var arg :arguments)
+        for (var arg : arguments)
             builder.append(arg.getDump(indent)).append(", ");
         if (arguments.size() > 0)
             builder = new StringBuilder(builder.substring(0, builder.lastIndexOf(",")));

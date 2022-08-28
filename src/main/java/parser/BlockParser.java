@@ -1,6 +1,9 @@
 package parser;
 
-import ast.*;
+import ast.Block;
+import ast.CompoundStatement;
+import ast.Program;
+import ast.Statement;
 import lexer.Token;
 import lexer.TokenStream;
 

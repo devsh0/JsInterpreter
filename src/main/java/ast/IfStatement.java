@@ -2,8 +2,6 @@ package ast;
 
 import ast.value.JSValue;
 
-import java.util.Objects;
-
 import static myutils.Macro.verify;
 
 public class IfStatement extends CompoundStatement {
