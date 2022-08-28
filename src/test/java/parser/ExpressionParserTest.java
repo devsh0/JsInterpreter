@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ExpressionParserTest {
+public class ExpressionParserTest {
 
     private Expression parseExpression(String code) {
         var stream = new TokenStream(code);
