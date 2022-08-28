@@ -1,11 +1,12 @@
-package lexer;
+package myutils;
 
 public class Utils {
-    static boolean isWhitespace(char ch) {
+    public static boolean isWhitespace(char ch) {
         return ch == ' ' || ch == '\n';
     }
 
-    static boolean isValidIdentifierChar(char ch) {
+    public static boolean isValidIdentifierChar(char ch) {
         return String.valueOf(ch).matches("[a-zA-Z0-9_]");
     }
+
 }
