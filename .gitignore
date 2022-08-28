@@ -3,4 +3,5 @@ out
 *.iml
 *.js
 target
+.attach_pid*
 /src/main/java/demos/
