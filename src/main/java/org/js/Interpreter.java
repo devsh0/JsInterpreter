@@ -18,6 +18,7 @@ public class Interpreter implements Macro {
         return this;
     }
 
+    // FIXME: Do not traverse the scope chain for function calls.
     public Optional<ASTNode> queryScope(final Identifier identifier) {
         for (int i = stack.size() - 1; i >= 0; i--) {
             var scope = stack.get(i);
@@ -33,6 +34,7 @@ public class Interpreter implements Macro {
         return stack.get(stack.size() - 1);
     }
 
+    // FIXME: Do not traverse the scope chain for function calls.
     public Expression rewrite(Identifier identifier, Expression value) {
         for (int i = stack.size() - 1; i >= 0; i--) {
             var scope = stack.get(i);
