@@ -1,6 +1,5 @@
 package parser;
 
-import ast.BinaryExpression;
 import ast.Identifier;
 import ast.VariableDeclaration;
 import lexer.TokenStream;
@@ -16,17 +15,17 @@ public class VariableDeclarationParser extends Parser {
     public VariableDeclaration parse() {
         verify(stream().consumeNextToken().getValue().equals("let"));
         var declaration = new VariableDeclaration();
-        var nextTokens = stream().peekTokens(2);
-        if (nextTokens.get(1).getValue().equals("=")) {
+        var tokens = stream().peekTokens(2);
+        if (tokens.get(1).getValue().equals("=")) {
             var assignmentExpression = new ExpressionParser(stream(), scopeManager()).parse();
-            declaration.setInitializer((BinaryExpression) assignmentExpression);
+            declaration.setInitializer(assignmentExpression);
+        } else {
+            // Consume the name, there is no initializer.
+            stream().consumeNextToken();
         }
-        var idStr = nextTokens.get(0).getValue();
-        declaration.setIdentifier(Identifier.from(idStr));
-        if (stream().peekNextToken().getValue().equals("=")) {
-            stream().consumeAndMatch("=");
-            declaration.setInitializer(new ExpressionParser(stream(), scopeManager()).parse());
-        }
+        var idStr = tokens.get(0).getValue();
+        var identifier = Identifier.from(idStr);
+        declaration.setIdentifier(identifier);
         stream().consumeAndMatch(";");
         return declaration;
     }

@@ -1,6 +1,13 @@
 package ast.value;
 
-public class JSUndefined implements JSValue {
+import ast.Expression;
+import ast.operator.OperatorPlus;
+
+import static myutils.Macro.unimplemented;
+
+public class JSUndefined implements
+        JSValue,
+        OperatorPlus.Interface {
     @Override
     public Object execute() {
         return this;
@@ -34,5 +41,13 @@ public class JSUndefined implements JSValue {
     @Override
     public String getString(int indent) {
         return "undefined";
+    }
+
+    @Override
+    public Expression add(Expression rhs) {
+        if (rhs instanceof JSString)
+            return asString().add(rhs);
+        unimplemented();
+        return null;
     }
 }
