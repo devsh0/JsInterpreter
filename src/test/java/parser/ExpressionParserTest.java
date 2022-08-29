@@ -205,6 +205,26 @@ public class ExpressionParserTest {
     }
 
     @Test
+    public void testSimplePostfixIncrement() {
+        var code = "value++;";
+        var unaryExpression = (UnaryExpression) parseExpression(code);
+        var plusPlus = unaryExpression.getOperator();
+        var value = (Identifier) unaryExpression.getOperand();
+        assertEquals("++", plusPlus.toString());
+        assertEquals("value", value.toString());
+    }
+
+    @Test
+    public void testSimplePostfixDecrement() {
+        var code = "value--;";
+        var unaryExpression = (UnaryExpression) parseExpression(code);
+        var minusMinus = unaryExpression.getOperator();
+        var value = (Identifier) unaryExpression.getOperand();
+        assertEquals("--", minusMinus.toString());
+        assertEquals("value", value.toString());
+    }
+
+    @Test
     public void testSimplePrefixDecrement() {
         var code = "--value;";
         var unaryExpression = (UnaryExpression) parseExpression(code);

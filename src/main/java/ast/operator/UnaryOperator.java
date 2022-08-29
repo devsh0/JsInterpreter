@@ -11,12 +11,8 @@ public interface UnaryOperator extends ASTNode {
 
     public static UnaryOperator construct(Token opToken, Expression operand, boolean isPrefix) {
         switch (opToken.getValue()) {
-            case "++":
-                if (isPrefix)
-                    return new PrefixIncrement(operand);
-            case "--":
-                if (isPrefix)
-                    return new PrefixDecrement(operand);
+            case "++": return isPrefix ? new PrefixIncrement(operand) : new PostfixIncrement(operand);
+            case "--": return isPrefix ? new PrefixDecrement(operand) : new PostfixDecrement(operand);
             case "!":
                 return new BooleanNot(operand);
         }

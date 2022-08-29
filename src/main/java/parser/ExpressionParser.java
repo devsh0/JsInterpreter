@@ -12,7 +12,8 @@ import ast.value.JSString;
 import lexer.Token;
 import lexer.TokenStream;
 
-import static myutils.Macro.*;
+import static myutils.Macro.unreachable;
+import static myutils.Macro.verify;
 
 /*
  * Expression Grammar :
@@ -143,6 +144,22 @@ public class ExpressionParser extends Parser {
         return parsePrefixIncrementOrDecrement();
     }
 
+    private Expression parsePostfixIncrementOrDecrement() {
+        var variableExpression = parseVariableExpression();
+        var opToken = stream().consumeNextToken();
+        var operator = UnaryOperator.construct(opToken, variableExpression, false);
+        return new UnaryExpression().setOperator(operator);
+    }
+
+    private Expression parsePostfixedExpression() {
+        var nextToken = stream().peekNextToken();
+        if (nextToken.getValue().equals("!"))
+            // PostfixedExpression => BooleanExpression.
+            return parseBooleanExpression();
+
+        return parsePostfixIncrementOrDecrement();
+    }
+
     private Expression parseUnaryExpression() {
         var tokens = stream().peekTokens(2);
         if (tokens.get(0).getType() == Token.Type.UnaryOperatorT)
@@ -150,8 +167,7 @@ public class ExpressionParser extends Parser {
 
         if (tokens.get(1).getType() == Token.Type.UnaryOperatorT) {
             // UnaryExpression => PostfixedExpression.
-            unimplemented();
-            return null;
+            return parsePostfixedExpression();
         }
 
         return parsePrimaryExpression();
