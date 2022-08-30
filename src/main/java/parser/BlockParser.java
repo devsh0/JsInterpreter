@@ -10,8 +10,7 @@ import lexer.TokenStream;
 import java.util.Objects;
 import java.util.Optional;
 
-import static myutils.Macro.todo_report_syntax_error;
-import static myutils.Macro.unimplemented;
+import static myutils.Macro.*;
 
 public class BlockParser extends Parser {
     private CompoundStatement owner;
@@ -46,7 +45,7 @@ public class BlockParser extends Parser {
     private boolean eof() {
         if (stream().eof()) {
             if (!(owner instanceof Program))
-                todo_report_syntax_error();
+                todo_report_semantic_error();
             return true;
         }
         return false;
@@ -61,16 +60,8 @@ public class BlockParser extends Parser {
         var tokenValue = nextToken.getValue();
 
         if (tokenType == Token.Type.LineCommentT) {
-            while (true) {
-                if (eof())
-                    return StatementType.Exit;
-                nextToken = stream().peekNextToken();
-                tokenType = nextToken.getType();
-                tokenValue = nextToken.getValue();
-                if (tokenType != Token.Type.LineCommentT)
-                    break;
-                stream().consumeNextToken();
-            }
+            stream().consumeNextToken();
+            return nextStatementType();
         }
 
         if (tokenType == Token.Type.EOF)
