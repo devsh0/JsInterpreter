@@ -55,7 +55,8 @@ public class FunctionDeclaration extends CompoundStatement {
             builder.append(", ");
         }
 
-        builder.append(parameters.get(parameters.size() - 1).getString(indent));
+        boolean emptyParams = parameters.size() == 0;
+        builder.append(emptyParams ? "" : parameters.get(parameters.size() - 1).getString(indent));
         builder.append(")");
         builder.append(this.body.getString(indent));
         return builder.toString();

@@ -65,7 +65,8 @@ public class CallExpression extends ExpressionStatement {
             builder.append(arguments.get(i).getString(indent));
             builder.append(", ");
         }
-        builder.append(arguments.get(arguments.size() - 1).getString(indent));
+        boolean emptyArgs = arguments.size() == 0;
+        builder.append(emptyArgs ? "" : arguments.get(arguments.size() - 1).getString(indent));
         builder.append(")");
         return builder.toString();
     }
