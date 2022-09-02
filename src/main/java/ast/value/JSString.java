@@ -66,7 +66,7 @@ public class JSString implements
 
     @Override
     public String toString() {
-        return value;
+        return "\"" + value + "\"";
     }
 
     public static JSString from(String string) {
@@ -134,6 +134,6 @@ public class JSString implements
 
     @Override
     public String getString(int indent) {
-        return "\"" + this + "\"";
+        return toString();
     }
 }

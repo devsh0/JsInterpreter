@@ -32,7 +32,7 @@ public class ExpressionParserTest {
     public void testStringLiteral() {
         var code = "\"alice in wonderland\";";
         var alice = (JSString) parseExpression(code);
-        assertEquals("alice in wonderland", alice.toString());
+        assertEquals(code.replace(";", ""), alice.toString());
     }
 
     @Test
