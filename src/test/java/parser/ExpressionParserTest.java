@@ -6,6 +6,7 @@ import ast.Identifier;
 import ast.UnaryExpression;
 import ast.value.JSBoolean;
 import ast.value.JSNumber;
+import ast.value.JSObject;
 import ast.value.JSString;
 import lexer.TokenStream;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ExpressionParserTest {
 
@@ -255,5 +257,32 @@ public class ExpressionParserTest {
         assertEquals("!", outerNot.toString());
         assertEquals("!", innerNot.toString());
         assertEquals("value", value.toString());
+    }
+
+    @Test
+    public void testEmptyObjectLiteral() {
+        var code = "map = {};";
+        var mapEqObject = (BinaryExpression) parseExpression(code);
+        var map = (Identifier) mapEqObject.getLHS();
+        var eq = mapEqObject.getOperator();
+        var object = (JSObject) mapEqObject.getRHS();
+        assertEquals("map", map.toString());
+        assertEquals("=", eq.toString());
+        assertEquals("{}", object.toString());
+    }
+
+    @Test
+    public void testObjectLiteralWithProperties() {
+        var code = "bender = {name:\"toph\", energy:100};";
+        var benderEqToph = (BinaryExpression) parseExpression(code);
+        var bender = (Identifier) benderEqToph.getLHS();
+        var eq = benderEqToph.getOperator();
+        var toph = (JSObject) benderEqToph.getRHS();
+        assertEquals("bender", bender.toString());
+        assertEquals("=", eq.toString());
+
+        var tophStr = toph.toString();
+        assertTrue(tophStr.contains("name:\"toph\""));
+        assertTrue(tophStr.contains("energy:100"));
     }
 }

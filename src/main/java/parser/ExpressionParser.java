@@ -8,9 +8,12 @@ import ast.operator.BinaryOperator;
 import ast.operator.UnaryOperator;
 import ast.value.JSBoolean;
 import ast.value.JSNumber;
+import ast.value.JSObject;
 import ast.value.JSString;
 import lexer.Token;
 import lexer.TokenStream;
+
+import java.util.HashMap;
 
 import static myutils.Macro.unreachable;
 import static myutils.Macro.verify;
@@ -86,12 +89,33 @@ public class ExpressionParser extends Parser {
         return JSBoolean.from(bool);
     }
 
+    private Expression parseObjectLiteral() {
+        stream().consumeAndMatch("{");
+        var map = new HashMap<Identifier, Expression>();
+        var nextToken = stream().peekNextToken();
+        while (nextToken.getType() != Token.Type.RightCurlyT) {
+            var idToken = stream().consumeIdentifier();
+            var propId = Identifier.from(idToken.getValue());
+            stream().consumeAndMatch(":");
+            var propValue = parse();
+            map.put(propId, propValue);
+            nextToken = stream().peekNextToken();
+            if (nextToken.getType() == Token.Type.CommaT) {
+                stream().consumeNextToken();
+                nextToken = stream().peekNextToken();
+            }
+        }
+        stream().consumeAndMatch("}");
+        return JSObject.from(map);
+    }
+
     private Expression parseLiteral() {
         var nextToken = stream().peekNextToken();
         switch (nextToken.getType()) {
             case NumberLiteralT: return parseNumberLiteral();
             case StringLiteralT: return parseStringLiteral();
             case KeywordT: return parseBooleanLiteral();
+            case LeftCurlyT: return parseObjectLiteral();
         }
         unreachable();
         return null;
