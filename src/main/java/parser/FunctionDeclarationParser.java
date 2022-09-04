@@ -58,7 +58,7 @@ public class FunctionDeclarationParser extends Parser {
         stream().consumeAndMatch("{");
         scopeManager().pushFunctionScope(function);
         function.setBody(parseFunctionBody(function));
-        scopeManager().popFunctionScope();
+        scopeManager().popFunction();
         stream().consumeAndMatch("}");
 
         return function;

@@ -34,9 +34,9 @@ public class ForStatementParser extends Parser {
         var hasCurlyEnclosedBlock = stream().peekNextToken().getValue().equals("{");
         if (hasCurlyEnclosedBlock)
             stream().consumeAndMatch("{");
-        scopeManager().pushLoopScope(forStatement);
+        scopeManager().pushLoop(forStatement);
         var forBody = new BlockParser(stream(), scopeManager(), forStatement, hasCurlyEnclosedBlock).parse();
-        scopeManager().popLoopScope();
+        scopeManager().popLoop();
         if (hasCurlyEnclosedBlock)
             stream().consumeAndMatch("}");
         return forBody;

@@ -17,7 +17,7 @@ public class ContinueStatementParser extends Parser {
         if (stream().peekNextToken().getType() == Token.Type.IdentifierT)
             label = Identifier.from(stream().consumeIdentifier().getValue());
 
-        var targetLoop = scopeManager().getLoopScope(label);
+        var targetLoop = scopeManager().getLoopWithLabel(label);
         stream().consumeAndMatch(";");
         return new ContinueStatement(targetLoop);
     }

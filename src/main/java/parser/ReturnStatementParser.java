@@ -13,7 +13,7 @@ public class ReturnStatementParser extends Parser {
     @Override
     public ReturnStatement parse() {
         stream().consumeNextToken(); // "return"
-        var target = scopeManager().getActiveFunctionScope();
+        var target = scopeManager().getActiveFunction();
         var statement = new ReturnStatement(target);
         if (stream().peekNextToken().getType() != Token.Type.SemiColonT) {
             var expression = new ExpressionParser(stream(), scopeManager()).parse();

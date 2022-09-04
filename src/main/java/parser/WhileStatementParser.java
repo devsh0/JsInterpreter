@@ -17,9 +17,9 @@ public class WhileStatementParser extends Parser {
         var hasCurlyEnclosedBlock = stream().peekNextToken().getValue().equals("{");
         if (hasCurlyEnclosedBlock)
             stream().consumeAndMatch("{");
-        scopeManager().pushLoopScope(whileStatement);
+        scopeManager().pushLoop(whileStatement);
         var whileBody = new BlockParser(stream(), scopeManager(), whileStatement, hasCurlyEnclosedBlock).parse();
-        scopeManager().popLoopScope();
+        scopeManager().popLoop();
         if (hasCurlyEnclosedBlock)
             stream().consumeAndMatch("}");
         return whileBody;
