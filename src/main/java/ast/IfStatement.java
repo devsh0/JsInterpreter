@@ -33,6 +33,10 @@ public class IfStatement extends CompoundStatement {
         return statement;
     }
 
+    public boolean hasAlternate() {
+        return alternate != null;
+    }
+
     @Override
     public String getString(int indent) {
         var builder = new StringBuilder("\n");
@@ -41,6 +45,13 @@ public class IfStatement extends CompoundStatement {
         builder.append(conditionExpression.getString(indent));
         builder.append(")");
         builder.append(this.body.getString(indent));
+
+        if (hasAlternate()) {
+            builder.append(" ".repeat(indent));
+            builder.append("else");
+            builder.append(this.alternate.getString(indent));
+        }
+
         return builder.toString();
     }
 
