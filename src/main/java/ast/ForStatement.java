@@ -40,15 +40,10 @@ public class ForStatement extends LoopStatement {
         builder.append(" ".repeat(indent));
         builder.append("for (");
         var initString = initializer == null ? "" : initializer.getPrettyString(indent);
-        if (initializer instanceof VariableDeclaration) {
-            initString = initString.replace("\n", "");
-            initString = initString.replace(";", "");
-        }
-        builder.append(initString.trim());
+        builder.append(initString.trim()).append(" ");
+        builder.append(conditionStatement == null ? "" : conditionStatement.getSource().getPrettyString(indent));
         builder.append("; ");
-        builder.append(conditionStatement == null ? "" : conditionStatement.getPrettyString(indent));
-        builder.append("; ");
-        builder.append(updateStatement == null ? "" : updateStatement.getPrettyString(indent));
+        builder.append(updateStatement == null ? "" : updateStatement.getSource().getPrettyString(indent));
         builder.append(")");
         builder.append(this.body.getPrettyString(indent));
         return builder.toString();
