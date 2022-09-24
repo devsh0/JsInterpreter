@@ -49,6 +49,10 @@ public class ForStatement extends LoopStatement {
         return builder.toString();
     }
 
+    public ExpressionStatement getUpdateStatement() {
+        return updateStatement;
+    }
+
     public Identifier getLabel() {
         return label;
     }

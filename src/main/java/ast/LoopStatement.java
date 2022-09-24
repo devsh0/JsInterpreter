@@ -36,6 +36,11 @@ public abstract class LoopStatement extends CompoundStatement {
             } catch (ContinueException exception) {
                 if (this != exception.getTarget())
                     throw exception;
+                if (this instanceof ForStatement forStmt) {
+                    var updateStatement = forStmt.getUpdateStatement();
+                    if (updateStatement != null)
+                        updateStatement.execute();
+                }
             }
         }
         return result;
