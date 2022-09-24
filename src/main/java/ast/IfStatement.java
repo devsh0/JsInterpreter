@@ -22,8 +22,7 @@ public class IfStatement extends CompoundStatement {
         return this;
     }
 
-    public IfStatement setAlternate(Statement statement) {
-        verify(statement == null || statement instanceof Block);
+    public IfStatement setAlternate(Block statement) {
         this.alternate = statement;
         return this;
     }
@@ -46,5 +45,5 @@ public class IfStatement extends CompoundStatement {
     }
 
     private Expression conditionExpression;
-    private Statement alternate;
+    private Block alternate;
 }

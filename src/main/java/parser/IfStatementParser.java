@@ -3,7 +3,6 @@ package parser;
 import ast.Block;
 import ast.Expression;
 import ast.IfStatement;
-import ast.Statement;
 import lexer.TokenStream;
 
 import java.util.Optional;
@@ -33,7 +32,7 @@ public class IfStatementParser extends Parser {
         return block;
     }
 
-    private Optional<Statement> maybeParseAlternate(IfStatement ifStatement) {
+    private Optional<Block> maybeParseAlternate(IfStatement ifStatement) {
         if (stream().peekNextToken().getValue().equals("else")) {
             stream().consumeNextToken();
             return Optional.of(parseBody(ifStatement));
