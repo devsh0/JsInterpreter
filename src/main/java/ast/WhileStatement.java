@@ -7,7 +7,7 @@ public class WhileStatement extends LoopStatement {
     }
 
     @Override
-    public String getString(int indent) {
+    public String getPrettyString(int indent) {
         var builder = new StringBuilder("\n");
 
         if (label != null) {
@@ -18,9 +18,9 @@ public class WhileStatement extends LoopStatement {
 
         builder.append(" ".repeat(indent));
         builder.append("while (");
-        builder.append(conditionStatement.getString(indent));
+        builder.append(conditionStatement.getPrettyString(indent));
         builder.append(")");
-        builder.append(this.body.getString(indent));
+        builder.append(this.body.getPrettyString(indent));
         return builder.toString();
     }
 }

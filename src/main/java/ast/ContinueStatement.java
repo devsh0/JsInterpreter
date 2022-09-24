@@ -34,7 +34,7 @@ public class ContinueStatement implements Statement {
     }
 
     @Override
-    public String getString(int indent) {
+    public String getPrettyString(int indent) {
         var builder = new StringBuilder("\n");
         builder.append(" ".repeat(indent));
         builder.append("continue");

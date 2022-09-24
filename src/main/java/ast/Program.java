@@ -15,8 +15,8 @@ public class Program extends CompoundStatement {
     }
 
     @Override
-    public String getString(int indent) {
-        var bodyStr = this.body.getString(indent);
+    public String getPrettyString(int indent) {
+        var bodyStr = this.body.getPrettyString(indent);
         int index = bodyStr.indexOf('{');
         bodyStr = bodyStr.substring(index + 1);
         index = bodyStr.lastIndexOf('}');
@@ -25,7 +25,7 @@ public class Program extends CompoundStatement {
     }
 
     public void prettyPrint() {
-        System.out.println(getString(0));
+        System.out.println(this.getPrettyString(0));
     }
 
     private Block body;

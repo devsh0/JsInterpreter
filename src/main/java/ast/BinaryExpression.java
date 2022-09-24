@@ -28,8 +28,8 @@ public class BinaryExpression implements Expression {
         return operator;
     }
 
-    public String getString(int indent) {
-        return operator.getString(indent);
+    public String getPrettyString(int indent) {
+        return operator.getPrettyString(indent);
     }
 
     private BinaryOperator operator;

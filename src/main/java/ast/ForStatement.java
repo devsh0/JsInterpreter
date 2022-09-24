@@ -28,7 +28,7 @@ public class ForStatement extends LoopStatement {
     }
 
     @Override
-    public String getString(int indent) {
+    public String getPrettyString(int indent) {
         var builder = new StringBuilder("\n");
 
         if (label != null) {
@@ -39,18 +39,18 @@ public class ForStatement extends LoopStatement {
 
         builder.append(" ".repeat(indent));
         builder.append("for (");
-        var initString = initializer == null ? "" : initializer.getString(indent);
+        var initString = initializer == null ? "" : initializer.getPrettyString(indent);
         if (initializer instanceof VariableDeclaration) {
             initString = initString.replace("\n", "");
             initString = initString.replace(";", "");
         }
         builder.append(initString.trim());
         builder.append("; ");
-        builder.append(conditionStatement == null ? "" : conditionStatement.getString(indent));
+        builder.append(conditionStatement == null ? "" : conditionStatement.getPrettyString(indent));
         builder.append("; ");
-        builder.append(updateStatement == null ? "" : updateStatement.getString(indent));
+        builder.append(updateStatement == null ? "" : updateStatement.getPrettyString(indent));
         builder.append(")");
-        builder.append(this.body.getString(indent));
+        builder.append(this.body.getPrettyString(indent));
         return builder.toString();
     }
 

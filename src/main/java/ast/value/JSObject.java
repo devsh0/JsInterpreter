@@ -50,7 +50,7 @@ public class JSObject implements JSValue {
     }
 
     @Override
-    public String getString(int indent) {
+    public String getPrettyString(int indent) {
         unimplemented();
         return null;
     }

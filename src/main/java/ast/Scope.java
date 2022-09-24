@@ -50,7 +50,7 @@ public class Scope implements ASTNode {
     }
 
     @Override
-    public String getString(int indent) {
+    public String getPrettyString(int indent) {
         return "";
     }
 

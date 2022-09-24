@@ -16,8 +16,8 @@ public class UnaryExpression implements Expression {
     }
 
     @Override
-    public String getString(int indent) {
-        return operator.getString(indent);
+    public String getPrettyString(int indent) {
+        return operator.getPrettyString(indent);
     }
 
     public Expression getOperand() {

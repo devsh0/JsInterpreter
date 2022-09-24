@@ -44,10 +44,10 @@ public class Block implements Statement {
         return scope;
     }
 
-    public String getString(int indent) {
+    public String getPrettyString(int indent) {
         var builder = new StringBuilder();
         builder.append(" {");
-        statementList.forEach(statement -> builder.append(statement.getString(indent + 4)));
+        statementList.forEach(statement -> builder.append(statement.getPrettyString(indent + 4)));
         builder.append("\n");
         builder.append(" ".repeat(indent));
         builder.append("}");

@@ -32,7 +32,7 @@ public class PostfixDecrement extends AbstractUnaryOperator {
     }
 
     @Override
-    public String getString(int indent) {
-        return operand.getString(indent) + this;
+    public String getPrettyString(int indent) {
+        return operand.getPrettyString(indent) + this;
     }
 }

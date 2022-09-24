@@ -30,5 +30,5 @@ public interface JSValue extends Expression {
     }
 
     @Override
-    public String getString(int indent);
+    public String getPrettyString(int indent);
 }

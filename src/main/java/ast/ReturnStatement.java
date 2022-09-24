@@ -20,13 +20,13 @@ public class ReturnStatement implements Statement {
     }
 
     @Override
-    public String getString(int indent) {
+    public String getPrettyString(int indent) {
         var builder = new StringBuilder("\n");
         builder.append(" ".repeat(indent));
         builder.append("return");
         if (expression != null) {
             builder.append(" ");
-            builder.append(expression.getString(indent));
+            builder.append(expression.getPrettyString(indent));
         }
         builder.append(";");
         return builder.toString();

@@ -43,7 +43,7 @@ public class FunctionDeclaration extends CompoundStatement {
     }
 
     @Override
-    public String getString(int indent) {
+    public String getPrettyString(int indent) {
         var builder = new StringBuilder("\n");
         builder.append(" ".repeat(indent));
         builder.append("function ");
@@ -51,14 +51,14 @@ public class FunctionDeclaration extends CompoundStatement {
         builder.append("(");
 
         for (int i = 0; i < parameters.size() - 1; i++) {
-            builder.append(parameters.get(i).getString(indent));
+            builder.append(parameters.get(i).getPrettyString(indent));
             builder.append(", ");
         }
 
         boolean emptyParams = parameters.size() == 0;
-        builder.append(emptyParams ? "" : parameters.get(parameters.size() - 1).getString(indent));
+        builder.append(emptyParams ? "" : parameters.get(parameters.size() - 1).getPrettyString(indent));
         builder.append(")");
-        builder.append(this.body.getString(indent));
+        builder.append(this.body.getPrettyString(indent));
         return builder.toString();
     }
 

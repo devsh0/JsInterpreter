@@ -34,12 +34,12 @@ public class VariableDeclaration implements Statement {
     }
 
     @Override
-    public String getString(int indent) {
+    public String getPrettyString(int indent) {
         var builder = new StringBuilder("\n");
         builder.append(" ".repeat(indent));
         builder.append("let ");
         if (!initializer.equals(JSValue.undefined()))
-            builder.append(initializer.getString(indent));
+            builder.append(initializer.getPrettyString(indent));
         builder.append(";");
         return builder.toString();
     }

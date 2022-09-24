@@ -64,5 +64,5 @@ public abstract class LoopStatement extends CompoundStatement {
     }
 
     @Override
-    abstract public String getString(int indent);
+    abstract public String getPrettyString(int indent);
 }

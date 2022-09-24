@@ -128,7 +128,7 @@ public class JSBoolean implements
     }
 
     @Override
-    public String getString(int indent) {
+    public String getPrettyString(int indent) {
         return toString();
     }
 }

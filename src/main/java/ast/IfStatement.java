@@ -38,18 +38,18 @@ public class IfStatement extends CompoundStatement {
     }
 
     @Override
-    public String getString(int indent) {
+    public String getPrettyString(int indent) {
         var builder = new StringBuilder("\n");
         builder.append(" ".repeat(indent));
         builder.append("if (");
-        builder.append(conditionExpression.getString(indent));
+        builder.append(conditionExpression.getPrettyString(indent));
         builder.append(")");
-        builder.append(this.body.getString(indent));
+        builder.append(this.body.getPrettyString(indent));
 
         if (hasAlternate()) {
             builder.append(" ".repeat(indent));
             builder.append("else");
-            builder.append(this.alternate.getString(indent));
+            builder.append(this.alternate.getPrettyString(indent));
         }
 
         return builder.toString();

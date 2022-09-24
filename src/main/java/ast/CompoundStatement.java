@@ -18,5 +18,5 @@ public abstract class CompoundStatement implements Statement {
     }
 
     @Override
-    abstract public String getString(int indent);
+    abstract public String getPrettyString(int indent);
 }
