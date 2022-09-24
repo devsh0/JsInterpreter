@@ -36,8 +36,7 @@ public class IfStatementParser extends Parser {
     private Optional<Statement> maybeParseAlternate(IfStatement ifStatement) {
         if (stream().peekNextToken().getValue().equals("else")) {
             stream().consumeNextToken();
-            var hasIfStatementNext = stream().peekNextToken().getValue().equals("if");
-            return Optional.of(hasIfStatementNext ? parse() : parseBody(ifStatement));
+            return Optional.of(parseBody(ifStatement));
         }
         return Optional.empty();
     }

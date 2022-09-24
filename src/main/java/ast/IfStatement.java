@@ -23,7 +23,7 @@ public class IfStatement extends CompoundStatement {
     }
 
     public IfStatement setAlternate(Statement statement) {
-        verify(statement == null || statement instanceof IfStatement || statement instanceof Block);
+        verify(statement == null || statement instanceof Block);
         this.alternate = statement;
         return this;
     }
