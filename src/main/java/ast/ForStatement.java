@@ -6,8 +6,8 @@ public class ForStatement extends LoopStatement {
     @Override
     public Object execute() {
         initializer.execute();
-        if (this.updateExpression != null)
-            this.body.append(new ExpressionStatement().setSource(this.updateExpression));
+        if (this.updateStatement != null)
+            this.body.append(new ExpressionStatement().setSource(this.updateStatement));
         return super.execute();
     }
 
@@ -17,8 +17,8 @@ public class ForStatement extends LoopStatement {
         return this;
     }
 
-    public ForStatement setUpdateExpression(Expression expression) {
-        this.updateExpression = expression;
+    public ForStatement setUpdateStatement(ExpressionStatement expression) {
+        this.updateStatement = expression;
         return this;
     }
 
@@ -46,9 +46,9 @@ public class ForStatement extends LoopStatement {
         }
         builder.append(initString.trim());
         builder.append("; ");
-        builder.append(conditionExpression == null ? "" : conditionExpression.getString(indent));
+        builder.append(conditionStatement == null ? "" : conditionStatement.getString(indent));
         builder.append("; ");
-        builder.append(updateExpression == null ? "" : updateExpression.getString(indent));
+        builder.append(updateStatement == null ? "" : updateStatement.getString(indent));
         builder.append(")");
         builder.append(this.body.getString(indent));
         return builder.toString();
@@ -59,6 +59,6 @@ public class ForStatement extends LoopStatement {
     }
 
     private Statement initializer;
-    private Expression updateExpression;
+    private ExpressionStatement updateStatement;
     private Identifier label;
 }

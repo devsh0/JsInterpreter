@@ -15,10 +15,10 @@ public class WhileStatement extends LoopStatement {
             builder.append(label);
             builder.append(":\n");
         }
-        
+
         builder.append(" ".repeat(indent));
         builder.append("while (");
-        builder.append(conditionExpression.getString(indent));
+        builder.append(conditionStatement.getString(indent));
         builder.append(")");
         builder.append(this.body.getString(indent));
         return builder.toString();

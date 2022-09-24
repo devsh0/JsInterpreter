@@ -18,16 +18,16 @@ public class ForStatementParser extends Parser {
         return new ExpressionStatementParser(stream(), scopeManager()).parse();
     }
 
-    private Expression parseConditionExpression() {
+    private ExpressionStatement parseConditionStatement() {
         // Note that expression statements with missing expressions are still valid.
-        var expressionStatement = new ExpressionStatementParser(stream(), scopeManager()).parse();
-        return expressionStatement.getSource();
+        return new ExpressionStatementParser(stream(), scopeManager()).parse();
     }
 
-    private Expression parseUpdateExpression() {
+    private ExpressionStatement parseUpdateExpression() {
         if (stream().peekNextToken().getType() == Token.Type.RightParenT)
             return null;
-        return new ExpressionParser(stream(), scopeManager()).parse();
+        var expression = new ExpressionParser(stream(), scopeManager()).parse();
+        return new ExpressionStatement().setSource(expression);
     }
 
     private Block parseBody(ForStatement forStatement) {
@@ -49,8 +49,8 @@ public class ForStatementParser extends Parser {
         stream().consumeNextToken(); // "for"
         stream().consumeAndMatch("(");
         forStatement.setInitializer(parseInitializer());
-        forStatement.setConditionExpression(parseConditionExpression());
-        forStatement.setUpdateExpression(parseUpdateExpression());
+        forStatement.setConditionStatement(parseConditionStatement());
+        forStatement.setUpdateStatement(parseUpdateExpression());
         stream().consumeAndMatch(")");
         forStatement.setBody(parseBody(forStatement));
         return forStatement;

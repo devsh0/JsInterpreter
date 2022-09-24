@@ -9,10 +9,10 @@ import static myutils.Macro.verify;
 
 public abstract class LoopStatement extends CompoundStatement {
     protected Identifier label;
-    protected Expression conditionExpression;
+    protected Expression conditionStatement;
 
     public LoopStatement() {
-        this.conditionExpression = JSValue.from(true);
+        this.conditionStatement = JSValue.from(true);
     }
 
     @Override
@@ -21,7 +21,7 @@ public abstract class LoopStatement extends CompoundStatement {
             Interpreter.get().getCurrentScope().addOrUpdateEntry(label, this);
         Object result = JSValue.undefined();
         while (true) {
-            var valueOrError = conditionExpression.execute();
+            var valueOrError = conditionStatement.execute();
             verify(valueOrError instanceof JSValue);
             var value = (JSValue) valueOrError;
             if (value.isFalsy())
@@ -53,9 +53,9 @@ public abstract class LoopStatement extends CompoundStatement {
         return this;
     }
 
-    public CompoundStatement setConditionExpression(Expression expression) {
+    public CompoundStatement setConditionStatement(ExpressionStatement expression) {
         if (expression != null)
-            conditionExpression = expression;
+            conditionStatement = expression;
         return this;
     }
 

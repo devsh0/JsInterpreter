@@ -11,6 +11,7 @@ public class ExpressionStatementParser extends Parser {
     @Override
     public ExpressionStatement parse() {
         var statement = new ExpressionStatement();
+        // Expressions are allowed to be empty.
         if (!stream().peekNextToken().getValue().equals(";"))
             statement.setSource(new ExpressionParser(stream(), scopeManager()).parse());
         stream().consumeAndMatch(";");

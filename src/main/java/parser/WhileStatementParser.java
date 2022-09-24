@@ -1,6 +1,7 @@
 package parser;
 
 import ast.Block;
+import ast.ExpressionStatement;
 import ast.Identifier;
 import ast.WhileStatement;
 import lexer.TokenStream;
@@ -11,6 +12,11 @@ public class WhileStatementParser extends Parser {
     public WhileStatementParser(TokenStream stream, ScopeManager scopeManager, Identifier label) {
         super(stream, scopeManager);
         this.label = label;
+    }
+
+    private ExpressionStatement parseConditionStatement() {
+        var expression = new ExpressionParser(stream(), scopeManager()).parse();
+        return new ExpressionStatement().setSource(expression);
     }
 
     private Block parseBody(WhileStatement whileStatement) {
@@ -31,7 +37,7 @@ public class WhileStatementParser extends Parser {
         whileStatement.setLabel(label);
         stream().consumeNextToken(); // "while"
         stream().consumeAndMatch("(");
-        whileStatement.setConditionExpression(new ExpressionParser(stream(), scopeManager()).parse());
+        whileStatement.setConditionStatement(parseConditionStatement());
         stream().consumeAndMatch(")");
         whileStatement.setBody(parseBody(whileStatement));
         return whileStatement;
