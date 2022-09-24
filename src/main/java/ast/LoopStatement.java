@@ -9,10 +9,10 @@ import static myutils.Macro.verify;
 
 public abstract class LoopStatement extends CompoundStatement {
     protected Identifier label;
-    protected Expression conditionStatement;
+    protected ExpressionStatement conditionStatement;
 
     public LoopStatement() {
-        this.conditionStatement = JSValue.from(true);
+        this.conditionStatement = new ExpressionStatement().setSource(JSValue.from(true));
     }
 
     @Override
@@ -53,9 +53,9 @@ public abstract class LoopStatement extends CompoundStatement {
         return this;
     }
 
-    public CompoundStatement setConditionStatement(ExpressionStatement expression) {
-        if (expression != null)
-            conditionStatement = expression;
+    public CompoundStatement setConditionStatement(ExpressionStatement statement) {
+        if (statement != null)
+            conditionStatement = statement;
         return this;
     }
 
