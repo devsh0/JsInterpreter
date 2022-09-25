@@ -1,13 +1,14 @@
 package ast;
 
+import java.util.Objects;
+
 import static myutils.Macro.verify;
 
 public class ForStatement extends LoopStatement {
+
     @Override
     public Object execute() {
         initializer.execute();
-        if (this.updateStatement != null)
-            this.body.append(new ExpressionStatement().setSource(this.updateStatement));
         return super.execute();
     }
 
@@ -17,13 +18,23 @@ public class ForStatement extends LoopStatement {
         return this;
     }
 
-    public ForStatement setUpdateStatement(ExpressionStatement expression) {
-        this.updateStatement = expression;
+    public ForStatement setUpdateStatement(ExpressionStatement updateStatement) {
+        verify(this.updateStatement == null);
+        this.updateStatement = updateStatement;
         return this;
     }
 
     public CompoundStatement setLabel(Identifier label) {
         this.label = label;
+        return this;
+    }
+
+    @Override
+    public LoopStatement setBody(Block block) {
+        Objects.requireNonNull(block);
+        if (updateStatement != null)
+            block.append(updateStatement);
+        super.setBody(block);
         return this;
     }
 
