@@ -1,34 +1,19 @@
 package ast;
 
-import org.js.Interpreter;
-
 import java.util.Objects;
 
-import static myutils.Macro.verify;
-
 public class BreakStatement implements Statement {
-    public BreakStatement(CompoundStatement owner) {
-        Objects.requireNonNull(owner);
-        this.owner = owner;
+    public BreakStatement(CompoundStatement target) {
+        Objects.requireNonNull(target);
+        this.target = target;
     }
 
     @Override
     public Object execute() {
-        CompoundStatement breakableEntity;
-        if (label != null) {
-            var entityOrEmpty = Interpreter.get().queryScope(label);
-            verify(entityOrEmpty.isPresent());
-            var entity = entityOrEmpty.get();
-            verify(entity instanceof CompoundStatement);
-            breakableEntity = (CompoundStatement) entity;
-        } else {
-            breakableEntity = owner;
-        }
-        throw new BreakException(breakableEntity);
+        throw new BreakException(target);
     }
 
     public BreakStatement setLabel(Identifier label) {
-        Objects.requireNonNull(label);
         this.label = label;
         return this;
     }
@@ -46,6 +31,6 @@ public class BreakStatement implements Statement {
         return builder.toString();
     }
 
-    private CompoundStatement owner;
+    private CompoundStatement target;
     private Identifier label;
 }

@@ -19,6 +19,6 @@ public class ContinueStatementParser extends Parser {
 
         var targetLoop = scopeManager().getLoopWithLabel(label);
         stream().consumeAndMatch(";");
-        return new ContinueStatement(targetLoop);
+        return new ContinueStatement(targetLoop).setLabel(label);
     }
 }

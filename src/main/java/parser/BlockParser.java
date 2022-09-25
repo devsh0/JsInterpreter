@@ -155,7 +155,7 @@ public class BlockParser extends Parser {
             case ContinueStatement:
                 return Optional.of(new ContinueStatementParser(stream(), scopeManager()).parse());
             case LabelStatement:
-                return Optional.of(new LabeledStatementParser(stream(), scopeManager()).parse());
+                return Optional.of(new LoopStatementParser(stream(), scopeManager()).parse());
             case Exit:
                 return Optional.empty();
             default:

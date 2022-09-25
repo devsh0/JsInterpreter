@@ -21,6 +21,6 @@ public class BreakStatementParser extends Parser {
         var targetLoop = scopeManager().getLoopWithLabel(label);
 
         stream().consumeAndMatch(";");
-        return new BreakStatement(targetLoop);
+        return new BreakStatement(targetLoop).setLabel(label);
     }
 }
