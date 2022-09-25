@@ -18,7 +18,9 @@ public class WhileStatement extends LoopStatement {
 
         builder.append(" ".repeat(indent));
         builder.append("while (");
-        builder.append(conditionStatement.getPrettyString(indent));
+        var conditionString = conditionStatement.getPrettyString(indent).trim();
+        conditionString = conditionString.replace(";", "");
+        builder.append(conditionString);
         builder.append(")");
         builder.append(this.body.getPrettyString(indent));
         return builder.toString();
