@@ -34,6 +34,11 @@ public class Block implements Statement {
         return this;
     }
 
+    public Statement removeLastStatement() {
+        var size = statementList.size();
+        return (size == 0) ? null : statementList.remove(statementList.size() - 1);
+    }
+
     public Optional<ASTNode> getOwner() {
         if (owner == null)
             return Optional.empty();

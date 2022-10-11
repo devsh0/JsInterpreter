@@ -54,9 +54,18 @@ public class ForStatement extends LoopStatement {
         builder.append(initString.trim()).append(" ");
         builder.append(conditionStatement == null ? "" : conditionStatement.getSource().getPrettyString(indent));
         builder.append("; ");
-        builder.append(updateStatement == null ? "" : updateStatement.getSource().getPrettyString(indent));
+        var hasUpdateStatement = updateStatement != null;
+        builder.append(hasUpdateStatement ? updateStatement.getSource().getPrettyString(indent) : "");
         builder.append(")");
-        builder.append(this.body.getPrettyString(indent));
+        if (!hasUpdateStatement)
+            builder.append(this.body.getPrettyString(indent));
+        else {
+            // Cannot print the updateStatement as part of the block.
+            var lastStatement = this.body.removeLastStatement();
+            builder.append(this.body.getPrettyString(indent));
+            if (lastStatement != null)
+                this.body.append(lastStatement);
+        }
         return builder.toString();
     }
 
