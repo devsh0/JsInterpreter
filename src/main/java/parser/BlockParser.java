@@ -6,6 +6,7 @@ import ast.Program;
 import ast.Statement;
 import lexer.Token;
 import lexer.TokenStream;
+import myutils.Macro;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -45,7 +46,7 @@ public class BlockParser extends Parser {
     private boolean eof() {
         if (stream().eof()) {
             if (!(owner instanceof Program))
-                todo_report_semantic_error();
+                Macro.todo_report_syntax_error();
             return true;
         }
         return false;

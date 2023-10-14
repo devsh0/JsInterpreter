@@ -8,6 +8,8 @@ import java.util.List;
 import static myutils.Macro.todo_report_syntax_error;
 import static myutils.Macro.verify;
 
+// I'm really _not_ proud of this scanner. Might come back to it and redo the whole thing.
+// It works, but one should not write tokenizers like this.
 public class TokenStream {
     private int cursor = 0;
     private String text;

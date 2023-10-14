@@ -6,7 +6,7 @@ import ast.LoopStatement;
 
 import java.util.Stack;
 
-import static myutils.Macro.todo_report_semantic_error;
+import static myutils.Macro.todo_report_syntax_error;
 import static myutils.Macro.verify;
 
 public class ScopeManager {
@@ -20,19 +20,19 @@ public class ScopeManager {
 
     public FunctionDeclaration getActiveFunction() {
         if (functionStack.isEmpty())
-            todo_report_semantic_error();
+            todo_report_syntax_error();
         return functionStack.peek();
     }
 
     public FunctionDeclaration popFunction() {
         if (functionStack.isEmpty())
-            todo_report_semantic_error();
+            todo_report_syntax_error();
         return functionStack.pop();
     }
 
     public LoopStatement getActiveLoop() {
         if (loopStack.isEmpty())
-            todo_report_semantic_error();
+            todo_report_syntax_error();
         return loopStack.peek();
     }
 
@@ -40,13 +40,13 @@ public class ScopeManager {
         if (label == null)
             return getActiveLoop();
         if (loopStack.isEmpty())
-            todo_report_semantic_error();
+            todo_report_syntax_error();
         for (var cursor = loopStack.size() - 1; cursor >= 0; cursor--) {
             var current = loopStack.elementAt(cursor);
             if (label.equals(current.getLabel()))
                 return current;
         }
-        todo_report_semantic_error();
+        todo_report_syntax_error();
         return null;
     }
 
@@ -57,7 +57,7 @@ public class ScopeManager {
 
     public LoopStatement popLoop() {
         if (loopStack.empty())
-            todo_report_semantic_error();
+            todo_report_syntax_error();
         return loopStack.pop();
     }
 }

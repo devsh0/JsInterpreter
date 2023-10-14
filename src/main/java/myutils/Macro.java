@@ -14,10 +14,6 @@ public interface Macro {
         die("Expecting a syntax error here!");
     }
 
-    public static void todo_report_semantic_error() {
-        die("Expecting a semantic error here!");
-    }
-
     public static void unimplemented() {
         die("This feature is yet to be implemented!");
     }
