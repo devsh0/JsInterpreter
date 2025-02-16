@@ -2,7 +2,7 @@
 An interpreter that can recognize a JS-like language. It can parse very simple JavaScript programs but is still missing
 a bunch of features. I intend to finish it once I have some time off freelancing. The plan is to have the parser recognize
 all the syntactical elements of ECMA-262 and once there, generate Java bytecode (or LLVM IR) based on the AST which can
-be interpreted by a VM (JVM).
+be interpreted by a VM.
 
 ## Building and Running the Tests
 Building and running the tests is a two-stage process.
