@@ -1,11 +1,9 @@
 ## Interpreter
-An interpreter that can recognize a JS-like language. It can parse very simple JavaScript programs but is still missing
-a bunch of features. I intend to finish it once I have some time off freelancing. The plan is to have the parser recognize
-all the syntactical elements of ECMA-262 and once there, generate Java bytecode (or LLVM IR) based on the AST which can
-be interpreted by a VM.
+A toy tree-walk interpreter that can run code written in a JS-like language. It can parse simple JavaScript programs.
+The long-term plan is to make it ECMA-262 compatible and once there, perhaps generate Java bytecode which can
+run on the JVM.
 
 ## Building and Running the Tests
-Building and running the tests is a two-stage process.
 
 #### Clone the repository
 ```shell 
@@ -17,11 +15,10 @@ git clone https://github.com/devsh0/JsInterpreter.git
 cd JsInterpreter
 mvn test
 ```
-**Note:** Ubuntu doesn't play nice with maven 3.6.x. If you encounter an error, upgrade to maven 3.8.x.
 
 ## Example Usecase
-Although the interpreter isn't ready to be used as a standalone library, you can still take it for a test drive. Steps to
-do that are pretty straight-forward:
+Although the interpreter isn't ready to be used as a standalone library, you can still take it for a test drive.
+Here's how:
 
 1. Install the library to your local maven repository.
 ```shell
@@ -79,7 +76,7 @@ public class Main {
 mvn exec:java
 ```
 
-This should run the application and print "buzz" somewhere in stdout. If you encounter a `ClassNotFoundExecption` pointing
+This should run the application and output "buzz" in stdout. If you encounter a `ClassNotFoundExecption` pointing
 to `Main`, you probably need this instead:
 
 ```shell
