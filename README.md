@@ -1,5 +1,5 @@
 ## Interpreter
-A toy tree-walk interpreter that can run code written in a JS-like language. It can parse simple JavaScript programs.
+A toy tree-walk interpreter that can run code written in a JS-like language.
 The long-term plan is to make it ECMA-262 compatible and once there, perhaps generate Java bytecode which can
 run on the JVM.
 
